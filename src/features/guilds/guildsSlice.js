@@ -8,14 +8,14 @@ const initialState = {
     error: null
 }
 
-export const fetchGuilds = createAsyncThunk("guilds/fetchGuilds", () => api.getGuilds())
+export const fetchGuilds = createAsyncThunk("guilds/fetchGuilds", async () => {
+    const res = await api.ws.getGuilds()
+    return res.data
+})
 
 const guildsSlice = createSlice({
     name: "guild",
     initialState,
-    reducers: {
-        
-    },
     extraReducers: {
         [fetchGuilds.pending]: (state, action) => {
             state.status = "pending"

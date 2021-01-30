@@ -2,9 +2,8 @@ import React, { useState } from "react"
 import { useHistory } from "react-router-dom"
 import { ListItem, ListItemText, ListItemIcon } from "@material-ui/core"
 
-import GuildIcon from "../Discord/GuildIcon.js"
+import GuildIcon from "../../components/Discord/GuildIcon.js"
 import { DISCORD_BOT_INVITE_URL } from "../../config/constants.js"
-
 
 function Guild({ guild, active = false }) {
     const history = useHistory()
@@ -12,7 +11,7 @@ function Guild({ guild, active = false }) {
     const [isMouseOver, setIsMouseOver] = useState(false)
 
     const handleClick = () => {
-        if (!guild.active) {
+        if (!guild.isActive) {
             window.open(DISCORD_BOT_INVITE_URL + "&guild_id=" + guild.id, "_blank", "noopener,noreferrer")
         } else {
             history.push("/guild/" + guild.id)

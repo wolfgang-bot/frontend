@@ -1,11 +1,10 @@
 import React from "react"
 import { Link } from "react-router-dom"
 import { useSelector } from "react-redux"
-import { CircularProgress, Drawer, Divider, Typography, List } from "@material-ui/core"
+import { Drawer, Divider, Typography, List } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 
-import useAPIData from "../../utils/useAPIData.js"
-import Guilds from "./Guilds.js"
+import Guilds from "../../features/guilds/GuildList.js"
 
 const useStyles = makeStyles(theme => {
     const width = 250
