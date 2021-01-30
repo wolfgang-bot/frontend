@@ -1,15 +1,11 @@
 import React, { useEffect, useRef } from "react"
 import { Button } from "@material-ui/core"
-import { useDispatch } from "react-redux"
 
 import { createListeners } from "../../utils"
 import { DISCORD_OAUTH_URL } from "../../config/constants.js"
 import formatAPI, { USER } from "../../config/formatAPI.js"
-import { login } from "../../store/actions.js"
 
 function OAuthDiscord({ children }) {
-    const dispatch = useDispatch()
-
     const popup = useRef()
 
     const handleClick = () => {
@@ -30,10 +26,11 @@ function OAuthDiscord({ children }) {
                 if (event.data.status === "ok") {
                     formatAPI(USER)({ data: event.data.payload.user })
 
-                    dispatch(login({
-                        user: event.data.payload.user,
-                        token: event.data.payload.token
-                    }))
+                    // dispatch(login({
+                    //     user: event.data.payload.user,
+                    //     token: event.data.payload.token
+                    // }))
+                    console.log("OAuth")
                 }
             }
         }

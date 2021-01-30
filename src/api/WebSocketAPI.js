@@ -1,23 +1,54 @@
 import { io } from "socket.io-client"
 
-import EventHandlers from "./EventHandlers.js"
-import format, { GUILDS } from "../format.js"
+import format, { GUILDS } from "./format.js"
+import { DEBUG } from "../config/constants.js"
 
 class WebSocketAPI {
-    static endpoint = "ws://localhost:8080"
-    static socket = null
+    endpoint
+    socket
+
+    /**
+     * @param {String} endpoint 
+     */
+    constructor(endpoint) {
+        this.endpoint = endpoint
+    }
+
+    /**
+     * Emit socket.io event and await server response
+     * 
+     * @param {String} event
+     * @param {...Any} args
+     */
+    fetch(event, ...args) {
+        if (!this.socket) {
+            throw new Error("You need to initialize the api before making requests")
+        }
+
+        return new Promise((resolve, reject) => {
+            this.socket.emit(event, ...args, (res) => {
+                if (DEBUG) {
+                    console.log(`[${event}]`, res)
+                }
+
+                if (res.status === "error") {
+                    reject(res)
+                } else if (res.status === "ok") {
+                    resolve(res)
+                } else {
+                    throw new Error(`Unkown status '${res.status}'`)
+                }
+            })
+        })
+    }
 
     /**
      * Initialize websocket api
      * 
      * @param {String} token 
      */
-    static init(token) {
-        // Log into API
-        this.websocket.login(token)
-
-        // Attach event listeners
-        this.socket.on("set:module-instances", EventHandlers.setModuleInstances)
+    async init(token) {
+        await this.login(token)
     }
 
     /**
@@ -25,7 +56,7 @@ class WebSocketAPI {
      * 
      * @param {String} token 
      */
-    static async login(token) {
+    async login(token) {
         this.socket = io(this.endpoint, {
             auth: {
                 token
@@ -39,29 +70,9 @@ class WebSocketAPI {
     }
 
     /**
-     * Fetch data from an event
-     * 
-     * @param {String} event
-     * @param {...Any} args
-     */
-    static fetch(event, ...args) {
-        return new Promise((resolve, reject) => {
-            this.socket.emit(event, ...args, (res) => {
-                if (res.status === "error") {
-                    reject(res)
-                } else if (res.status === "ok") {
-                    resolve(res)
-                } else {
-                    throw new Error(`Unkown status '${res.status}'`)
-                }
-            })
-        })
-    }
-
-    /**
      * @fires get:guilds
      */
-    static async getGuilds() {
+    async getGuilds() {
         const data = await this.fetch("get:guilds")
         return format(GUILDS)(data)
     }
@@ -71,7 +82,7 @@ class WebSocketAPI {
      * 
      * @param {String} guildId
      */
-    static getConfigDescriptive(guildId) {
+    getConfigDescriptive(guildId) {
         return this.fetch("get:config-descriptive", guildId)
     }
 
@@ -81,14 +92,14 @@ class WebSocketAPI {
      * @param {String} guildId 
      * @param {Object} newValue 
      */
-    static updateConfig(guildId, newValue) {
+    updateConfig(guildId, newValue) {
         return this.fetch("post:config", guildId, newValue)
     }
 
     /**
      * @fires get:modules
      */
-    static getModules() {
+    getModules() {
         return this.fetch("get:modules")
     }
 
@@ -97,38 +108,38 @@ class WebSocketAPI {
      * 
      * @param {String} guildId
      */
-    static getModuleInstances(guildId) {
+    getModuleInstances(guildId) {
         return this.fetch("get:module-instances", guildId)
     }
 
     /**
-     * @fires post.module-instances/start
+     * @fires post:module-instances/start
      * 
      * @param {String} guildId
      * @param {String} moduleName
      * @param {Array<String>} args
      */
-    static startModuleInstance(guildId, moduleName, args) {
+    startModuleInstance(guildId, moduleName, args) {
         return this.fetch("post:module-instances/start", guildId, moduleName, ["778576977103421453"])
     }
 
     /**
-     * @fires post.module-instances/stop
+     * @fires post:module-instances/stop
      * 
      * @param {String} guildId
      * @param {String} moduleName
      */
-    static stopModuleInstance(guildId, moduleName) {
+    stopModuleInstance(guildId, moduleName) {
         return this.fetch("post:module-instances/stop", guildId, moduleName)
     }
     
     /**
-     * @fires post.module-instances/restart
+     * @fires post:module-instances/restart
      * 
      * @param {String} guildId
      * @param {String} moduleName
      */
-    static restartModuleInstance(guildId, moduleName) {
+    restartModuleInstance(guildId, moduleName) {
         return this.fetch("post:module-instances/restart", guildId, moduleName)
     }
 }

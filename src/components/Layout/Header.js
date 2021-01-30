@@ -1,10 +1,9 @@
 import React from "react"
-import { useSelector, useDispatch } from "react-redux"
+import { useSelector } from "react-redux"
 import { useHistory } from "react-router-dom"
 import { AppBar, Toolbar, Button, Grid, Divider } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 
-import { logout } from "../../store/actions.js"
 import DiscordOAuth from "../OAuth/DiscordOAuth.js"
 import Avatar from "../User/Avatar.js"
 
@@ -33,14 +32,12 @@ function Header() {
     const classes = useStyles()
 
     const history = useHistory()
-    
-    const dispatch = useDispatch()
 
     const isLoggedIn = useSelector(store => store.auth.isLoggedIn)
 
     const handleLogout = () => {
+        console.log("Logout")
         history.push("/")
-        dispatch(logout())
     }
 
     return (

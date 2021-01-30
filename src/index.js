@@ -3,9 +3,10 @@ import ReactDOM from "react-dom"
 import { Provider } from "react-redux"
 import { createMuiTheme, ThemeProvider } from "@material-ui/core"
 
-import store from "./store"
+import store from "./store.js"
 import App from "./App.js"
 import "./index.css"
+import { DEBUG } from "./config/constants.js"
 
 const theme = createMuiTheme({
     palette: {
@@ -33,7 +34,7 @@ const theme = createMuiTheme({
     }
 })
 
-if (process.env.NODE_ENV === "development") {
+if (DEBUG) {
     console.log(theme)
 }
 

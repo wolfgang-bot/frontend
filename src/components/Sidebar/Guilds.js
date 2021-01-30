@@ -3,8 +3,6 @@ import { useSelector, useDispatch } from "react-redux"
 import { CircularProgress } from "@material-ui/core"
 
 import Guild from "./Guild.js"
-import WebSocketAPI from "../../api/websocket/WebSocketAPI.js"
-
 
 function Guilds({ activeGuild }) {
     const dispatch = useDispatch()
@@ -22,9 +20,11 @@ function Guilds({ activeGuild }) {
         return <CircularProgress/>
     }
 
-    return <div></div>
+    if (isLoading) {
+        return <CircularProgress/>
+    }
 
-    return WebSocketAPI.guilds.map(guild => (
+    return guilds.map(guild => (
         <Guild guild={guild} key={guild.id} active={activeGuild && activeGuild === guild.id}/>
     ))
 }

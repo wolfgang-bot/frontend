@@ -1,12 +1,9 @@
-import React, { useEffect, useState } from "react"
-import { useDispatch } from "react-redux"
-import { CssBaseline, CircularProgress, Typography } from "@material-ui/core"
+import React, { useState, useEffect } from "react"
+import { CssBaseline, CircularProgress } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 
 import Router from "./router/index.js"
-import { login } from "./store/actions.js"
-import { getProfile } from "./config/api.js"
-import WebSocketAPI from "./api/websocket/WebSocketAPI.js"
+import login from "./features/auth/login.js"
 
 const useStyles = makeStyles({
     "@global": {
@@ -16,53 +13,19 @@ const useStyles = makeStyles({
     }
 })
 
-const shouldLogin = !!localStorage.getItem("token")
-
 function App() {
     useStyles()
 
-    const dispatch = useDispatch()
-
-    const [isLoading, setIsLoading] = useState(shouldLogin)
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
-        (async () => {
-            if (shouldLogin) {
-                try {
-                    await WebSocketAPI.init(localStorage.getItem("token"))
-                } catch(error) {
-                    console.error(error)
-                    localStorage.removeItem("token")
-                    setIsLoading(false)
-                    return
-                }
-                
-                const { data: user } = await getProfile()
-
-                dispatch(login({
-                    token: localStorage.getItem("token"),
-                    user
-                }))
-
-                setIsLoading(false)
-            }
-        })()
-
-        // eslint-disable-next-line
+        login().finally(() => setIsLoading(false))
     }, [])
 
     return (
         <>
             <CssBaseline/>
-
-            { isLoading ? (
-                <>
-                    <Typography>Logging in...</Typography>
-                    <CircularProgress />
-                </>
-            ) : (
-                <Router />
-            )}
+            { isLoading ? <CircularProgress /> : <Router />}
         </>
     )
 }

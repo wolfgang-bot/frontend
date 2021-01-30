@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 
-import WebSocketAPI from "../api/websocket/WebSocketAPI.js"
+import WebSocketAPI from "../api/WebSocketAPI.js"
 
 /**
  * Fetch data from a web socket event

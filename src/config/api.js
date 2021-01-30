@@ -5,7 +5,8 @@ import format, {
     GUILD,
     GUILDS
 } from "./formatAPI.js"
-import { API_BASE_URL } from "./constants.js"
+import { API_BASE_URL, WEB_SOCKET_API_URL } from "./constants.js"
+import API from "../api/API.js"
 
 export function setTokenHeader(token) {
     axios.defaults.headers.common = {
@@ -30,3 +31,10 @@ export const getModuleInstances = (guildId) => axios.get(url("/modules/instances
 export const startModuleInstance = (guildId, moduleName, body) => axios.post(url("/modules/instances/" + guildId + "/start/" + moduleName), { body })
 export const stopModuleInstance = (guildId, moduleName) => axios.post(url("/modules/instances/" + guildId + "/stop/" + moduleName))
 export const restartModuleInstance = (guildId, moduleName) => axios.post(url("/modules/instances/" + guildId + "/restart/" + moduleName))
+
+const api = new API({
+    httpEndpoint: API_BASE_URL,
+    webSocketEndpoint: WEB_SOCKET_API_URL
+})
+
+export default api

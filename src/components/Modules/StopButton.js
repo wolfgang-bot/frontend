@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import StopIcon from "@material-ui/icons/Stop"
 
 import LoadingIconButton from "../Styled/LoadingIconButton.js"
-import WebSocketAPI from "../../api/websocket/WebSocketAPI.js"
+import WebSocketAPI from "../../api/WebSocketAPI.js"
 
 function StopButton({ module, guild, onUpdate, ...props }) {
     const [isLoading, setIsLoading] = useState(false)
