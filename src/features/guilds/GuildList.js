@@ -26,7 +26,7 @@ function GuildList({ activeGuild }) {
         return <div>{ error }</div>
     }
 
-    return guilds.map(guild => (
+    return Object.values(guilds).map(guild => (
         <Guild guild={guild} key={guild.id} active={activeGuild && activeGuild === guild.id}/>
     ))
 }

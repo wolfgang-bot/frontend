@@ -3,7 +3,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import api from "../../config/api"
 
 const initialState = {
-    data: [],
+    data: {},
     status: "idle",
     error: null
 }
@@ -22,7 +22,9 @@ const guildsSlice = createSlice({
         },
         [fetchGuilds.fulfilled]: (state, action) => {
             state.status = "succeeded"
-            state.data = action.payload
+            action.payload.forEach(guild => {
+                state.data[guild.id] = guild
+            })
         },
         [fetchGuilds.rejected]: (state, action) => {
             state.status = "failed"
