@@ -1,23 +1,23 @@
 export namespace API {
     enum INSTANCE_STATES {
-        ACTIVE = "active",
-        INACTIVE = "inactive",
-        STARTING = "starting",
-        STOPPING = "stopping"
+        ACTIVE,
+        INACTIVE,
+        STARTING,
+        STOPPING
     }
 
     type DescriptiveObject = {
         [key: string]: {
             value: string | number | any[] | DescriptiveObject,
             description?: string,
-            constraints?: string,
+            constraints?: string
         }
     }
 
-    export type Response = {
-        status: string,
-        data?: any,
-        message?: string
+    export type Response<T> = {
+        status: "ok" | "error",
+        data?: T,
+        message?: any
     }
 
     export type Guild = {
@@ -27,14 +27,15 @@ export namespace API {
         icon_animated: string,
         isActive?: boolean,
         owner: boolean,
-        permissions: number,
+        permissions: number
     }
 
     export type User = {
         id: string,
         username?: string,
-        discriminator?: string,
+        discriminator?: number,
         avatar?: string,
+        avatar_animated: string
     }
 
     export type DescriptiveConfig = DescriptiveObject
