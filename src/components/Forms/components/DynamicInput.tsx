@@ -17,7 +17,7 @@ function DynamicInput({ value, className, name, onChange }: {
     value: any,
     className?: string,
     name: string,
-    onChange: (value: any) => void
+    onChange?: (value: any) => void
 }) {    
     const InputComponent = inputMap[value.constructor.name]
 

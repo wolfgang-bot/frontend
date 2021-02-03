@@ -12,7 +12,10 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-function Title({ _key, desc }) {
+function Title({ _key, desc }: {
+    _key: string,
+    desc: string
+}) {
     const classes = useStyles()
 
     const { errors } = useFormContext()
@@ -32,4 +35,5 @@ function Title({ _key, desc }) {
         </div>
     )
 }
+
 export default Title

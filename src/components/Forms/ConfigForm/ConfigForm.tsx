@@ -8,9 +8,7 @@ import LoadingButton from "../../Styled/LoadingButton.js"
 import Title from "./Title.js"
 import Input from "./Input.js"
 import { createNestedElements, createNestedObject, flattenObject } from "../../../utils"
-import { setConfig } from "../../../config/api.js"
-import { opener } from "../../ComponentOpener/ComponentOpener.js"
-import useAPIData from "../../../utils/useAPIData.js"
+import { API } from "../../../config/types"
 
 const useStyles = makeStyles(theme => ({
     titleWrapper: {
@@ -43,7 +41,10 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-function ConfigForm({ guild, data }) {
+function ConfigForm({ guild, data }: {
+    guild: API.Guild,
+    data: API.DescriptiveConfig
+}) {
     const classes = useStyles()
 
     const [children, keys] = useMemo(() => {
@@ -66,26 +67,26 @@ function ConfigForm({ guild, data }) {
 
     const [isSubmitting, setIsSubmitting] = useState(false)
 
-    const handleSubmit = (values) => {
+    const handleSubmit = (values: API.Config) => {
         // Format keys back to object
         const data = createNestedObject(values)
 
         setIsSubmitting(true)
 
-        setConfig(guild.id, data)
-            .then(() => {
-                opener.openSnackbar("Success!")
-            })
-            .catch((error) => {
-                const flattened = flattenObject(error.response.data)
+        // setConfig(guild.id, data)
+        //     .then(() => {
+        //         opener.openSnackbar("Success!")
+        //     })
+        //     .catch((error) => {
+        //         const flattened = flattenObject(error.response.data)
 
-                for (let key in flattened) {
-                    form.setError(key, {
-                        message: flattened[key]
-                    })
-                }
-            })
-            .finally(() => setIsSubmitting(false))
+        //         for (let key in flattened) {
+        //             form.setError(key, {
+        //                 message: flattened[key]
+        //             })
+        //         }
+        //     })
+        //     .finally(() => setIsSubmitting(false))
     }
 
     return (
@@ -106,11 +107,17 @@ function ConfigForm({ guild, data }) {
     )
 }
 
-function ConfigFormWrapper({ guild }) {
-    const { data, isLoading, error } = useAPIData({
-        method: "getConfigDescriptive",
-        data: guild.id
-    })
+function ConfigFormWrapper({ guild }: { guild: API.Guild }) {
+    // const { data, isLoading, error } = useAPIData({
+    //     method: "getConfigDescriptive",
+    //     data: guild.id
+    // })
+
+    const { data, isLoading, error } = {
+        data: null,
+        isLoading: false,
+        error: null
+    }
 
     if (isLoading) {
         return <CircularProgress/>

@@ -4,7 +4,7 @@ import { Typography } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 import { capitalCase } from "change-case"
 
-import DynamicInput from "../components/DynamicInput.js"
+import DynamicInput from "../components/DynamicInput"
 import { KEY_DELIMITER } from "../../../utils"
 
 const useStyles = makeStyles(theme => ({
@@ -29,12 +29,16 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-function Input({ _key, value, desc }) {
+function Input({ _key, value, desc }: {
+    _key: string,
+    value: any,
+    desc: string
+}) {
     const classes = useStyles()
 
     const { errors } = useFormContext()
 
-    // Use the last portion of the combined key as label (e.g. "one#to#three" -> "three")
+    // Use the last portion of the combined key as the label (e.g. "one#to#three" --> "three")
     const label = _key.split(KEY_DELIMITER).pop()
 
     const hasError = Object.keys(errors).some(key => key.startsWith(_key))
