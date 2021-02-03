@@ -4,16 +4,26 @@ import { useSelector } from "react-redux"
 import { Avatar as MuiAvatar } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 
-const useStyles = makeStyles(theme => ({
-    avatar: {
-        cursor: props => !props.notClickable && "pointer",
-        width: props => props.size,
-        height: props => props.size
-    }
-}))
+import { theme } from "../../index"
 
-function Avatar({ size }) {
-    const classes = useStyles({ size })
+type StyleProps = {
+    clickable: boolean,
+    size: number
+}
+
+const useStyles = makeStyles<typeof theme, StyleProps>({
+    avatar: props => ({
+        cursor: !props.clickable && "pointer",
+        width: props.size,
+        height: props.size
+    })
+})
+
+function Avatar({ size, clickable = true }: {
+    size?: number,
+    clickable?: boolean
+}) {
+    const classes = useStyles({ size, clickable })
 
     const history = useHistory()
 

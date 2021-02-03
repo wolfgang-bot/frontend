@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, ReactChildren } from "react"
+import React, { useEffect, useRef, PropsWithChildren } from "react"
 import { Button } from "@material-ui/core"
 
 import { createListeners } from "../../utils"
@@ -6,9 +6,7 @@ import { API } from "../../config/types"
 import { DISCORD_OAUTH_URL } from "../../config/constants"
 import format, { FORMATS } from "../../api/format"
 
-function OAuthDiscord({ children }: {
-    children: ReactChildren
-}) {
+function OAuthDiscord({ children }: PropsWithChildren<{}>) {
     const popup = useRef<Window>()
 
     const handleClick = () => {

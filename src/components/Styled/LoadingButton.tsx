@@ -15,10 +15,11 @@ const useStyles = makeStyles({
     },
 })
 
-function LoadingButton({ isLoading, children, ...props }: {
-    isLoading: boolean,
-    children: React.ReactChildren
-} & React.ComponentProps<typeof Button>) {
+type Props = {
+    isLoading: boolean
+} & React.ComponentProps<typeof Button>
+
+function LoadingButton({ isLoading, children, ...props }: React.PropsWithChildren<Props>) {
     const classes = useStyles()
 
     return (

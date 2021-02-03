@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => {
 })
 
 function Sidebar({ activeGuildId }: {
-    activeGuildId: string
+    activeGuildId?: string
 }) {
     const classes = useStyles()
 

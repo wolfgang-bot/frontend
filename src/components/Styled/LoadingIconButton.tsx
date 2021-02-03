@@ -15,11 +15,12 @@ const useStyles = makeStyles({
     },
 })
 
-function LoadingIconButton({ isLoading, children, className, ...props }: {
+type Props = {
     isLoading: boolean,
-    children: React.ReactChildren,
     className: string
-} & React.ComponentProps<typeof IconButton>) {
+} & React.ComponentProps<typeof IconButton>
+
+function LoadingIconButton({ isLoading, children, className, ...props }: React.PropsWithChildren<Props>) {
     const classes = useStyles()
 
     return (
