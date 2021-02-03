@@ -5,7 +5,7 @@ import { CircularProgress } from "@material-ui/core"
 import Guild from "./Guild.js"
 import { fetchGuilds } from "./guildsSlice.js"
 
-function GuildList({ activeGuild }) {
+function GuildList({ activeGuildId }) {
     const dispatch = useDispatch()
 
     const guilds = useSelector(store => store.guilds.data)
@@ -27,7 +27,7 @@ function GuildList({ activeGuild }) {
     }
 
     return Object.values(guilds).map(guild => (
-        <Guild guild={guild} key={guild.id} active={activeGuild && activeGuild === guild.id}/>
+        <Guild guild={guild} key={guild.id} active={activeGuildId && activeGuildId === guild.id}/>
     ))
 }
 

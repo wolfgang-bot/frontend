@@ -4,7 +4,7 @@ import { useSelector } from "react-redux"
 import { Drawer, Divider, Typography, List } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 
-import Guilds from "../../features/guilds/GuildList.js"
+import Guilds from "../../features/guilds/GuildList"
 
 const useStyles = makeStyles(theme => {
     const width = 250
@@ -32,7 +32,9 @@ const useStyles = makeStyles(theme => {
     }
 })
 
-function Sidebar({ activeGuild }) {
+function Sidebar({ activeGuildId }: {
+    activeGuildId: string
+}) {
     const classes = useStyles()
 
     const isLoggedIn = useSelector(store => store.auth.isLoggedIn)
@@ -54,7 +56,7 @@ function Sidebar({ activeGuild }) {
             <Divider/>
 
             <List className={classes.nav}>
-                { isLoggedIn && <Guilds activeGuild={activeGuild}/> }
+                { isLoggedIn && <Guilds activeGuildId={activeGuildId}/> }
             </List>
         </Drawer>
     )
