@@ -2,7 +2,7 @@ import React from "react"
 import { Button, CircularProgress } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
     loadingButton: {
         position: "relative",
         display: "inline-block"
@@ -13,9 +13,12 @@ const useStyles = makeStyles(theme => ({
         top: "50%", left: "50%",
         margin: "-12px 0 0 -12px"
     },
-}))
+})
 
-function LoadingButton({ isLoading, children, ...props }) {
+function LoadingButton({ isLoading, children, ...props }: {
+    isLoading: boolean,
+    children: React.ReactChildren
+} & React.ComponentProps<typeof Button>) {
     const classes = useStyles()
 
     return (

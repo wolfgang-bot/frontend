@@ -3,7 +3,7 @@ import clsx from "clsx"
 import { IconButton, CircularProgress } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
     loadingButton: {
         position: "relative"
     },
@@ -13,9 +13,13 @@ const useStyles = makeStyles(theme => ({
         top: "50%", left: "50%",
         margin: "-12px 0 0 -12px"
     },
-}))
+})
 
-function LoadingIconButton({ isLoading, children, className, ...props }) {
+function LoadingIconButton({ isLoading, children, className, ...props }: {
+    isLoading: boolean,
+    children: React.ReactChildren,
+    className: string
+} & React.ComponentProps<typeof IconButton>) {
     const classes = useStyles()
 
     return (
