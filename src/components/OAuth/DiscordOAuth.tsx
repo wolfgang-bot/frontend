@@ -1,12 +1,15 @@
-import React, { useEffect, useRef } from "react"
+import React, { useEffect, useRef, ReactChildren } from "react"
 import { Button } from "@material-ui/core"
 
 import { createListeners } from "../../utils"
-import { DISCORD_OAUTH_URL } from "../../config/constants.js"
-import formatAPI, { USER } from "../../config/formatAPI.js"
+import { API } from "../../config/types"
+import { DISCORD_OAUTH_URL } from "../../config/constants"
+import format, { FORMATS } from "../../api/format"
 
-function OAuthDiscord({ children }) {
-    const popup = useRef()
+function OAuthDiscord({ children }: {
+    children: ReactChildren
+}) {
+    const popup = useRef<Window>()
 
     const handleClick = () => {
         const width = 1000
@@ -19,18 +22,19 @@ function OAuthDiscord({ children }) {
     }
 
     useEffect(() => {
-        const handleMessage = (event) => {
-            if (event.data?.source === "oauth" && popup.current) {
+        const handleMessage = (event: { data: API.OAuthPopupResponse }) => {
+            const { data: res } = event
+            if (res?.source === "oauth" && popup.current) {
                 popup.current.close()
 
-                if (event.data.status === "ok") {
-                    formatAPI(USER)({ data: event.data.payload.user })
+                if (res.status === "ok") {
+                    format(FORMATS.USER)({ data: res.data.user })
 
                     // dispatch(login({
-                    //     user: event.data.payload.user,
-                    //     token: event.data.payload.token
+                    //     user: res.data.user,
+                    //     token: res.data.token
                     // }))
-                    console.log("OAuth")
+                    console.log("OAuth", res)
                 }
             }
         }

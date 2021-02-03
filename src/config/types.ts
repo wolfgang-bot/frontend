@@ -20,6 +20,11 @@ export namespace API {
         message?: any
     }
 
+    export type OAuthPopupResponse = Response<{
+        token: string,
+        user: User
+    }> & { source: string }
+
     export type Guild = {
         id: string,
         name: string,
