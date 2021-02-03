@@ -8,7 +8,7 @@ import App from "./App.js"
 import "./index.css"
 import { DEBUG } from "./config/constants.js"
 
-const theme = createMuiTheme({
+export const theme = createMuiTheme({
     palette: {
         theme: "dark",
         type: "dark",

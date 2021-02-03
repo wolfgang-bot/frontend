@@ -4,8 +4,8 @@ import { useHistory } from "react-router-dom"
 import { AppBar, Toolbar, Button, Grid, Divider } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 
-import DiscordOAuth from "../OAuth/DiscordOAuth.js"
-import Avatar from "../User/Avatar.js"
+import DiscordOAuth from "../OAuth/DiscordOAuth"
+import Avatar from "../User/Avatar"
 
 const useStyles = makeStyles(theme => ({
     header: {

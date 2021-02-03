@@ -2,11 +2,15 @@ import React from "react"
 import { Container } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 
+import { theme } from "../../index"
 import Header from "./Header.js"
-import ComponentOpener from "../ComponentOpener/ComponentOpener.js"
-import Sidebar from "../Sidebar/Sidebar.js"
+import Sidebar from "../Sidebar/Sidebar"
 
-const useStyles = makeStyles(theme => ({
+type StyleProps = {
+    center: boolean
+}
+
+const useStyles = makeStyles<typeof theme, StyleProps>(theme => ({
     layout: {
         display: "flex"
     },
@@ -17,10 +21,10 @@ const useStyles = makeStyles(theme => ({
         marginBottom: theme.spacing(8)
     },
 
-    content: {
-        display: props => props.center && "flex",
-        flexDirection: props => props.center && "column",
-        alignItems: props => props.center && "center"
+    content: props => props.center && {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center"
     }
 }))
 
@@ -38,8 +42,6 @@ function Layout({ headerProps = {}, sidebarProps = {}, children, center = false 
                     { children }
                 </Container>
             </div>
-
-            <ComponentOpener/>
         </div>
     )
 }
