@@ -4,7 +4,7 @@ import { useForm, FormProvider } from "react-hook-form"
 import { Paper, CircularProgress } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 
-import LoadingButton from "../components/LoadingButton.js"
+import LoadingButton from "../../Styled/LoadingButton.js"
 import Title from "./Title.js"
 import Input from "./Input.js"
 import { createNestedElements, createNestedObject, flattenObject } from "../../../utils"

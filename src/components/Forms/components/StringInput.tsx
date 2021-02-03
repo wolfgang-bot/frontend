@@ -1,13 +1,16 @@
-import React from "react"
+import React, { ChangeEvent } from "react"
 import { useFormContext } from "react-hook-form"
 import { TextField } from "@material-ui/core"
 
-function StringInput({ onChange, ...props }) {
+function StringInput({ onChange, ...props }: {
+    onChange: (value: string) => void,
+    name: string
+}) {
     const { register, errors } = useFormContext()
     
-    const handleChange = (event) => {
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         if (onChange) {
-            onChange(event.target.value)
+            onChange(event.currentTarget.value)
         }
     }
 

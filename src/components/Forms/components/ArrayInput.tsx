@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/core/styles"
 import DeleteIcon from "@material-ui/icons/Close"
 import AddIcon from "@material-ui/icons/Add"
 
-import DynamicInput from "./DynamicInput.js"
+import DynamicInput from "./DynamicInput"
 
 const useStyles = makeStyles(theme => ({
     inputWrapper: {
@@ -18,12 +18,12 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-function ArrayInput(props) {
+function ArrayInput(props: { name: string }) {
     const classes = useStyles()
 
     const { register, setValue, control, errors } = useFormContext()
 
-    const values = useWatch({ control, name: props.name })
+    const values = useWatch<any[]>({ control, name: props.name })
 
     const form = useForm({
         defaultValues: values
@@ -43,7 +43,7 @@ function ArrayInput(props) {
         setInputIds([...inputIds])
     }
 
-    const handleRemove = (id) => {
+    const handleRemove = (id: number) => {
         const newValues = form.watch()
         delete newValues[id]
         setValue(props.name, Object.values(newValues))
@@ -56,7 +56,6 @@ function ArrayInput(props) {
     
     useEffect(() => {
         register(props.name)
-
         // eslint-disable-next-line
     }, [])
 

@@ -1,11 +1,14 @@
-import React, { useEffect } from "react"
+import React, { useEffect, ChangeEvent } from "react"
 import { useFormContext } from "react-hook-form"
 import { TextField } from "@material-ui/core"
 
-function NumberInput({ onChange, ...props }) {
+function NumberInput({ onChange, ...props }: {
+    onChange: (value: number) => void,
+    name: string
+}) {
     const { register, setValue, watch, errors } = useFormContext()
 
-    const handleChange = (event) => {
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         const newValue = parseInt(event.target.value)
         setValue(props.name, newValue)
 
