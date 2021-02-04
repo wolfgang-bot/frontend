@@ -16,8 +16,8 @@ const useStyles = makeStyles({
 })
 
 type Props = {
-    isLoading: boolean,
-    className: string
+    isLoading?: boolean,
+    className?: string
 } & React.ComponentProps<typeof IconButton>
 
 function LoadingIconButton({ isLoading, children, className, ...props }: React.PropsWithChildren<Props>) {

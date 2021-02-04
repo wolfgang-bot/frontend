@@ -1,19 +1,27 @@
 import React from "react"
 import { Card, CardActionArea, CardContent, CardActions, Typography } from "@material-ui/core"
 
-import StartButton from "./StartButton.js"
-import StopButton from "./StopButton.js"
-import RestartButton from "./RestartButton.js"
+import { API } from "../../config/types"
+import StartButton from "./StartButton"
+import StopButton from "./StopButton"
+import RestartButton from "./RestartButton"
 
-function ModuleCard({ module, guild, active, onUpdate }) {
-    const commonButtonProps = { module, guild, onUpdate }
+type Props = {
+    instance: API.ModuleInstance,
+    guild: API.Guild,
+    active: boolean,
+    onUpdate: () => Promise<void>
+}
+
+function ModuleCard({ instance, guild, active, onUpdate }: Props) {
+    const commonButtonProps = { instance, guild, onUpdate }
 
     return (
         <Card>
             <CardActionArea>
                 <CardContent>
                     <Typography>
-                        {module.name}
+                        {instance.moduleName}
                     </Typography>
                 </CardContent>
             </CardActionArea>

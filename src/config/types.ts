@@ -60,3 +60,9 @@ export namespace API {
 }
 
 export type LoadingState = "idle" | "pending" | "success" | "error"
+
+export type ReduxAPIState<T> = {
+    data?: T,
+    status: LoadingState,
+    error?: string
+}

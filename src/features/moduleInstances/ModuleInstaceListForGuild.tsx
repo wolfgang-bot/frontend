@@ -2,11 +2,11 @@ import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { CircularProgress, Grid } from "@material-ui/core"
 
-import ModuleInstanceCard from "./ModuleInstanceCard.js"
-import { fetchModules } from "../modules/modulesSlice.js"
-import { fetchModuleInstancesForGuild } from "./moduleInstancesSlice.js"
+import ModuleInstanceCard from "./ModuleInstanceCard"
+import { fetchModules } from "../modules/modulesSlice"
+import { fetchModuleInstancesForGuild } from "./moduleInstancesSlice"
 
-function ModuleInstaceListForGuild({ guildId }) {
+function ModuleInstaceListForGuild({ guildId }: { guildId: string }) {
     const dispatch = useDispatch()
 
     const modules = useSelector(state => state.modules.data)
