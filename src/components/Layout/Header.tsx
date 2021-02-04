@@ -4,6 +4,7 @@ import { useHistory } from "react-router-dom"
 import { AppBar, Toolbar, Button, Grid, Divider } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 
+import { RootState } from "../../store"
 import DiscordOAuth from "../OAuth/DiscordOAuth"
 import Avatar from "../User/Avatar"
 
@@ -33,7 +34,7 @@ function Header() {
 
     const history = useHistory()
 
-    const isLoggedIn = useSelector(store => store.auth.isLoggedIn)
+    const isLoggedIn = useSelector((store: RootState) => store.auth.isLoggedIn)
 
     const handleLogout = () => {
         console.log("Logout")

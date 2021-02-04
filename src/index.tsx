@@ -3,14 +3,13 @@ import ReactDOM from "react-dom"
 import { Provider } from "react-redux"
 import { createMuiTheme, ThemeProvider } from "@material-ui/core"
 
-import store from "./store.js"
-import App from "./App.js"
+import store from "./store"
+import App from "./App"
 import "./index.css"
-import { DEBUG } from "./config/constants.js"
+import { DEBUG } from "./config/constants"
 
 export const theme = createMuiTheme({
     palette: {
-        theme: "dark",
         type: "dark",
 
         background: {
@@ -19,8 +18,7 @@ export const theme = createMuiTheme({
         },
 
         primary: {
-            main: "#BB86FC",
-            variant: "#3700B3"
+            main: "#BB86FC"
         },
 
         secondary: {

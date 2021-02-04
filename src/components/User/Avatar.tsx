@@ -5,6 +5,7 @@ import { Avatar as MuiAvatar } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 
 import { theme } from "../../index"
+import { RootState } from "../../store"
 
 type StyleProps = {
     clickable: boolean,
@@ -27,14 +28,14 @@ function Avatar({ size, clickable = true }: {
 
     const history = useHistory()
 
-    const user = useSelector(store => store.auth.user)
+    const user = useSelector((store: RootState) => store.auth.user)
 
     const handleClick = () => {
         history.push("/")
     }
 
     return (
-        <MuiAvatar className={classes.avatar} onClick={handleClick} src={user.avatar_url} />
+        <MuiAvatar className={classes.avatar} onClick={handleClick} src={user.avatar} />
     )
 }
 

@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react"
 import { CssBaseline, CircularProgress } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 
-import Router from "./router/index.js"
-import login from "./features/auth/login.js"
+import Router from "./router"
+import login from "./features/auth/login"
 
 const useStyles = makeStyles({
     "@global": {
