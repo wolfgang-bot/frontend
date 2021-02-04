@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 
-import api from "../../config/api.js"
+import api from "../../api"
 
 const initialState = {
     data: {},

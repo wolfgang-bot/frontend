@@ -1,6 +1,6 @@
 import store from "../../store.js"
 import { fetchUser } from "./authSlice.js"
-import api from "../../config/api.js"
+import api from "../../api"
 import { API_TOKEN } from "../../config/constants.js"
 
 export default async function login() {

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 
-import api from "../../config/api.js"
+import api from "../../api"
 import { fetchGuilds } from "../guilds/guildsSlice.js"
 
 const initialGuildState = {
