@@ -1,11 +1,11 @@
 import React from "react"
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom"
 
-import ProtectedRoute from "./ProtectedRoute.js"
-import IndexPage from "../pages/IndexPage.js"
-import LoginPage from "../pages/LoginPage.js"
-import GuildPage from "../pages/GuildPage.js"
-import NotFoundPage from "../pages/NotFoundPage.js"
+import ProtectedRoute from "./ProtectedRoute"
+import IndexPage from "../pages/IndexPage"
+import LoginPage from "../pages/LoginPage"
+import GuildPage from "../pages/GuildPage"
+import NotFoundPage from "../pages/NotFoundPage"
 
 function Router() {
     return (

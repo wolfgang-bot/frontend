@@ -2,7 +2,9 @@ import React from "react"
 import { useSelector } from "react-redux"
 import { Redirect, useLocation, Route } from "react-router-dom"
 
-function ProtectedRoute({ children, ...props }) {
+type Props = React.PropsWithChildren<React.ComponentProps<typeof Route>>
+
+function ProtectedRoute({ children, ...props }: Props) {
     const location = useLocation()
 
     const isLoggedIn = useSelector(store => store.auth.isLoggedIn)
