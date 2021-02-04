@@ -2,8 +2,8 @@ import React from "react"
 import { useSelector } from "react-redux"
 import { Redirect } from "react-router-dom"
 
-import Layout from "../components/Layout/Layout.js"
-import Guilds from "../components/User/Guilds.js"
+import Layout from "../components/Layout/Layout"
+// import GuildList from "../features/guilds/GuildList"
 
 function ProfilePage() {
     const isLoggedIn = useSelector(store => store.auth.isLoggedIn)
@@ -14,7 +14,7 @@ function ProfilePage() {
 
     return (
         <Layout center>
-            <Guilds/>
+            {/* <GuildList/> */}
         </Layout>
     )
 }

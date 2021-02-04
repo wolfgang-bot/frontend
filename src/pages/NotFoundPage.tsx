@@ -1,6 +1,6 @@
 import React from "react"
 
-import Layout from "../components/Layout/Layout.js"
+import Layout from "../components/Layout/Layout"
 import notFoundAnimation from "../assets/images/not-found.webp"
 
 function NotFoundPage() {

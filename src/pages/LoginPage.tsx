@@ -2,8 +2,8 @@ import React from "react"
 import { useSelector } from "react-redux"
 import { Redirect, useLocation } from "react-router-dom"
 
-import Layout from "../components/Layout/Layout.js"
-import DiscordOAuth from "../components/OAuth/DiscordOAuth.js"
+import Layout from "../components/Layout/Layout"
+import DiscordOAuth from "../components/OAuth/DiscordOAuth"
 
 function LoginPage() {
     const location = useLocation()
