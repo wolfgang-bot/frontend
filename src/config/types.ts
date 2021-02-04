@@ -58,3 +58,5 @@ export namespace API {
         state: INSTANCE_STATES
     }
 }
+
+export type LoadingState = "idle" | "pending" | "success" | "error"

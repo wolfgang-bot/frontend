@@ -1,8 +1,16 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 
+import { API, LoadingState } from "../../config/types"
 import api from "../../api"
 
-const initialState = {
+type AuthState = {
+    user: API.User,
+    isLoggedIn: boolean,
+    status: LoadingState,
+    error?: any
+}
+
+const initialState: AuthState = {
     user: null,
     isLoggedIn: false,
     status: "idle",
@@ -17,17 +25,18 @@ export const fetchUser = createAsyncThunk("auth/fetchUser", async () => {
 const authSlice = createSlice({
     name: "auth",
     initialState,
+    reducers: {},
     extraReducers: {
-        [fetchUser.pending]: (state, action) => {
+        [fetchUser.pending.toString()]: (state) => {
             state.status = "pending"
         },
-        [fetchUser.fulfilled]: (state, action) => {
-            state.status = "succeeded"
+        [fetchUser.fulfilled.toString()]: (state, action) => {
+            state.status = "success"
             state.user = action.payload
             state.isLoggedIn = true
         },
-        [fetchUser.rejected]: (state, action) => {
-            state.status = "failed"
+        [fetchUser.rejected.toString()]: (state, action) => {
+            state.status = "error"
             state.error = action.payload
         }
     }
