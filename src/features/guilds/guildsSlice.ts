@@ -1,8 +1,15 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 
+import { API, LoadingState } from "../../config/types"
 import api from "../../api"
 
-const initialState = {
+type GuildsState = {
+    data: Record<string, API.Guild>,
+    status: LoadingState,
+    error?: any
+}
+
+const initialState: GuildsState = {
     data: {},
     status: "idle",
     error: null
@@ -16,18 +23,19 @@ export const fetchGuilds = createAsyncThunk("guilds/fetchGuilds", async () => {
 const guildsSlice = createSlice({
     name: "guild",
     initialState,
+    reducers: {},
     extraReducers: {
-        [fetchGuilds.pending]: (state, action) => {
+        [fetchGuilds.pending.toString()]: (state) => {
             state.status = "pending"
         },
-        [fetchGuilds.fulfilled]: (state, action) => {
-            state.status = "succeeded"
+        [fetchGuilds.fulfilled.toString()]: (state, action) => {
+            state.status = "success"
             action.payload.forEach(guild => {
                 state.data[guild.id] = guild
             })
         },
-        [fetchGuilds.rejected]: (state, action) => {
-            state.status = "failed"
+        [fetchGuilds.rejected.toString()]: (state, action) => {
+            state.status = "error"
             state.error = action.payload
         }
     }

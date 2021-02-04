@@ -2,10 +2,10 @@ import React, { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { CircularProgress } from "@material-ui/core"
 
-import Guild from "./Guild.js"
-import { fetchGuilds } from "./guildsSlice.js"
+import Guild from "./Guild"
+import { fetchGuilds } from "./guildsSlice"
 
-function GuildList({ activeGuildId }) {
+function GuildList({ activeGuildId }: { activeGuildId: string }) {
     const dispatch = useDispatch()
 
     const guilds = useSelector(store => store.guilds.data)
