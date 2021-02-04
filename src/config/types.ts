@@ -6,14 +6,6 @@ export namespace API {
         STOPPING
     }
 
-    type DescriptiveObject = {
-        [key: string]: {
-            value: string | number | any[] | DescriptiveObject,
-            description?: string,
-            constraints?: string
-        }
-    }
-
     export type Response<T> = {
         status: "ok" | "error",
         data?: T,
@@ -65,4 +57,12 @@ export type ReduxAPIState<T> = {
     data?: T,
     status: LoadingState,
     error?: string
+}
+
+export type DescriptiveObject = {
+    [key: string]: {
+        value: string | number | any[] | DescriptiveObject,
+        description?: string,
+        constraints?: string
+    }
 }

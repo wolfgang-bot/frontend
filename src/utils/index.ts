@@ -1,23 +1,22 @@
 import React from "react"
 
+import { DescriptiveObject } from "../config/types"
+
 export const KEY_DELIMITER = "#"
 
 /**
  * Make an array of components which render a descriptive object recursively and return
  * the flattened keys.
- * 
- * @param {Object} data Descriptive object
- * @param {Object} components Rendered components
- * @param {Function} components.title Sub-Object's Key
- * @param {Function} components.container Container for sub-object's values
- * @param {Function} components.leaf Value where no further recursion happens
- * @returns {[Array<React.Element>, Object]} Elements and the backtracable key-value pairs 
  */
-export function createNestedElements(data, components) {
+export function createNestedElements(data: DescriptiveObject, components: {
+    title: React.FunctionComponent,
+    container: React.FunctionComponent,
+    leaf: React.FunctionComponent
+}): [React.ReactElement[], Record<string, string>] {
     const keys = {}
 
-    function _create(data, keyCarry = "", depth = 0) {
-        const elements = []
+    function _create(data: DescriptiveObject, keyCarry = "", depth = 0) {
+        const elements: React.ReactElement[] = []
 
         for (let key in data) {
             const value = data[key].value
@@ -31,13 +30,13 @@ export function createNestedElements(data, components) {
                     _key: backtraceKey,
                     desc,
                     depth
-                }))
+                } as any))
                 
                 // Recursively create elements with depth += 1
                 elements.push(React.createElement(components.container, {
                     key: keyCarry + key + "container",
-                    children: _create(value, backtraceKey + KEY_DELIMITER, depth + 1)
-                }))
+                    children: _create(value as DescriptiveObject, backtraceKey + KEY_DELIMITER, depth + 1)
+                } as any))
             } else {
                 elements.push(React.createElement(components.leaf, {
                     key: backtraceKey + "leaf",
@@ -45,7 +44,7 @@ export function createNestedElements(data, components) {
                     value,
                     desc,
                     depth
-                }))
+                } as any))
 
                 keys[backtraceKey] = value
             }
@@ -60,15 +59,12 @@ export function createNestedElements(data, components) {
 /**
  * Create a nested object based on keys delimitted by the KEY_DELIMITER constant.
  * e.g. the keys "foo#bar" and "foo#baz" become: { foo: { bar, baz } }
- * 
- * @param {Object} values the flat key-value pairs
- * @returns {Object} Multi-dimensional object based
  */
-export function createNestedObject(values) {
+export function createNestedObject(values: Record<string, string>): object {
     const result = {}
 
     for (let key in values) {
-        // Split the key up into the 
+        // Split the union key into it's single key parts
         const finalKeys = key.split(KEY_DELIMITER)
 
         let currentObject = result
@@ -91,20 +87,17 @@ export function createNestedObject(values) {
 }
 
 /**
- * Flatten an object by combining keys with the delimitter constant.
- * 
- * @param {Object} input
- * @returns {Object} Flattened object
+ * Flatten an object by the combining keys by a given delimiter.
  */
-export function flattenObject(input) {
+export function flattenObject(input: object, delimiter = KEY_DELIMITER): object {
     const result = {}
 
-    function _flatten(input, keyCarry = "") {
+    function _flatten(input: object, keyCarry = "") {
         for (let key in input) {
             const backtraceKey = keyCarry + key
 
             if (input[key].constructor.name === "Object") {
-                _flatten(input[key], backtraceKey + KEY_DELIMITER)
+                _flatten(input[key], backtraceKey + delimiter)
             } else {
                 result[backtraceKey] = input[key]
             }
@@ -118,11 +111,8 @@ export function flattenObject(input) {
 
 /**
  * Attach the listeners to the event target and return a function which removes them.
- * 
- * @param {EventTarget|Emittable} target 
- * @param {Array<[String, Function]>} events 
  */
-export function createListeners(target, events) {
+export function createListeners(target: EventTarget, events: Array<[string, EventListenerOrEventListenerObject]>) {
     events.forEach(([name, fn]) => {
         target.addEventListener(name, fn, false)
     })
