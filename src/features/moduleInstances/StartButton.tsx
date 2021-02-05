@@ -5,14 +5,14 @@ import { API } from "../../config/types"
 import ActionButton from "./ActionButton"
 
 type Props = {
-    instance: API.ModuleInstance,
+    module: API.Module,
     guild: API.Guild,
     onUpdate: () => Promise<void>
 } & Partial<React.ComponentProps<typeof ActionButton>>
 
-function StartButton({ instance, guild, onUpdate, ...props }: Props) {
+function StartButton({ module, guild, onUpdate, ...props }: Props) {
     const handleClick = async () => {
-        console.log("Stop", { instance, guild })
+        console.log("Start", { module, guild })
     }
 
     return (

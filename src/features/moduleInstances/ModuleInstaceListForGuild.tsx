@@ -3,30 +3,33 @@ import { useDispatch, useSelector } from "react-redux"
 import { CircularProgress, Grid } from "@material-ui/core"
 
 import { RootState } from "../../store"
+import { API } from "../../config/types"
 import ModuleInstanceCard from "./ModuleInstanceCard"
 import { fetchModules } from "../modules/modulesSlice"
 import { fetchModuleInstancesForGuild } from "./moduleInstancesSlice"
 
-function ModuleInstaceListForGuild({ guildId }: { guildId: string }) {
+function ModuleInstaceListForGuild({ guild }: { guild: API.Guild }) {
     const dispatch = useDispatch()
 
     const modules = useSelector((state: RootState) => state.modules.data)
     const modulesStatus = useSelector((state: RootState) => state.modules.status)
     const modulesError = useSelector((state: RootState) => state.modules.error)
 
-    const moduleInstances = useSelector((state: RootState) => state.moduleInstances.guilds[guildId]?.data?.moduleInstances)
-    const moduleInstancesStatus = useSelector((state: RootState) => state.moduleInstances.guilds[guildId]?.status)
-    const moduleInstancesError = useSelector((state: RootState) => state.moduleInstances.guilds[guildId]?.error)
+    const moduleInstances = useSelector((state: RootState) => state.moduleInstances.guilds[guild.id]?.data?.moduleInstances)
+    const moduleInstancesStatus = useSelector((state: RootState) => state.moduleInstances.guilds[guild.id]?.status)
+    const moduleInstancesError = useSelector((state: RootState) => state.moduleInstances.guilds[guild.id]?.error)
 
     useEffect(() => {
         if (modulesStatus === "idle") {
             dispatch(fetchModules())
         }
+    }, [modulesStatus])
 
+    useEffect(() => {
         if (moduleInstancesStatus === "idle") {
-            dispatch(fetchModuleInstancesForGuild(guildId))
+            dispatch(fetchModuleInstancesForGuild(guild.id))
         }
-    })
+    }, [moduleInstancesStatus])
 
     if (modulesStatus === "pending" || moduleInstancesStatus === "pending") {
         return <CircularProgress/>
@@ -37,26 +40,26 @@ function ModuleInstaceListForGuild({ guildId }: { guildId: string }) {
     }
 
     console.log({ modules, moduleInstances })
-    
-    return null
 
-    // const activeModules = modules.filter(module => moduleInstances.includes(module.name))
-    // const inactiveModules = modules.filter(module => !moduleInstances.includes(module.name))
+    const activeModules = Object.values(modules).filter(module => module.name in moduleInstances)
+    const inactiveModules = Object.values(modules).filter(module => !(module.name in moduleInstances))
 
-    // return (
-    //     <Grid container spacing={2}>
-    //         { activeModules.concat(inactiveModules).map(module => (
-    //             <Grid item key={module.name}>
-    //                 <ModuleInstanceCard
-    //                     guildId={guildId}
-    //                     module={module}
-    //                     onUpdate={moduleInstances.reload}
-    //                     active={moduleInstances.data.includes(module.name)}
-    //                 />
-    //             </Grid>
-    //         ))}
-    //     </Grid>
-    // )
+    return (
+        <Grid container spacing={2}>
+            { activeModules.concat(inactiveModules).map(module => (
+                <Grid item key={module.name}>
+                    <ModuleInstanceCard
+                        guild={guild}
+                        module={module}
+                        onUpdate={async () => {
+                            console.log("Update", module)
+                        }}
+                        active={module.name in moduleInstances}
+                    />
+                </Grid>
+            ))}
+        </Grid>
+    )
 }
 
 export default ModuleInstaceListForGuild

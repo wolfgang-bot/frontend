@@ -7,21 +7,21 @@ import StopButton from "./StopButton"
 import RestartButton from "./RestartButton"
 
 type Props = {
-    instance: API.ModuleInstance,
+    module: API.Module,
     guild: API.Guild,
     active: boolean,
     onUpdate: () => Promise<void>
 }
 
-function ModuleCard({ instance, guild, active, onUpdate }: Props) {
-    const commonButtonProps = { instance, guild, onUpdate }
+function ModuleCard({ module, guild, active, onUpdate }: Props) {
+    const commonButtonProps = { module, guild, onUpdate }
 
     return (
         <Card>
             <CardActionArea>
                 <CardContent>
                     <Typography>
-                        {instance.moduleName}
+                        {module.name}
                     </Typography>
                 </CardContent>
             </CardActionArea>
