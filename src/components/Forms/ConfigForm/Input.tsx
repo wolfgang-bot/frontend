@@ -47,7 +47,9 @@ function Input({ _key, value, desc }: {
     return (
         <div className={classes.inputWrapper}>
             <div className={classes.inputLabelWrapper}>
-                <Typography variant="subtitle1" className={classes.inputLabel} color={textColor}>{capitalCase(label)}</Typography>
+                <Typography variant="subtitle1" className={classes.inputLabel} color={textColor}>{
+                    label ? capitalCase(label) : "Unknown"
+                }</Typography>
                 <Typography variant="caption" color={textColor}>{desc}</Typography>
             </div>
 

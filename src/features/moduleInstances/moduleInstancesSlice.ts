@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit"
 
 import { API, LoadingState, ReduxAPIState } from "../../config/types"
 import api from "../../api"
-import { fetchGuilds } from "../guilds/guildsSlice.js"
+import { fetchGuilds } from "../guilds/guildsSlice"
 
 type GuildState = ReduxAPIState<{
     moduleInstances: Record<string, API.ModuleInstance>
@@ -16,8 +16,7 @@ const initialGuildState: GuildState = {
     data: {
         moduleInstances: {}
     },
-    status: "idle",
-    error: null
+    status: "idle"
 }
 
 const initialState: ModuleInstancesState = {

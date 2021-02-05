@@ -3,7 +3,7 @@ import { useFormContext } from "react-hook-form"
 import { TextField } from "@material-ui/core"
 
 function StringInput({ onChange, ...props }: {
-    onChange: (value: string) => void,
+    onChange?: (value: string) => void,
     name: string
 }) {
     const { register, errors } = useFormContext()

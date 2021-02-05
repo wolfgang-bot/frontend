@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 
-import LoadingIconButton from "../../components/Styled/LoadingIconButton.js"
+import LoadingIconButton from "../../components/Styled/LoadingIconButton"
 
 type Props = {
     icon: React.FunctionComponent,

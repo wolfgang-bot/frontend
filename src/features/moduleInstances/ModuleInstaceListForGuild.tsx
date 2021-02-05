@@ -14,7 +14,7 @@ function ModuleInstaceListForGuild({ guildId }: { guildId: string }) {
     const modulesStatus = useSelector((state: RootState) => state.modules.status)
     const modulesError = useSelector((state: RootState) => state.modules.error)
 
-    const moduleInstances = useSelector((state: RootState) => state.moduleInstances.guilds[guildId]?.data.moduleInstances)
+    const moduleInstances = useSelector((state: RootState) => state.moduleInstances.guilds[guildId]?.data?.moduleInstances)
     const moduleInstancesStatus = useSelector((state: RootState) => state.moduleInstances.guilds[guildId]?.status)
     const moduleInstancesError = useSelector((state: RootState) => state.moduleInstances.guilds[guildId]?.error)
 
@@ -40,23 +40,23 @@ function ModuleInstaceListForGuild({ guildId }: { guildId: string }) {
     
     return null
 
-    const activeModules = modules.filter(module => moduleInstances.includes(module.name))
-    const inactiveModules = modules.filter(module => !moduleInstances.includes(module.name))
+    // const activeModules = modules.filter(module => moduleInstances.includes(module.name))
+    // const inactiveModules = modules.filter(module => !moduleInstances.includes(module.name))
 
-    return (
-        <Grid container spacing={2}>
-            { activeModules.concat(inactiveModules).map(module => (
-                <Grid item key={module.name}>
-                    <ModuleInstanceCard
-                        guildId={guildId}
-                        module={module}
-                        onUpdate={moduleInstances.reload}
-                        active={moduleInstances.data.includes(module.name)}
-                    />
-                </Grid>
-            ))}
-        </Grid>
-    )
+    // return (
+    //     <Grid container spacing={2}>
+    //         { activeModules.concat(inactiveModules).map(module => (
+    //             <Grid item key={module.name}>
+    //                 <ModuleInstanceCard
+    //                     guildId={guildId}
+    //                     module={module}
+    //                     onUpdate={moduleInstances.reload}
+    //                     active={moduleInstances.data.includes(module.name)}
+    //                 />
+    //             </Grid>
+    //         ))}
+    //     </Grid>
+    // )
 }
 
 export default ModuleInstaceListForGuild

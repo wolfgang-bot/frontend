@@ -6,35 +6,10 @@ import { DEBUG } from "../config/constants"
 
 class WebSocketAPI {
     endpoint: string
-    socket: Socket
+    socket?: Socket
 
     constructor(endpoint: string) {
         this.endpoint = endpoint
-    }
-
-    /**
-     * Emit socket.io event and await server response
-     */
-    fetch<T = void>(event: string, ...args: any[]): Promise<API.Response<T>> {
-        if (!this.socket) {
-            throw new Error("You need to initialize the api before making requests")
-        }
-
-        return new Promise((resolve, reject) => {
-            this.socket.emit(event, ...args, (res: API.Response<T>) => {
-                if (DEBUG) {
-                    console.log(`%c[${event}]`, "color:blue", res)
-                }
-
-                if (res.status === "error") {
-                    reject(res)
-                } else if (res.status === "ok") {
-                    resolve(res)
-                } else {
-                    throw new Error(`Unkown status '${res.status}'`)
-                }
-            })
-        })
     }
 
     /**
@@ -55,8 +30,33 @@ class WebSocketAPI {
         })
 
         await new Promise((resolve, reject) => {
-            this.socket.on("connect", resolve)
-            this.socket.on("connect_error", reject)
+            this.socket!.on("connect", resolve)
+            this.socket!.on("connect_error", reject)
+        })
+    }
+
+    /**
+     * Emit socket.io event and await server response
+     */
+    fetch<T = void>(event: string, ...args: any[]): Promise<API.Response<T>> {
+        if (!this.socket) {
+            throw new Error("The api needs to be initialized before making requests")
+        }
+
+        return new Promise((resolve, reject) => {
+            this.socket!.emit(event, ...args, (res: API.Response<T>) => {
+                if (DEBUG) {
+                    console.log(`%c[${event}]`, "color:blue", res)
+                }
+
+                if (res.status === "error") {
+                    reject(res)
+                } else if (res.status === "ok") {
+                    resolve(res)
+                } else {
+                    throw new Error(`Unkown status '${res.status}'`)
+                }
+            })
         })
     }
 

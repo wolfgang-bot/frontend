@@ -7,7 +7,7 @@ import Layout from "../components/Layout/Layout"
 // import GuildList from "../features/guilds/GuildList"
 
 function ProfilePage() {
-    const isLoggedIn = useSelector((store: RootState) => store.auth.isLoggedIn)
+    const isLoggedIn = useSelector((store: RootState) => !!store.auth.data.user)
 
     if (!isLoggedIn) {
         return <Redirect to="/login"/>

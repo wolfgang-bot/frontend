@@ -34,7 +34,7 @@ function Header() {
 
     const history = useHistory()
 
-    const isLoggedIn = useSelector((store: RootState) => store.auth.isLoggedIn)
+    const isLoggedIn = useSelector((store: RootState) => !!store.auth.data.user)
 
     const handleLogout = () => {
         console.log("Logout")

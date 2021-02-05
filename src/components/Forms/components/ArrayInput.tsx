@@ -31,7 +31,9 @@ function ArrayInput(props: { name: string }) {
 
     const idCounter = useRef(0)
 
-    const [inputIds, setInputIds] = useState(() => values.map(() => idCounter.current++))
+    const [inputIds, setInputIds] = useState(() => !values ? [] : 
+        values.map(() => idCounter.current++)
+    )
 
     const handleChange = () => {
         const newValues = Object.values(form.watch())
@@ -67,7 +69,7 @@ function ArrayInput(props: { name: string }) {
                 <Grid container className={classes.inputWrapper} wrap="nowrap" spacing={1} key={id}>
                     <Grid item xs={12}>
                         <DynamicInput
-                            value={values[0]}
+                            value={values?.[0]}
                             name={id.toString()}
                             onChange={handleChange}
                         />

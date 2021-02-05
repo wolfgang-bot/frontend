@@ -1,5 +1,5 @@
 import { API } from "../config/types"
-import { DISCORD_CDN_BASE_URL, DEFAULT_AVATAR_URL } from "../config/constants.js"
+import { DISCORD_CDN_BASE_URL, DEFAULT_AVATAR_URL } from "../config/constants"
 
 export enum FORMATS {
     USER,
@@ -32,11 +32,11 @@ export default function format<T>(type: FORMATS) {
     let fn: Function
 
     if (type === FORMATS.USER) {
-        fn = (data: Response<API.User>) => formatUser(data.data)
+        fn = (data: Response<API.User>) => formatUser(data.data!)
     } else if (type === FORMATS.GUILD) {
-        fn = (data: Response<API.Guild>) => formatGuild(data.data)
+        fn = (data: Response<API.Guild>) => formatGuild(data.data!)
     } else if (type === FORMATS.GUILDS) {
-        fn = (data: Response<API.Guild[]>) => data.data.map(formatGuild)
+        fn = (data: Response<API.Guild[]>) => data.data!.map(formatGuild)
     }
 
     return (data: Response<T>) => {

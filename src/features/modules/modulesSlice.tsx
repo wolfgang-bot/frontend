@@ -7,8 +7,7 @@ type ModuleState = ReduxAPIState<Record<string, API.Module>>
 
 const initialState: ModuleState = {
     data: {},
-    status: "idle",
-    error: null
+    status: "idle"
 }
 
 export const fetchModules = createAsyncThunk("module/fetchModules", async () => {

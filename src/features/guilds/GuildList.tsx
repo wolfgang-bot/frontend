@@ -6,7 +6,7 @@ import { RootState } from "../../store"
 import Guild from "./Guild"
 import { fetchGuilds } from "./guildsSlice"
 
-function GuildList({ activeGuildId }: { activeGuildId: string }) {
+function GuildList({ activeGuildId }: { activeGuildId?: string }) {
     const dispatch = useDispatch()
 
     const guilds = useSelector((store: RootState) => store.guilds.data)
@@ -27,9 +27,13 @@ function GuildList({ activeGuildId }: { activeGuildId: string }) {
         return <div>{ error }</div>
     }
 
-    return Object.values(guilds).map(guild => (
-        <Guild guild={guild} key={guild.id} active={activeGuildId && activeGuildId === guild.id}/>
-    ))
+    return (
+        <>
+            {Object.values(guilds).map(guild => (
+                <Guild guild={guild} key={guild.id} active={activeGuildId ? activeGuildId === guild.id : false} />
+            ))}
+        </>
+    )
 }
 
 export default GuildList

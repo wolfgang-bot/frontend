@@ -4,9 +4,9 @@ import { useForm, FormProvider } from "react-hook-form"
 import { Paper, CircularProgress } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 
-import LoadingButton from "../../Styled/LoadingButton.js"
-import Title from "./Title.js"
-import Input from "./Input.js"
+import LoadingButton from "../../Styled/LoadingButton"
+import Title from "./Title"
+import Input from "./Input"
 import { createNestedElements, createNestedObject, flattenObject } from "../../../utils"
 import { API } from "../../../config/types"
 
@@ -67,7 +67,7 @@ function ConfigForm({ guild, data }: {
 
     const [isSubmitting, setIsSubmitting] = useState(false)
 
-    const handleSubmit = (values: API.Config) => {
+    const handleSubmit = (values: Record<string, string>) => {
         // Format keys back to object
         const data = createNestedObject(values)
 
@@ -114,7 +114,7 @@ function ConfigFormWrapper({ guild }: { guild: API.Guild }) {
     // })
 
     const { data, isLoading, error } = {
-        data: null,
+        data: {},
         isLoading: false,
         error: null
     }
@@ -123,9 +123,9 @@ function ConfigFormWrapper({ guild }: { guild: API.Guild }) {
         return <CircularProgress/>
     }
 
-    if (error?.response.status === 404) {
-        return <Redirect to="/not-found"/>
-    }
+    // if (error?.response.status === 404) {
+    //     return <Redirect to="/not-found"/>
+    // }
 
     return <ConfigForm guild={guild} data={data}/>
 }

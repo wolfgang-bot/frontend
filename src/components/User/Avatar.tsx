@@ -8,13 +8,13 @@ import { theme } from "../../index"
 import { RootState } from "../../store"
 
 type StyleProps = {
-    clickable: boolean,
-    size: number
+    clickable?: boolean,
+    size?: number
 }
 
 const useStyles = makeStyles<typeof theme, StyleProps>({
     avatar: props => ({
-        cursor: !props.clickable && "pointer",
+        cursor: !props.clickable ? "pointer" : "",
         width: props.size,
         height: props.size
     })
@@ -28,14 +28,14 @@ function Avatar({ size, clickable = true }: {
 
     const history = useHistory()
 
-    const user = useSelector((store: RootState) => store.auth.user)
+    const user = useSelector((store: RootState) => store.auth.data.user)
 
     const handleClick = () => {
         history.push("/")
     }
 
     return (
-        <MuiAvatar className={classes.avatar} onClick={handleClick} src={user.avatar} />
+        <MuiAvatar className={classes.avatar} onClick={handleClick} src={user?.avatar} />
     )
 }
 

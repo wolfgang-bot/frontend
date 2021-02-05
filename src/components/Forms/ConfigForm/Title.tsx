@@ -27,7 +27,9 @@ function Title({ _key, desc }: {
 
     return (
         <div className={classes.title}>
-            <Typography variant="h5" color={textColor}>{capitalCase(label)}</Typography>
+            <Typography variant="h5" color={textColor}>{
+                label ? capitalCase(label) : "Unknown"
+            }</Typography>
 
             { desc && (
                 <Typography variant="subtitle1" color={textColor}>{desc}</Typography>

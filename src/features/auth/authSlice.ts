@@ -1,20 +1,13 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit"
 
-import { API, LoadingState } from "../../config/types"
+import { API, ReduxAPIState } from "../../config/types"
 import api from "../../api"
 
-type AuthState = {
-    user: API.User,
-    isLoggedIn: boolean,
-    status: LoadingState,
-    error?: any
-}
-
-const initialState: AuthState = {
-    user: null,
-    isLoggedIn: false,
-    status: "idle",
-    error: null
+const initialState: ReduxAPIState<{
+    user?: API.User
+}> = {
+    data: {},
+    status: "idle"
 }
 
 export const fetchUser = createAsyncThunk("auth/fetchUser", async () => {
@@ -30,12 +23,11 @@ const authSlice = createSlice({
         [fetchUser.pending.toString()]: (state) => {
             state.status = "pending"
         },
-        [fetchUser.fulfilled.toString()]: (state, action) => {
+        [fetchUser.fulfilled.toString()]: (state, action: PayloadAction<API.User>) => {
             state.status = "success"
-            state.user = action.payload
-            state.isLoggedIn = true
+            state.data.user = action.payload
         },
-        [fetchUser.rejected.toString()]: (state, action) => {
+        [fetchUser.rejected.toString()]: (state, action: PayloadAction<string>) => {
             state.status = "error"
             state.error = action.payload
         }

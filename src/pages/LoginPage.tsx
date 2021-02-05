@@ -9,7 +9,7 @@ import DiscordOAuth from "../components/OAuth/DiscordOAuth"
 function LoginPage() {
     const location = useLocation()
 
-    const isLoggedIn = useSelector((store: RootState) => store.auth.isLoggedIn)
+    const isLoggedIn = useSelector((store: RootState) => !!store.auth.data.user)
 
     if (isLoggedIn) {
         const redirect = new URLSearchParams(location.search).get("redirect_to")

@@ -3,7 +3,7 @@ import { useFormContext } from "react-hook-form"
 import { TextField } from "@material-ui/core"
 
 function NumberInput({ onChange, ...props }: {
-    onChange: (value: number) => void,
+    onChange?: (value: number) => void,
     name: string
 }) {
     const { register, setValue, watch, errors } = useFormContext()

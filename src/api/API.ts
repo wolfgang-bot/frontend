@@ -1,5 +1,5 @@
-import HttpAPI from "./HttpAPI.js"
-import WebSocketAPI from "./WebSocketAPI.js"
+import HttpAPI from "./HttpAPI"
+import WebSocketAPI from "./WebSocketAPI"
 
 class API {
     http: HttpAPI

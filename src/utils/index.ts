@@ -9,11 +9,11 @@ export const KEY_DELIMITER = "#"
  * the flattened keys.
  */
 export function createNestedElements(data: DescriptiveObject, components: {
-    title: React.FunctionComponent,
-    container: React.FunctionComponent,
-    leaf: React.FunctionComponent
+    title: React.FunctionComponent<any>,
+    container: React.FunctionComponent<any>,
+    leaf: React.FunctionComponent<any>
 }): [React.ReactElement[], Record<string, string>] {
-    const keys = {}
+    const keys: Record<string, any> = {}
 
     function _create(data: DescriptiveObject, keyCarry = "", depth = 0) {
         const elements: React.ReactElement[] = []
@@ -67,11 +67,15 @@ export function createNestedObject(values: Record<string, string>): object {
         // Split the union key into it's single key parts
         const finalKeys = key.split(KEY_DELIMITER)
 
-        let currentObject = result
+        let currentObject: any = result
 
         // Create nested object
         while (finalKeys.length > 1) {
             const firstKey = finalKeys.shift()
+
+            if (!firstKey) {
+                break
+            }
 
             if (!currentObject[firstKey]) {
                 currentObject[firstKey] = {}
@@ -90,9 +94,9 @@ export function createNestedObject(values: Record<string, string>): object {
  * Flatten an object by the combining keys by a given delimiter.
  */
 export function flattenObject(input: object, delimiter = KEY_DELIMITER): object {
-    const result = {}
+    const result: Record<string, any> = {}
 
-    function _flatten(input: object, keyCarry = "") {
+    function _flatten(input: any, keyCarry = "") {
         for (let key in input) {
             const backtraceKey = keyCarry + key
 

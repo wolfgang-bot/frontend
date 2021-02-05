@@ -1,5 +1,5 @@
-import { API_BASE_URL, WEB_SOCKET_API_URL } from "../config/constants.js"
-import API from "./API.js"
+import { API_BASE_URL, WEB_SOCKET_API_URL } from "../config/constants"
+import API from "./API"
 
 const api = new API({
     httpEndpoint: API_BASE_URL,

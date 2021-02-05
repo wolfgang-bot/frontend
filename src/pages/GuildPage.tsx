@@ -10,7 +10,7 @@ function GuildPage() {
     return (
         <Layout
             sidebarProps={{
-                activeGuild: id
+                activeGuildId: id
             }}
         >
             <ModuleInstanceListForGuild guildId={id}/>

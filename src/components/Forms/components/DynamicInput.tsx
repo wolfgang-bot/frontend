@@ -6,7 +6,7 @@ import StringInput from "./StringInput"
 
 const inputMap: Record<string, FunctionComponent<{
     name: string,
-    onChange: (value: any) => void
+    onChange?: (value: any) => void
 }>> = {
     "Array": ArrayInput,
     "Number": NumberInput,

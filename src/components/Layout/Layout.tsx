@@ -3,12 +3,17 @@ import { Container } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 
 import { theme } from "../../index"
-import Header from "./Header.js"
+import Header from "./Header"
 import Sidebar from "../Sidebar/Sidebar"
 
 type StyleProps = {
     center: boolean
 }
+
+type Props = React.PropsWithChildren<{
+    sidebarProps?: React.ComponentProps<typeof Sidebar>,
+    center?: boolean
+}>
 
 const useStyles = makeStyles<typeof theme, StyleProps>(theme => ({
     layout: {
@@ -21,25 +26,25 @@ const useStyles = makeStyles<typeof theme, StyleProps>(theme => ({
         marginBottom: theme.spacing(8)
     },
 
-    content: props => props.center && {
+    content: props => props.center ? {
         display: "flex",
         flexDirection: "column",
         alignItems: "center"
-    }
+    } : {}
 }))
 
-function Layout({ headerProps = {}, sidebarProps = {}, children, center = false }) {
+function Layout({ sidebarProps = {}, center = false, children }: Props) {
     const classes = useStyles({ center })
 
     return (
         <div className={classes.layout}>
-            <Header {...headerProps}/>
+            <Header/>
 
             <Sidebar {...sidebarProps}/>
 
             <div className={classes.body}>
                 <Container className={classes.content}>
-                    { children }
+                    { children as React.ReactChildren }
                 </Container>
             </div>
         </div>

@@ -5,7 +5,7 @@ import { Drawer, Divider, Typography, List } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 
 import { RootState } from "../../store"
-import Guilds from "../../features/guilds/GuildList"
+import GuildList from "../../features/guilds/GuildList"
 
 const useStyles = makeStyles(theme => {
     const width = 250
@@ -33,12 +33,10 @@ const useStyles = makeStyles(theme => {
     }
 })
 
-function Sidebar({ activeGuildId }: {
-    activeGuildId?: string
-}) {
+function Sidebar({ activeGuildId }: { activeGuildId?: string }) {
     const classes = useStyles()
 
-    const isLoggedIn = useSelector((store: RootState) => store.auth.isLoggedIn)
+    const isLoggedIn = useSelector((store: RootState) => !!store.auth.data.user)
 
     return (
         <Drawer
@@ -57,7 +55,7 @@ function Sidebar({ activeGuildId }: {
             <Divider/>
 
             <List className={classes.nav}>
-                { isLoggedIn && <Guilds activeGuildId={activeGuildId}/> }
+                { isLoggedIn && <GuildList activeGuildId={activeGuildId}/> }
             </List>
         </Drawer>
     )

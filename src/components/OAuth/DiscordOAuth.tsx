@@ -7,7 +7,7 @@ import { DISCORD_OAUTH_URL } from "../../config/constants"
 import format, { FORMATS } from "../../api/format"
 
 function OAuthDiscord({ children }: PropsWithChildren<{}>) {
-    const popup = useRef<Window>()
+    const popup = useRef<Window | null>()
 
     const handleClick = () => {
         const width = 1000
@@ -20,12 +20,21 @@ function OAuthDiscord({ children }: PropsWithChildren<{}>) {
     }
 
     useEffect(() => {
-        const handleMessage = (event: { data: API.OAuthPopupResponse }) => {
-            const { data: res } = event
+        const handleMessage = (event: any) => {
+            const { data: res }: { data: API.OAuthPopupResponse } = event
+
+            if (!res) {
+                throw new Error("Missing attribute 'data' in oauth response")
+            }
+
             if (res?.source === "oauth" && popup.current) {
                 popup.current.close()
 
                 if (res.status === "ok") {
+                    if (!res.data) {
+                        throw new Error("Missing attribute 'data.data' in oauth response")
+                    }
+
                     format(FORMATS.USER)({ data: res.data.user })
 
                     // dispatch(login({
