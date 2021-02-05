@@ -5,6 +5,7 @@ import { makeStyles } from "@material-ui/core/styles"
 import { theme } from "../../index"
 import Header from "./Header"
 import Sidebar from "../Sidebar/Sidebar"
+import ComponentOpener from "../ComponentOpener/ComponentOpener"
 
 type StyleProps = {
     center: boolean
@@ -47,6 +48,8 @@ function Layout({ sidebarProps = {}, center = false, children }: Props) {
                     { children as React.ReactChildren }
                 </Container>
             </div>
+
+            <ComponentOpener/>
         </div>
     )
 }

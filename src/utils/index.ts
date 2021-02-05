@@ -1,6 +1,7 @@
 import React from "react"
 
 import { DescriptiveObject } from "../config/types"
+import Emittable, { EventListener } from "./Emittable"
 
 export const KEY_DELIMITER = "#"
 
@@ -116,12 +117,12 @@ export function flattenObject(input: object, delimiter = KEY_DELIMITER): object 
 /**
  * Attach the listeners to the event target and return a function which removes them.
  */
-export function createListeners(target: EventTarget, events: Array<[string, EventListenerOrEventListenerObject]>) {
-    events.forEach(([name, fn]) => {
-        target.addEventListener(name, fn, false)
+export function createListeners(target: EventTarget | Emittable, events: Array<[string, EventListener]>) {
+    events.forEach(([name, listener]) => {
+        target.addEventListener(name, listener)
     })
 
-    return () => events.forEach(([name, fn]) => {
-        target.removeEventListener(name, fn, false)
+    return () => events.forEach(([name, listener]) => {
+        target.removeEventListener(name, listener)
     })
 }
