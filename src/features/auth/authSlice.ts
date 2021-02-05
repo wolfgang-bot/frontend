@@ -18,7 +18,22 @@ export const fetchUser = createAsyncThunk("auth/fetchUser", async () => {
 const authSlice = createSlice({
     name: "auth",
     initialState,
-    reducers: {},
+    reducers: {
+        login: (state, action: PayloadAction<{
+            user: API.User,
+            token: string
+        }>) => {
+            state.data.user = action.payload.user
+        },
+        logout: (state) => {
+            state.data.user = undefined
+        },
+        init: (state, action: PayloadAction<{
+            token?: string | null
+        }>) => {
+            state.status = "pending"
+        }
+    },
     extraReducers: {
         [fetchUser.pending.toString()]: (state) => {
             state.status = "pending"
@@ -33,5 +48,7 @@ const authSlice = createSlice({
         }
     }
 })
+
+export const { login, logout, init } = authSlice.actions
 
 export default authSlice.reducer

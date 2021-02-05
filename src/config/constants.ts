@@ -2,7 +2,8 @@ export const DEBUG = process.env.NODE_ENV === "development"
 
 export const API_BASE_URL = window.location.origin + "/api"
 export const WEB_SOCKET_API_URL = `ws://${window.location.host}`
-export const API_TOKEN = localStorage.getItem("token")
+export const API_TOKEN_STORAGE_KEY = "token"
+export const API_TOKEN = localStorage.getItem(API_TOKEN_STORAGE_KEY)
 
 export const DISCORD_OAUTH_API_ENDPOINT = API_BASE_URL + "/oauth/discord"
 export const DISCORD_OAUTH_URL =

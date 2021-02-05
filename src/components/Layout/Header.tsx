@@ -1,5 +1,5 @@
 import React from "react"
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import { useHistory } from "react-router-dom"
 import { AppBar, Toolbar, Button, Grid, Divider } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
@@ -7,6 +7,7 @@ import { makeStyles } from "@material-ui/core/styles"
 import { RootState } from "../../store"
 import DiscordOAuth from "../OAuth/DiscordOAuth"
 import Avatar from "../User/Avatar"
+import { logout } from "../../features/auth/authSlice"
 
 const useStyles = makeStyles(theme => ({
     header: {
@@ -34,10 +35,12 @@ function Header() {
 
     const history = useHistory()
 
+    const dispatch = useDispatch()
+
     const isLoggedIn = useSelector((store: RootState) => !!store.auth.data.user)
 
     const handleLogout = () => {
-        console.log("Logout")
+        dispatch(logout())
         history.push("/")
     }
 

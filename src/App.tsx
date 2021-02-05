@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from "react"
+import React, { useEffect } from "react"
+import { useSelector, useDispatch } from "react-redux"
 import { CssBaseline, CircularProgress } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 
+import { RootState } from "./store"
 import Router from "./router"
-import login from "./features/auth/login"
+import { init } from "./features/auth/authSlice"
+import { API_TOKEN_STORAGE_KEY } from "./config/constants"
 
 const useStyles = makeStyles({
     "@global": {
@@ -16,16 +19,21 @@ const useStyles = makeStyles({
 function App() {
     useStyles()
 
-    const [isLoading, setIsLoading] = useState(true)
+    const dispatch = useDispatch()
+
+    const status = useSelector((store: RootState) => store.auth.status)
 
     useEffect(() => {
-        login().finally(() => setIsLoading(false))
-    }, [])
+        if (status === "idle") {
+            const token = localStorage.getItem(API_TOKEN_STORAGE_KEY)
+            dispatch(init({ token }))
+        }
+    }, [status])
 
     return (
         <>
             <CssBaseline/>
-            { isLoading ? <CircularProgress /> : <Router />}
+            { status === "pending" ? <CircularProgress /> : <Router />}
         </>
     )
 }

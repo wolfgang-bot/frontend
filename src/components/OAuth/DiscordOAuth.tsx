@@ -1,12 +1,16 @@
 import React, { useEffect, useRef, PropsWithChildren } from "react"
+import { useDispatch } from "react-redux"
 import { Button } from "@material-ui/core"
 
 import { createListeners } from "../../utils"
 import { API } from "../../config/types"
 import { DISCORD_OAUTH_URL } from "../../config/constants"
 import format, { FORMATS } from "../../api/format"
+import { login } from "../../features/auth/authSlice"
 
 function OAuthDiscord({ children }: PropsWithChildren<{}>) {
+    const dispatch = useDispatch()
+
     const popup = useRef<Window | null>()
 
     const handleClick = () => {
@@ -37,11 +41,10 @@ function OAuthDiscord({ children }: PropsWithChildren<{}>) {
 
                     format(FORMATS.USER)({ data: res.data.user })
 
-                    // dispatch(login({
-                    //     user: res.data.user,
-                    //     token: res.data.token
-                    // }))
-                    console.log("OAuth", res)
+                    dispatch(login({
+                        user: res.data.user,
+                        token: res.data.token
+                    }))
                 }
             }
         }
