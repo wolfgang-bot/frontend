@@ -4,11 +4,11 @@ import { CircularProgress, Grid } from "@material-ui/core"
 
 import { RootState } from "../../store"
 import { API } from "../../config/types"
-import ModuleInstanceCard from "./ModuleInstanceCard"
-import { fetchModules } from "../modules/modulesSlice"
-import { fetchModuleInstancesForGuild } from "./moduleInstancesSlice"
+import ModuleInstanceCard from "./ModuleCard"
+import { fetchModules } from "./modulesSlice"
+import { fetchModuleInstancesForGuild } from "../moduleInstances/moduleInstancesSlice"
 
-function ModuleInstaceListForGuild({ guild }: { guild: API.Guild }) {
+function ModuleListForGuild({ guild }: { guild: API.Guild }) {
     const dispatch = useDispatch()
 
     const modules = useSelector((state: RootState) => state.modules.data)
@@ -62,4 +62,4 @@ function ModuleInstaceListForGuild({ guild }: { guild: API.Guild }) {
     )
 }
 
-export default ModuleInstaceListForGuild
+export default ModuleListForGuild

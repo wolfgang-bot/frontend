@@ -5,7 +5,7 @@ import { CircularProgress } from "@material-ui/core"
 
 import { RootState } from "../store"
 import Layout from "../components/Layout/Layout"
-import ModuleInstanceListForGuild from "../features/moduleInstances/ModuleInstaceListForGuild"
+import ModuleListForGuild from "../features/modules/ModuleListForGuild"
 import { fetchGuilds } from "../features/guilds/guildsSlice"
 
 function GuildPage() {
@@ -28,7 +28,7 @@ function GuildPage() {
     if (status === "error") {
         child = <div>{ error }</div>
     } else if (status === "success") {
-        child = <ModuleInstanceListForGuild guild={guild}/>
+        child = <ModuleListForGuild guild={guild}/>
     }
 
     return (
