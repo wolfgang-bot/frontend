@@ -3,6 +3,7 @@ import RestartIcon from "@material-ui/icons/Replay"
 
 import { API } from "../../config/types"
 import ActionButton from "./ActionButton"
+import api from "../../api"
 
 type Props = {
     module: API.Module,
@@ -12,7 +13,7 @@ type Props = {
 
 function RestartButton({ module, guild, onUpdate, ...props }: Props) {
     const handleClick = async () => {
-        console.log("Restart", { module, guild })
+        api.ws.restartModuleInstance(guild.id, module.name)
     }
 
     return (
