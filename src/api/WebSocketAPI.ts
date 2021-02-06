@@ -3,10 +3,12 @@ import { io, Socket } from "socket.io-client"
 import { API } from "../config/types"
 import format, { FORMATS } from "./format"
 import { DEBUG } from "../config/constants"
+import WebSocketReceiver from "./WebSocketReceiver"
 
 class WebSocketAPI {
     endpoint: string
     socket?: Socket
+    receiver?: WebSocketReceiver
 
     constructor(endpoint: string) {
         this.endpoint = endpoint
@@ -17,6 +19,7 @@ class WebSocketAPI {
      */
     async init(token: string) {
         await this.login(token)
+        this.receiver = new WebSocketReceiver(this.socket!)
     }
 
     /**
@@ -95,14 +98,14 @@ class WebSocketAPI {
      * @fires get:modules
      */
     getModules() {
-        return this.fetch<API.Module>("get:modules")
+        return this.fetch<API.Module[]>("get:modules")
     }
 
     /**
      * @fires get:module-instances
      */
     getModuleInstances(guildId: string) {
-        return this.fetch<API.ModuleInstance>("get:module-instances", guildId)
+        return this.fetch<API.ModuleInstance[]>("get:module-instances", guildId)
     }
 
     /**

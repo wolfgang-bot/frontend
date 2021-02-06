@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit"
 
 import { API, ReduxAPIState } from "../../config/types"
-import api from "../../api"
+import { ThunkExtraArgument } from "../../store"
 
 const initialState: ReduxAPIState<{
     user?: API.User
@@ -10,7 +10,11 @@ const initialState: ReduxAPIState<{
     status: "idle"
 }
 
-export const fetchUser = createAsyncThunk("auth/fetchUser", async () => {
+export const fetchUser = createAsyncThunk<
+    API.User | undefined,
+    void,
+    { extra: ThunkExtraArgument }
+>("auth/fetchUser", async (_, { extra: { api } }) => {
     const res = await api.http.getProfile()
     return res.data
 })

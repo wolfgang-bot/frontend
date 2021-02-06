@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 import { API, ReduxAPIState } from "../../config/types"
-import api from "../../api"
+import { ThunkExtraArgument } from "../../store"
 
 type ModuleState = ReduxAPIState<Record<string, API.Module>>
 
@@ -10,7 +10,11 @@ const initialState: ModuleState = {
     status: "idle"
 }
 
-export const fetchModules = createAsyncThunk("module/fetchModules", async () => {
+export const fetchModules = createAsyncThunk<
+    API.Module[] | undefined,
+    void,
+    { extra: ThunkExtraArgument }
+>("module/fetchModules", async (_, { extra: { api } }) => {
     const res = await api.ws.getModules()
     return res.data
 })

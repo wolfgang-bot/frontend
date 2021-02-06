@@ -25,14 +25,14 @@ export namespace Discord {
 }
 
 export namespace API {
-    enum INSTANCE_STATES {
+    export enum INSTANCE_STATES {
         ACTIVE,
         INACTIVE,
         STARTING,
         STOPPING
     }
 
-    enum ARGUMENT_TYPES {
+    export enum ARGUMENT_TYPES {
         TEXT_CHANNEL = "text_channel",
         VOICE_CHANNEL = "voice_channel",
         CATEGORY_CHANNEL = "category_channel"
@@ -85,6 +85,7 @@ export namespace API {
 
     export type ModuleInstance = {
         moduleName: string,
+        guildId: string,
         state: INSTANCE_STATES
     }
 

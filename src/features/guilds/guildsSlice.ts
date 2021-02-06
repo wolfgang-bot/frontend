@@ -1,24 +1,29 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit"
 
 import { API, Discord, ReduxAPIState } from "../../config/types"
-import api from "../../api"
+import { ThunkExtraArgument } from "../../store"
 
 const initialState: ReduxAPIState<Record<string, API.Guild>> = {
     data: {},
     status: "idle"
 }
 
-export const fetchGuilds = createAsyncThunk("guilds/fetchGuilds", async () => {
+export const fetchGuilds = createAsyncThunk<
+    API.Guild[] | undefined,
+    void,
+    { extra: ThunkExtraArgument }
+>("guilds/fetchGuilds", async (_, { extra: { api } }) => {
     const res = await api.ws.getGuilds()
     return res.data
 })
 
 export const fetchChannels = createAsyncThunk<
     API.GuildChannel[] | undefined,
-    string
+    string,
+    { extra: ThunkExtraArgument }
 >(
     "guilds/fetchChannels",
-    async (guildId) => {
+    async (guildId, { extra: { api } }) => {
         const res = await api.ws.getGuildChannels(guildId)
         return res.data
     }

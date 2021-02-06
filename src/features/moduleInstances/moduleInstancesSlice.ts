@@ -1,8 +1,8 @@
-import { createSlice, createAsyncThunk, PayloadAction, ThunkAction } from "@reduxjs/toolkit"
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit"
 
-import { API, LoadingState, ReduxAPIState } from "../../config/types"
-import api from "../../api"
+import { API, ReduxAPIState } from "../../config/types"
 import { fetchGuilds } from "../guilds/guildsSlice"
+import { ThunkExtraArgument } from "../../store"
 
 type GuildState = ReduxAPIState<Record<string, API.ModuleInstance>>
 
@@ -19,9 +19,13 @@ const initialState: ModuleInstancesState = {
     guilds: {}
 }
 
-export const fetchModuleInstancesForGuild = createAsyncThunk(
+export const fetchModuleInstancesForGuild = createAsyncThunk<
+    API.ModuleInstance[] | undefined,
+    string,
+    { extra: ThunkExtraArgument }
+>(
     "moduleInstances/fetchModuleInstancesForGuild",
-    async (guildId: string) => {
+    async (guildId, { extra: { api } }) => {
         const res = await api.ws.getModuleInstances(guildId)
         return res.data
     }
@@ -31,8 +35,13 @@ const moduleInstancesSlice = createSlice({
     name: "moduleInstances",
     initialState,
     reducers: {
-        "modules/moduleInstances": (state, action) => {
-            state.guilds[action.payload.guildId].status = action.payload.status
+        updateInstances: (state, action: PayloadAction<API.ModuleInstance[]>) => {
+            action.payload.forEach(instance => {
+                const guild = state.guilds[instance.guildId]
+                if (guild) {
+                    guild.data[instance.moduleName] = instance
+                }
+            })
         }
     },
     extraReducers: {
@@ -67,5 +76,7 @@ const moduleInstancesSlice = createSlice({
         }
     }
 })
+
+export const { updateInstances } = moduleInstancesSlice.actions
 
 export default moduleInstancesSlice.reducer
