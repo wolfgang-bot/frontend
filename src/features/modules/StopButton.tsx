@@ -3,6 +3,7 @@ import StopIcon from "@material-ui/icons/Stop"
 
 import { API } from "../../config/types"
 import ActionButton from "./ActionButton"
+import api from "../../api"
 
 type Props = {
     module: API.Module,
@@ -12,7 +13,7 @@ type Props = {
 
 function StartButton({ module, guild, onUpdate, ...props }: Props) {
     const handleClick = async () => {
-        console.log("Stop", { module, guild })
+        api.ws.stopModuleInstance(guild.id, module.name)
     }
 
     return (
