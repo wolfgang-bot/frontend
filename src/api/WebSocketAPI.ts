@@ -69,6 +69,13 @@ class WebSocketAPI {
     }
 
     /**
+     * @fires get:guild/channels
+     */
+    async getGuildChannels(guildId: string) {
+        return this.fetch<API.GuildChannel[]>("get:guild/channels", guildId)
+    }
+
+    /**
      * @fires get:config-descriptive
      * 
      * @param {String} guildId

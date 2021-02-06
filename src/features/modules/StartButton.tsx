@@ -3,6 +3,8 @@ import StartIcon from "@material-ui/icons/PlayArrow"
 
 import { API } from "../../config/types"
 import ActionButton from "./ActionButton"
+import opener from "../../components/ComponentOpener"
+import api from "../../api"
 
 type Props = {
     module: API.Module,
@@ -12,7 +14,10 @@ type Props = {
 
 function StartButton({ module, guild, onUpdate, ...props }: Props) {
     const handleClick = async () => {
-        console.log("Start", { module, guild })
+        const handle = opener.openDialog("StartModuleDialog", { module, guild })
+        handle.addEventListener("close", (values) => {
+            api.ws.startModuleInstance(guild.id, module.name, values.args)
+        })
     }
 
     return (

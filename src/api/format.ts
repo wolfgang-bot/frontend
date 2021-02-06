@@ -22,6 +22,10 @@ function formatUser(user: API.User) {
 }
 
 function formatGuild(guild: API.Guild) {
+    guild.channels = {
+        data: {},
+        status: "idle"
+    }
     if (guild.icon) {
         guild.icon = `${DISCORD_CDN_BASE_URL}/icons/${guild.id}/${guild.icon}.png`
         guild.icon_animated = `${DISCORD_CDN_BASE_URL}/icons/${guild.id}/${guild.icon}`

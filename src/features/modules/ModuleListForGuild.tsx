@@ -15,7 +15,7 @@ function ModuleListForGuild({ guild }: { guild: API.Guild }) {
     const modulesStatus = useSelector((state: RootState) => state.modules.status)
     const modulesError = useSelector((state: RootState) => state.modules.error)
 
-    const moduleInstances = useSelector((state: RootState) => state.moduleInstances.guilds[guild.id]?.data?.moduleInstances)
+    const moduleInstances = useSelector((state: RootState) => state.moduleInstances.guilds[guild.id]?.data)
     const moduleInstancesStatus = useSelector((state: RootState) => state.moduleInstances.guilds[guild.id]?.status)
     const moduleInstancesError = useSelector((state: RootState) => state.moduleInstances.guilds[guild.id]?.error)
 

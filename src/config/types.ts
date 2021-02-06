@@ -1,3 +1,29 @@
+export namespace Discord {
+    export type Channel = {
+        id: string,
+        type: string,
+        deleted: boolean,
+        createdTimestamp: number
+    }
+
+    export type GuildChannel = Channel & {
+        guild: string,
+        name: string,
+        parentID?: string,
+        rawPosition: number
+    }
+
+    export type TextChannel = GuildChannel & {
+        lastMessageID?: string,
+        lastPinTimestamp?: number,
+        nsfw: boolean,
+        rateLimitPerUser: number,
+        topic?: string
+    }
+
+    export type CategoryChannel = GuildChannel
+}
+
 export namespace API {
     enum INSTANCE_STATES {
         ACTIVE,
@@ -5,6 +31,13 @@ export namespace API {
         STARTING,
         STOPPING
     }
+
+    enum ARGUMENT_TYPES {
+        TEXT_CHANNEL = "text_channel",
+        VOICE_CHANNEL = "voice_channel",
+        CATEGORY_CHANNEL = "category_channel"
+    }
+
 
     export type Response<T> = {
         status: "ok" | "error",
@@ -24,7 +57,8 @@ export namespace API {
         icon_animated: string,
         isActive?: boolean,
         owner: boolean,
-        permissions: number
+        permissions: number,
+        channels: ReduxAPIState<Record<string, Discord.GuildChannel>>
     }
 
     export type User = {
@@ -42,13 +76,26 @@ export namespace API {
         name: string,
         isGlobal: boolean,
         isPrivate: boolean,
-        translations: Record<string, string | string[]>
+        translations: {
+            desc: string,
+            features: string[],
+            args: Argument[]
+        }
     }
 
     export type ModuleInstance = {
         moduleName: string,
         state: INSTANCE_STATES
     }
+
+    export type Argument = {
+        type: ARGUMENT_TYPES,
+        name: string,
+        displayName: string,
+        desc: string
+    }
+
+    export type GuildChannel = Discord.GuildChannel
 }
 
 export type LoadingState = "idle" | "pending" | "success" | "error"
