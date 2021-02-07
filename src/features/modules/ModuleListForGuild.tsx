@@ -23,13 +23,13 @@ function ModuleListForGuild({ guild }: { guild: API.Guild }) {
         if (modulesStatus === "idle") {
             dispatch(fetchModules())
         }
-    }, [modulesStatus])
+    }, [modulesStatus, dispatch])
 
     useEffect(() => {
         if (moduleInstancesStatus === "idle") {
             dispatch(fetchModuleInstancesForGuild(guild.id))
         }
-    }, [moduleInstancesStatus])
+    }, [moduleInstancesStatus, dispatch, guild.id])
 
     if (modulesStatus === "pending" || moduleInstancesStatus === "pending") {
         return <CircularProgress/>

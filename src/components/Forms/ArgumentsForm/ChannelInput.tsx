@@ -34,7 +34,7 @@ function ChannelInput({ arg, guild, channelType }: {
         if (status === "idle") {
             dispatch(fetchChannels(guild.id))
         }
-    }, [status])
+    }, [status, dispatch, guild.id])
 
     if (status === "error") {
         return <div>{ error }</div>

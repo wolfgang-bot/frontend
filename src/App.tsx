@@ -28,7 +28,7 @@ function App() {
             const token = localStorage.getItem(API_TOKEN_STORAGE_KEY)
             dispatch(init({ token }))
         }
-    }, [status])
+    }, [status, dispatch])
 
     return (
         <>

@@ -21,7 +21,7 @@ function GuildPage() {
         if (status === "idle") {
             dispatch(fetchGuilds())
         }
-    }, [status])
+    }, [status, dispatch])
 
     let child = <CircularProgress/>
 

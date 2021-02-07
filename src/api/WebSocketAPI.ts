@@ -2,7 +2,6 @@ import { io, Socket } from "socket.io-client"
 
 import { API } from "../config/types"
 import format, { FORMATS } from "./format"
-import { DEBUG } from "../config/constants"
 import WebSocketReceiver from "./WebSocketReceiver"
 
 class WebSocketAPI {
@@ -80,8 +79,6 @@ class WebSocketAPI {
 
     /**
      * @fires get:config-descriptive
-     * 
-     * @param {String} guildId
      */
     getConfigDescriptive(guildId: string) {
         return this.fetch<API.DescriptiveConfig>("get:config-descriptive", guildId)
