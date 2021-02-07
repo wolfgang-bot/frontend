@@ -1,4 +1,17 @@
-export namespace Discord {
+export enum INSTANCE_STATES {
+    ACTIVE,
+    INACTIVE,
+    STARTING,
+    STOPPING
+}
+
+export enum ARGUMENT_TYPES {
+    TEXT_CHANNEL = "text_channel",
+    VOICE_CHANNEL = "voice_channel",
+    CATEGORY_CHANNEL = "category_channel"
+}
+
+export declare namespace Discord {
     export type Channel = {
         id: string,
         type: string,
@@ -24,21 +37,7 @@ export namespace Discord {
     export type CategoryChannel = GuildChannel
 }
 
-export namespace API {
-    export enum INSTANCE_STATES {
-        ACTIVE,
-        INACTIVE,
-        STARTING,
-        STOPPING
-    }
-
-    export enum ARGUMENT_TYPES {
-        TEXT_CHANNEL = "text_channel",
-        VOICE_CHANNEL = "voice_channel",
-        CATEGORY_CHANNEL = "category_channel"
-    }
-
-
+export declare namespace API {
     export type Response<T> = {
         status: "ok" | "error",
         data?: T,

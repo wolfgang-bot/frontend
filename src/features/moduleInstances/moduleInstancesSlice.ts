@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit"
 
-import { API, ReduxAPIState } from "../../config/types"
+import { API, INSTANCE_STATES, ReduxAPIState } from "../../config/types"
 import { fetchGuilds } from "../guilds/guildsSlice"
 import { ThunkExtraArgument } from "../../store"
 
@@ -40,6 +40,10 @@ const moduleInstancesSlice = createSlice({
                 const guild = state.guilds[instance.guildId]
                 if (guild) {
                     guild.data[instance.moduleName] = instance
+
+                    if (instance.state === INSTANCE_STATES.INACTIVE) {
+                        delete guild.data[instance.moduleName]
+                    }
                 }
             })
         }

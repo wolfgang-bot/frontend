@@ -1,20 +1,21 @@
 import React from "react"
 import { Card, CardActionArea, CardContent, CardActions, Typography } from "@material-ui/core"
 
-import { API } from "../../config/types"
+import { API, INSTANCE_STATES } from "../../config/types"
 import StartButton from "./StartButton"
 import StopButton from "./StopButton"
 import RestartButton from "./RestartButton"
 
 type Props = {
     module: API.Module,
-    guild: API.Guild,
-    active: boolean,
-    onUpdate: () => Promise<void>
+    instance?: API.ModuleInstance,
+    guild: API.Guild
 }
 
-function ModuleCard({ module, guild, active, onUpdate }: Props) {
-    const commonButtonProps = { module, guild, onUpdate }
+function ModuleCard({ module, instance, guild }: Props) {
+    const commonButtonProps = { module, instance, guild }
+
+    const isActive = instance?.state === INSTANCE_STATES.ACTIVE
 
     return (
         <Card>
@@ -29,17 +30,17 @@ function ModuleCard({ module, guild, active, onUpdate }: Props) {
             <CardActions>
                 <StartButton
                     {...commonButtonProps}
-                    disabled={active}
+                    disabled={isActive}
                     size="small"
                 />
                 <StopButton
                     {...commonButtonProps}
-                    disabled={!active}
+                    disabled={!isActive}
                     size="small"
                 />
                 <RestartButton
                     {...commonButtonProps}
-                    disabled={!active}
+                    disabled={!isActive}
                     size="small"
                 />
             </CardActions>

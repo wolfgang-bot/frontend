@@ -14,9 +14,19 @@ class WebSocketReceiver {
     }
 
     attachEventReceivers() {
-        this.socket.on("push:module-instances", this.receiveModuleInstances)
+        this.addReceiver("push:module-instances", this.receiveModuleInstances)
     }
 
+    addReceiver(event: string, receiver: (...args: any[]) => void) {
+        this.socket.on(event, (...args: any[]) => {
+            console.log(`%c[${event}]`, "color: darkviolet", ...args)
+            receiver(...args)
+        })
+    }
+
+    /**
+     * @listens push:module-instances
+     */
     receiveModuleInstances(instances: API.ModuleInstance[]) {
         store.dispatch(updateInstances(instances))
     }

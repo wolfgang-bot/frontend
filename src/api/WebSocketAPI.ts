@@ -47,10 +47,10 @@ class WebSocketAPI {
         }
 
         return new Promise((resolve, reject) => {
+            console.log(`%c[${event}]`, "color:blue")
+
             this.socket!.emit(event, ...args, (res: API.Response<T>) => {
-                if (DEBUG) {
-                    console.log(`%c[${event}]`, "color:blue", res)
-                }
+                console.log(`%c[${event}]`, "color:green", res)
 
                 if (res.status === "error") {
                     reject(res)

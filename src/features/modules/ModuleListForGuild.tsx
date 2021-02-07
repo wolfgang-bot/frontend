@@ -39,8 +39,6 @@ function ModuleListForGuild({ guild }: { guild: API.Guild }) {
         return <div>{ modulesError } <br/> { moduleInstancesError }</div>
     }
 
-    console.log({ modules, moduleInstances })
-
     const activeModules = Object.values(modules).filter(module => module.name in moduleInstances)
     const inactiveModules = Object.values(modules).filter(module => !(module.name in moduleInstances))
 
@@ -51,10 +49,7 @@ function ModuleListForGuild({ guild }: { guild: API.Guild }) {
                     <ModuleInstanceCard
                         guild={guild}
                         module={module}
-                        onUpdate={async () => {
-                            console.log("Update", module)
-                        }}
-                        active={module.name in moduleInstances}
+                        instance={moduleInstances[module.name]}
                     />
                 </Grid>
             ))}
