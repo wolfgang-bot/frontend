@@ -46,10 +46,13 @@ class WebSocketAPI {
         }
 
         return new Promise((resolve, reject) => {
-            console.log(`%c[${event}]`, "color:blue")
+            console.log(`%c[${event}]`, "color:blue", args)
 
             this.socket!.emit(event, ...args, (res: API.Response<T>) => {
-                console.log(`%c[${event}]`, "color:green", res)
+                console.log(
+                    `%c[${event}]`, `color:${res.status === "error" ? "red" : "green"}`,
+                    res
+                )
 
                 if (res.status === "error") {
                     reject(res)
@@ -88,7 +91,7 @@ class WebSocketAPI {
      * @fires post:config
      */
     updateConfig(guildId: string, newValue: object) {
-        return this.fetch("post:config", guildId, newValue)
+        return this.fetch<API.DescriptiveConfig>("post:config", guildId, newValue)
     }
 
     /**

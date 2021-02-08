@@ -42,7 +42,7 @@ function ChannelInput({ arg, guild, channelType }: {
         const channels = Object.values(data).filter(channel => channel.type === channelType)
 
         return (
-            <FormControl className={classes.formControl}>
+            <FormControl className={classes.formControl} fullWidth>
                 <InputLabel id={arg.name}>{ arg.displayName }</InputLabel>
 
                 <Controller
@@ -50,7 +50,7 @@ function ChannelInput({ arg, guild, channelType }: {
                     control={control}
                     defaultValue={channels[0].id}
                     as={
-                        <Select fullWidth labelId={arg.name}>
+                        <Select labelId={arg.name}>
                             {channels.map(channel => (
                                 <MenuItem value={channel.id} key={channel.id}>
                                     {channel.name}

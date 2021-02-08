@@ -1,4 +1,4 @@
-import { API } from "../config/types"
+import { API, ReduxAPIState } from "../config/types"
 import { DISCORD_CDN_BASE_URL, DEFAULT_AVATAR_URL } from "../config/constants"
 
 export enum FORMATS {
@@ -12,6 +12,13 @@ type Response<T> = {
     [key: string]: any
 }
 
+function makeReduxAPIState<T>(data: T): ReduxAPIState<T> {
+    return {
+        data,
+        status: "idle"
+    }
+}
+
 function formatUser(user: API.User) {
     if (user.avatar) {
         user.avatar = `${DISCORD_CDN_BASE_URL}/avatars/${user.id}/${user.avatar}.png`
@@ -22,10 +29,11 @@ function formatUser(user: API.User) {
 }
 
 function formatGuild(guild: API.Guild) {
-    guild.channels = {
-        data: {},
-        status: "idle"
-    }
+    guild.channels = makeReduxAPIState<Record<string, API.GuildChannel>>({})
+    guild.config = makeReduxAPIState<API.DescriptiveConfig>({
+        value: null
+    })
+
     if (guild.icon) {
         guild.icon = `${DISCORD_CDN_BASE_URL}/icons/${guild.id}/${guild.icon}.png`
         guild.icon_animated = `${DISCORD_CDN_BASE_URL}/icons/${guild.id}/${guild.icon}`

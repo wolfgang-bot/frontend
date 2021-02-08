@@ -10,6 +10,7 @@ function NumberInput({ onChange, ...props }: {
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         const newValue = parseInt(event.target.value)
+
         setValue(props.name, newValue)
 
         if (onChange) {

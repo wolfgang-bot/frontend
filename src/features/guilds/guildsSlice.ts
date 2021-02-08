@@ -12,10 +12,13 @@ export const fetchGuilds = createAsyncThunk<
     API.Guild[] | undefined,
     void,
     { extra: ThunkExtraArgument }
->("guilds/fetchGuilds", async (_, { extra: { api } }) => {
-    const res = await api.ws.getGuilds()
-    return res.data
-})
+>(
+    "guilds/fetchGuilds",
+    async (_, { extra: { api } }) => {
+        const res = await api.ws.getGuilds()
+        return res.data
+    }
+)
 
 export const fetchChannels = createAsyncThunk<
     API.GuildChannel[] | undefined,
@@ -29,11 +32,36 @@ export const fetchChannels = createAsyncThunk<
     }
 )
 
+export const fetchConfig = createAsyncThunk<
+    object | undefined,
+    string,
+    { extra: ThunkExtraArgument }
+>(
+    "guilds/fetchConfig",
+    async (guildId, { extra: { api } }) => {
+        const res = await api.ws.getConfigDescriptive(guildId)
+        return res.data
+    }
+)
+
 const guildsSlice = createSlice({
     name: "guild",
     initialState,
-    reducers: {},
+    reducers: {
+        setConfig: (state, action: PayloadAction<{
+            guildId: string,
+            value: API.DescriptiveConfig
+        }>) => {
+            const guild = state.data[action.payload.guildId]
+            if (guild) {
+                guild.config.data = action.payload.value
+            }
+        }
+    },
     extraReducers: {
+        /**
+         * Thunk: guilds/fetchConfig
+         */
         [fetchGuilds.pending.toString()]: (state) => {
             state.status = "pending"
         },
@@ -47,6 +75,10 @@ const guildsSlice = createSlice({
             state.status = "error"
             state.error = action.payload
         },
+
+        /**
+         * Thunk: guilds/fetchChannels
+         */
         [fetchChannels.pending.toString()]: (state, action) => {
             const guild = state.data[action.meta.arg]
             if (guild) {
@@ -68,8 +100,34 @@ const guildsSlice = createSlice({
                 guild.channels.error = action.payload
                 guild.channels.status = "error"
             }
+        },
+
+        /**
+         * Thunk: guilds/fetchConfig
+         */
+        [fetchConfig.pending.toString()]: (state, action) => {
+            const guild = state.data[action.meta.arg]
+            if (guild) {
+                guild.config.status = "pending"
+            }
+        },
+        [fetchConfig.fulfilled.toString()]: (state, action) => {
+            const guild = state.data[action.meta.arg]
+            if (guild) {
+                guild.config.data = action.payload
+                guild.config.status = "success"
+            }
+        },
+        [fetchConfig.rejected.toString()]: (state, action) => {
+            const guild = state.data[action.meta.arg]
+            if (guild) {
+                guild.config.error = action.payload
+                guild.config.status = "error"
+            }
         }
     }
 })
+
+export const { setConfig } = guildsSlice.actions
 
 export default guildsSlice.reducer

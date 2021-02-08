@@ -1,14 +1,29 @@
-import React, { useState, useMemo } from "react"
-import { Redirect } from "react-router-dom"
+import React, { useMemo, useState, useEffect, useImperativeHandle, ForwardedRef } from "react"
+import { useSelector, useDispatch } from "react-redux"
 import { useForm, FormProvider } from "react-hook-form"
 import { Paper, CircularProgress } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 
-import LoadingButton from "../../Styled/LoadingButton"
+import { API } from "../../../config/types"
+import { RootState } from "../../../store"
 import Title from "./Title"
 import Input from "./Input"
-import { createNestedElements, createNestedObject, flattenObject } from "../../../utils"
-import { API } from "../../../config/types"
+import {
+    createNestedElements,
+    createNestedObject,
+    flattenObject,
+    convertDescriptiveObjectToVanillaObject
+} from "../../../utils"
+import { fetchConfig } from "../../../features/guilds/guildsSlice"
+
+type Props = {
+    guild: API.Guild,
+    module: API.Module
+}
+
+export type RefHandle = {
+    getValues: () => object
+}
 
 const useStyles = makeStyles(theme => ({
     titleWrapper: {
@@ -41,13 +56,25 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-function ConfigForm({ guild, data }: {
-    guild: API.Guild,
-    data: API.DescriptiveConfig
-}) {
+function ConfigForm({ guild, module }: Props, ref?: ForwardedRef<RefHandle>) {
     const classes = useStyles()
 
+    const dispatch = useDispatch()
+
+    const config = useSelector((store: RootState) => store.guilds.data[guild.id]?.config.data)
+    const data = useSelector((store: RootState) => store.guilds.data[guild.id]?.config.data?.value?.[module.name])
+    const status = useSelector((store: RootState) => store.guilds.data[guild.id]?.config.status)
+    const error = useSelector((store: RootState) => store.guilds.data[guild.id]?.config.error)
+
+    const [hasFormValues, setHasFormValue] = useState(false)
+
+    const form = useForm()
+
     const [children, keys] = useMemo(() => {
+        if (!data) {
+            return []
+        }
+
         return createNestedElements(data, {
             title: Title,
             leaf: Input,
@@ -61,73 +88,38 @@ function ConfigForm({ guild, data }: {
         // eslint-disable-next-line
     }, [data])
 
-    const form = useForm({
-        defaultValues: keys
-    })
+    useEffect(() => {
+        if (status === "idle") {
+            dispatch(fetchConfig(guild.id))
+        } else if (status === "success" && !hasFormValues) {
+            form.reset(keys)
+            setHasFormValue(true)
+        }
+    }, [status, dispatch, guild.id, keys, hasFormValues, form])
 
-    const [isSubmitting, setIsSubmitting] = useState(false)
+    useImperativeHandle(ref, () => ({
+        getValues: () => {
+            const newConfig = convertDescriptiveObjectToVanillaObject(config)
+            newConfig[module.name] = createNestedObject(form.getValues())
+            return newConfig
+        }
+    }))
 
-    const handleSubmit = (values: Record<string, string>) => {
-        // Format keys back to object
-        const data = createNestedObject(values)
-
-        setIsSubmitting(true)
-
-        // setConfig(guild.id, data)
-        //     .then(() => {
-        //         opener.openSnackbar("Success!")
-        //     })
-        //     .catch((error) => {
-        //         const flattened = flattenObject(error.response.data)
-
-        //         for (let key in flattened) {
-        //             form.setError(key, {
-        //                 message: flattened[key]
-        //             })
-        //         }
-        //     })
-        //     .finally(() => setIsSubmitting(false))
+    if (status === "error") {
+        return <div>{ error }</div>
     }
 
-    return (
-        <FormProvider {...form}>
-            <form onSubmit={form.handleSubmit(handleSubmit)}>
-                { children }
+    if (status === "success" && hasFormValues) {
+        return (
+            <FormProvider {...form}>
+                {children}
+            </FormProvider>
+        )
+    }
 
-                <LoadingButton
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                    isLoading={isSubmitting}
-                >
-                    Save
-                </LoadingButton>
-            </form>
-        </FormProvider>
-    )
+    return <CircularProgress/>
 }
 
-function ConfigFormWrapper({ guild }: { guild: API.Guild }) {
-    // const { data, isLoading, error } = useAPIData({
-    //     method: "getConfigDescriptive",
-    //     data: guild.id
-    // })
+const ConfigFormWithRef = React.forwardRef<RefHandle, Props>(ConfigForm)
 
-    const { data, isLoading, error } = {
-        data: {},
-        isLoading: false,
-        error: null
-    }
-
-    if (isLoading) {
-        return <CircularProgress/>
-    }
-
-    // if (error?.response.status === 404) {
-    //     return <Redirect to="/not-found"/>
-    // }
-
-    return <ConfigForm guild={guild} data={data}/>
-}
-
-export default ConfigFormWrapper
+export default ConfigFormWithRef

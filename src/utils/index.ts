@@ -14,14 +14,20 @@ export function createNestedElements(data: DescriptiveObject, components: {
     container: React.FunctionComponent<any>,
     leaf: React.FunctionComponent<any>
 }): [React.ReactElement[], Record<string, string>] {
+    const getValue = (data: any) => {
+        return "value" in data ? data.value : data
+    }
+
     const keys: Record<string, any> = {}
 
-    function _create(data: DescriptiveObject, keyCarry = "", depth = 0) {
+    function _create(data: object, keyCarry = "", depth = 0) {
         const elements: React.ReactElement[] = []
 
-        for (let key in data) {
-            const value = data[key].value
-            const desc = data[key].description
+        const values: { [key: string]: any } = getValue(data)
+
+        for (let key in values) {
+            const value = getValue(values[key])
+            const desc = values[key].description
 
             const backtraceKey = keyCarry + key
             
@@ -36,7 +42,7 @@ export function createNestedElements(data: DescriptiveObject, components: {
                 // Recursively create elements with depth += 1
                 elements.push(React.createElement(components.container, {
                     key: keyCarry + key + "container",
-                    children: _create(value as DescriptiveObject, backtraceKey + KEY_DELIMITER, depth + 1)
+                    children: _create(value as object, backtraceKey + KEY_DELIMITER, depth + 1)
                 } as any))
             } else {
                 elements.push(React.createElement(components.leaf, {
@@ -110,6 +116,29 @@ export function flattenObject(input: object, delimiter = KEY_DELIMITER): object 
     }
 
     _flatten(input)
+
+    return result
+}
+
+/**
+ * Convert descriptive object to vanilla object
+ */
+export function convertDescriptiveObjectToVanillaObject(object: DescriptiveObject) {
+    const getValue = (object: any) => object.value || object
+    
+    const result: { [key: string]: any } = {}
+
+    const values = getValue(object)
+
+    for (let key in values) {
+        const value = getValue(values[key])
+
+        if (value.constructor.name === "Object") {
+            result[key] = convertDescriptiveObjectToVanillaObject(value)
+        } else {
+            result[key] = value
+        }
+    }
 
     return result
 }

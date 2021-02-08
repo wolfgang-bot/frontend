@@ -57,7 +57,8 @@ export declare namespace API {
         isActive?: boolean,
         owner: boolean,
         permissions: number,
-        channels: ReduxAPIState<Record<string, Discord.GuildChannel>>
+        channels: ReduxAPIState<Record<string, Discord.GuildChannel>>,
+        config: ReduxAPIState<DescriptiveConfig>
     }
 
     export type User = {
@@ -107,9 +108,7 @@ export type ReduxAPIState<T> = {
 }
 
 export type DescriptiveObject = {
-    [key: string]: {
-        value: string | number | any[] | DescriptiveObject,
-        description?: string,
-        constraints?: string
-    }
+    value: any,
+    description?: string,
+    constraints?: string
 }
