@@ -24,14 +24,23 @@ function StartModuleDialog({ open, onClose, module, guild }: {
     const updateConfig = async (value: API.Config) => {
         try {
             const res = await api.ws.updateConfig(guild.id, value)
+
             if (res.data) {
                 dispatch(setConfig({
                     guildId: guild.id,
                     value: res.data
                 }))
             }
+
+            return true
         } catch (error) {
             console.error(error)
+
+            if (typeof error.message === "object") {
+                configFormRef.current?.setErrors(error.message)
+            }
+
+            return false
         }
     }
 
@@ -43,8 +52,12 @@ function StartModuleDialog({ open, onClose, module, guild }: {
             throw new Error("Failed to receive config from config form")
         }
 
-        await updateConfig(config)
+        const success = await updateConfig(config)
 
+        if (!success) {
+            return
+        }
+        
         api.ws.startModuleInstance(guild.id, module.name, args)
 
         onClose()

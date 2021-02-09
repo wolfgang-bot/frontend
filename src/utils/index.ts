@@ -100,7 +100,7 @@ export function createNestedObject(values: Record<string, string>): object {
 /**
  * Flatten an object by the combining keys by a given delimiter.
  */
-export function flattenObject(input: object, delimiter = KEY_DELIMITER): object {
+export function flattenObject(input: object, delimiter = KEY_DELIMITER) {
     const result: Record<string, any> = {}
 
     function _flatten(input: any, keyCarry = "") {

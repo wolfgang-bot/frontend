@@ -22,7 +22,8 @@ type Props = {
 }
 
 export type RefHandle = {
-    getValues: () => object
+    getValues: () => object,
+    setErrors: (errors: object) => void
 }
 
 const useStyles = makeStyles(theme => ({
@@ -102,6 +103,18 @@ function ConfigForm({ guild, module }: Props, ref?: ForwardedRef<RefHandle>) {
             const newConfig = convertDescriptiveObjectToVanillaObject(config)
             newConfig[module.name] = createNestedObject(form.getValues())
             return newConfig
+        },
+
+        setErrors: (errors: Record<string, any> | string) => {
+            if (errors && typeof errors === "object") {
+                const flattened = flattenObject(errors[module.name])
+                
+                for (let key in flattened) {
+                    form.setError(key, {
+                        message: flattened[key] 
+                    })
+                }
+            }
         }
     }))
 
