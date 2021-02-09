@@ -3,6 +3,7 @@ import { io, Socket } from "socket.io-client"
 import { API } from "../config/types"
 import format, { FORMATS } from "./format"
 import WebSocketReceiver from "./WebSocketReceiver"
+import opener from "../components/ComponentOpener"
 
 class WebSocketAPI {
     endpoint: string
@@ -55,6 +56,7 @@ class WebSocketAPI {
                 )
 
                 if (res.status === "error") {
+                    opener.openSnackbar("Error", "error")
                     reject(res)
                 } else if (res.status === "ok") {
                     resolve(res)

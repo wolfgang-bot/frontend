@@ -5,42 +5,76 @@ import CloseIcon from "@material-ui/icons/Close"
 
 import ComponentHandle from "./ComponentHandle"
 
+type SnackbarTypes = "info" | "error"
+
 class SnackbarHandle extends ComponentHandle<
-    typeof Snackbar,
-    React.ComponentProps<typeof Snackbar>
+    typeof CustomSnackbar,
+    React.ComponentProps<typeof CustomSnackbar>
 > {}
 
 const useStyles = makeStyles(theme => ({
-    closeButton: {
+    "snackbar-info": {
+
+    },
+
+    "close-button-info": {
         color: theme.palette.primary.main
+    },
+
+    "snackbar-error": {
+        backgroundColor: theme.palette.error.dark,
+        color: theme.palette.common.white
+    },
+
+    "close-button-error": {
+        color: theme.palette.common.white
     }
 }))
 
-function CloseButton({ onClose }: {
-    onClose: (...args: any) => void
-}) {
-    const classes = useStyles()
+function CustomSnackbar({ type = "info", ...props }: {
+    type?: SnackbarTypes,
+} & React.ComponentProps<typeof Snackbar>) {
+    const classes = useStyles({ type })
+
+    const snackbarClassName = ("snackbar-" + type) as keyof typeof classes
+    const closeButtonClassName = ("close-button-" + type) as keyof typeof classes
+
+    if (!classes[snackbarClassName] || !classes[closeButtonClassName]) {
+        throw new Error(`Missing class for type '${type}'`)
+    }
 
     return (
-        <IconButton onClick={onClose} className={classes.closeButton}>
-            <CloseIcon />
-        </IconButton>
+        <Snackbar
+            ContentProps={{
+                className: classes[snackbarClassName]
+            }}
+            action={
+                <IconButton
+                    onClick={props.onClose as any}
+                    className={classes[closeButtonClassName]}
+                >
+                    <CloseIcon />
+                </IconButton>
+            }
+            {...props}
+        />
     )
 }
 
 function createOpener(open: (handle: SnackbarHandle) => SnackbarHandle) {
-    return function openSnackbar(message: string) {
+    return function openSnackbar(message: string, type: SnackbarTypes = "info") {
         const handle = new SnackbarHandle({
-            component: Snackbar,
+            component: CustomSnackbar,
             data: {
                 message,
+                type,
                 anchorOrigin: { vertical: "bottom", horizontal: "left" },
                 autoHideDuration: 3000
             }
         })
 
         handle.setData({
-            action: <CloseButton onClose={() => handle.dispatchEvent("close")} />
+            onClose: () => handle.dispatchEvent("close")
         })
 
         return open(handle)

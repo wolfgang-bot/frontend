@@ -38,8 +38,8 @@ function ComponentOpener() {
     }
 
     const remove = (handle: ComponentHandle<any, any>) => {
-        const newComponent = handles.filter(({ id }) => handle.id !== id)
-        setHandles(newComponent)
+        // const newComponent = handles.filter(({ id }) => handle.id !== id)
+        // setHandles(newComponent)
     }
 
     useEffect(() => {
