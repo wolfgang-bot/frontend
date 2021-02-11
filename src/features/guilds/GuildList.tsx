@@ -1,6 +1,7 @@
 import React, { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { CircularProgress } from "@material-ui/core"
+import { Box } from "@material-ui/core"
+import Skeleton from "@material-ui/lab/Skeleton"
 
 import { RootState } from "../../store"
 import Guild from "./Guild"
@@ -19,8 +20,18 @@ function GuildList({ activeGuildId }: { activeGuildId?: string }) {
         }
     }, [status, dispatch])
 
-    if (status === "pending") {
-        return <CircularProgress/>
+    if (status === "success") {
+        return (
+            <>
+                {Object.values(guilds).map(guild => (
+                    <Guild
+                        key={guild.id}
+                        guild={guild}
+                        active={activeGuildId ? activeGuildId === guild.id : false}
+                    />
+                ))}
+            </>
+        )
     }
 
     if (status === "error") {
@@ -29,8 +40,10 @@ function GuildList({ activeGuildId }: { activeGuildId?: string }) {
 
     return (
         <>
-            {Object.values(guilds).map(guild => (
-                <Guild guild={guild} key={guild.id} active={activeGuildId ? activeGuildId === guild.id : false} />
+            {Array(3).fill(null).map((_, index) => (
+                <Box mb={1} key={index}>
+                    <Skeleton variant="rect" height={56}/>
+                </Box>
             ))}
         </>
     )

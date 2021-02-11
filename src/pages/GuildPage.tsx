@@ -25,10 +25,12 @@ function GuildPage() {
 
     let child = <CircularProgress/>
 
+    if (status === "success") {
+        child = <ModuleListForGuild guild={guild} />
+    }
+    
     if (status === "error") {
         child = <div>{ error }</div>
-    } else if (status === "success") {
-        child = <ModuleListForGuild guild={guild}/>
     }
 
     return (

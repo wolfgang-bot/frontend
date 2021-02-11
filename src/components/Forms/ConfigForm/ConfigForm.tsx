@@ -1,7 +1,8 @@
 import React, { useMemo, useState, useEffect, useImperativeHandle, ForwardedRef } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { useForm, FormProvider } from "react-hook-form"
-import { Paper, CircularProgress } from "@material-ui/core"
+import { Paper, Box } from "@material-ui/core"
+import Skeleton from "@material-ui/lab/Skeleton"
 import { makeStyles } from "@material-ui/core/styles"
 
 import { API } from "../../../config/types"
@@ -27,33 +28,9 @@ export type RefHandle = {
 }
 
 const useStyles = makeStyles(theme => ({
-    titleWrapper: {
-        margin: `${theme.spacing(2)}px 0`
-    },
-
     container: {
         padding: theme.spacing(2),
         marginBottom: theme.spacing(6),
-    },
-
-    inputWrapper: {
-        margin: `${theme.spacing(2)}px 0`,
-
-        "&:first-child": {
-            marginTop: 0
-        },
-
-        "&:last-child": {
-            marginBottom: 0
-        }
-    },
-
-    inputLabelWrapper: {
-        marginBottom: theme.spacing(.5)
-    },
-
-    inputLabel: {
-        lineHeight: "unset"
     }
 }))
 
@@ -130,7 +107,19 @@ function ConfigForm({ guild, module }: Props, ref?: ForwardedRef<RefHandle>) {
         )
     }
 
-    return <CircularProgress/>
+    return (
+        <>
+            {new Array(3).fill(null).map((_, index) => (
+                <React.Fragment key={index}>
+                    <Skeleton height={22} />
+                    <Skeleton height={14} />
+                    <Box mt={1} mb={2}>
+                        <Skeleton variant="rect" height={56} />
+                    </Box>
+                </React.Fragment>
+            ))}
+        </>
+    )
 }
 
 const ConfigFormWithRef = React.forwardRef<RefHandle, Props>(ConfigForm)

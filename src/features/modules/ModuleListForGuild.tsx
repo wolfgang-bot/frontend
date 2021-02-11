@@ -1,10 +1,10 @@
 import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { CircularProgress, Grid } from "@material-ui/core"
+import { Grid } from "@material-ui/core"
 
 import { RootState } from "../../store"
 import { API } from "../../config/types"
-import ModuleInstanceCard from "./ModuleCard"
+import ModuleCard from "./ModuleCard"
 import { fetchModules } from "./modulesSlice"
 import { fetchModuleInstancesForGuild } from "../moduleInstances/moduleInstancesSlice"
 
@@ -31,26 +31,34 @@ function ModuleListForGuild({ guild }: { guild: API.Guild }) {
         }
     }, [moduleInstancesStatus, dispatch, guild.id])
 
-    if (modulesStatus === "pending" || moduleInstancesStatus === "pending") {
-        return <CircularProgress/>
+    if (modulesStatus === "success" && moduleInstancesStatus === "success") {
+        const activeModules = Object.values(modules).filter(module => module.key in moduleInstances)
+        const inactiveModules = Object.values(modules).filter(module => !(module.key in moduleInstances))
+
+        return (
+            <Grid container spacing={2}>
+                { activeModules.concat(inactiveModules).map(module => (
+                    <Grid item key={module.key}>
+                        <ModuleCard
+                            guild={guild}
+                            module={module}
+                            instance={moduleInstances[module.key]}
+                        />
+                    </Grid>
+                ))}
+            </Grid>
+        )
     }
 
     if (modulesStatus === "error" || moduleInstancesStatus === "error") {
         return <div>{ modulesError } <br/> { moduleInstancesError }</div>
     }
 
-    const activeModules = Object.values(modules).filter(module => module.key in moduleInstances)
-    const inactiveModules = Object.values(modules).filter(module => !(module.key in moduleInstances))
-
     return (
         <Grid container spacing={2}>
-            { activeModules.concat(inactiveModules).map(module => (
-                <Grid item key={module.key}>
-                    <ModuleInstanceCard
-                        guild={guild}
-                        module={module}
-                        instance={moduleInstances[module.key]}
-                    />
+            {Array(5).fill(null).map((_, index) => (
+                <Grid item key={index}>
+                    <ModuleCard isLoading/>
                 </Grid>
             ))}
         </Grid>

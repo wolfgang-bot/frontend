@@ -2,12 +2,12 @@ import React, { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { useFormContext, Controller } from "react-hook-form"
 import { Select, MenuItem, FormControl, InputLabel, FormHelperText } from "@material-ui/core"
+import Skeleton from "@material-ui/lab/Skeleton"
 import { makeStyles } from "@material-ui/core/styles"
 
 import { API } from "../../../config/types"
 import { RootState } from "../../../store"
 import { fetchChannels } from "../../../features/guilds/guildsSlice"
-import { CircularProgress } from "@material-ui/core"
 
 const useStyles = makeStyles({
     formControl: {
@@ -65,7 +65,13 @@ function ChannelInput({ arg, guild, channelType }: {
         )
     }
 
-    return <CircularProgress/>
+    return (
+        <Skeleton
+            variant="rect"
+            height={70}
+            className={classes.formControl}
+        />
+    )
 }
 
 function makeChannelInput(type: string) {
