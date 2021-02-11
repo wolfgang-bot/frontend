@@ -22,7 +22,7 @@ function ModuleCard({ module, instance, guild }: Props) {
             <CardActionArea>
                 <CardContent>
                     <Typography>
-                        {module.name}
+                        {module.key}
                     </Typography>
                 </CardContent>
             </CardActionArea>

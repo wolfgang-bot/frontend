@@ -39,10 +39,10 @@ const moduleInstancesSlice = createSlice({
             action.payload.forEach(instance => {
                 const guild = state.guilds[instance.guildId]
                 if (guild) {
-                    guild.data[instance.moduleName] = instance
+                    guild.data[instance.moduleKey] = instance
 
                     if (instance.state === INSTANCE_STATES.INACTIVE) {
-                        delete guild.data[instance.moduleName]
+                        delete guild.data[instance.moduleKey]
                     }
                 }
             })
@@ -59,7 +59,7 @@ const moduleInstancesSlice = createSlice({
             const guild = state.guilds[action.meta.arg]
             if (guild) {
                 action.payload.forEach((instance: API.ModuleInstance) => {
-                    guild.data[instance.moduleName] = instance
+                    guild.data[instance.moduleKey] = instance
                 })
                 guild.status = "success"        
             }

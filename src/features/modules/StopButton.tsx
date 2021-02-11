@@ -13,7 +13,7 @@ type Props = {
 
 function StartButton({ module, instance, guild, ...props }: Props) {
     const handleClick = async () => {
-        api.ws.stopModuleInstance(guild.id, module.name)
+        api.ws.stopModuleInstance(guild.id, module.key)
     }
 
     return (

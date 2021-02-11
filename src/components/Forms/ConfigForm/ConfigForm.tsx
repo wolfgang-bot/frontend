@@ -63,7 +63,7 @@ function ConfigForm({ guild, module }: Props, ref?: ForwardedRef<RefHandle>) {
     const dispatch = useDispatch()
 
     const config = useSelector((store: RootState) => store.guilds.data[guild.id]?.config.data)
-    const data = useSelector((store: RootState) => store.guilds.data[guild.id]?.config.data?.value?.[module.name])
+    const data = useSelector((store: RootState) => store.guilds.data[guild.id]?.config.data?.value?.[module.key])
     const status = useSelector((store: RootState) => store.guilds.data[guild.id]?.config.status)
     const error = useSelector((store: RootState) => store.guilds.data[guild.id]?.config.error)
 
@@ -101,13 +101,13 @@ function ConfigForm({ guild, module }: Props, ref?: ForwardedRef<RefHandle>) {
     useImperativeHandle(ref, () => ({
         getValues: () => {
             const newConfig = convertDescriptiveObjectToVanillaObject(config)
-            newConfig[module.name] = createNestedObject(form.getValues())
+            newConfig[module.key] = createNestedObject(form.getValues())
             return newConfig
         },
 
         setErrors: (errors: Record<string, any> | string) => {
             if (errors && typeof errors === "object") {
-                const flattened = flattenObject(errors[module.name])
+                const flattened = flattenObject(errors[module.key])
                 
                 for (let key in flattened) {
                     form.setError(key, {

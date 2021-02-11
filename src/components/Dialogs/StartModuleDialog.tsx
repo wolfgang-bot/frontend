@@ -58,14 +58,14 @@ function StartModuleDialog({ open, onClose, module, guild }: {
             return
         }
         
-        api.ws.startModuleInstance(guild.id, module.name, args)
+        api.ws.startModuleInstance(guild.id, module.key, args)
 
         onClose()
     }
 
     return (
         <Dialog open={open} onClose={onClose}>
-            <DialogTitle>{ module.name }</DialogTitle>
+            <DialogTitle>{ module.key }</DialogTitle>
 
             <DialogContent>
                 <FormProvider {...form}>

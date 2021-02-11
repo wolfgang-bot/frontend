@@ -43,7 +43,7 @@ function ChannelInput({ arg, guild, channelType }: {
 
         return (
             <FormControl className={classes.formControl} fullWidth>
-                <InputLabel id={arg.name}>{ arg.displayName }</InputLabel>
+                <InputLabel id={arg.name}>{ arg.name }</InputLabel>
 
                 <Controller
                     name={arg.name}

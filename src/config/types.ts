@@ -73,7 +73,7 @@ export declare namespace API {
     export type Config = object
 
     export type Module = {
-        name: string,
+        key: string,
         isGlobal: boolean,
         isPrivate: boolean,
         translations: {
@@ -84,15 +84,15 @@ export declare namespace API {
     }
 
     export type ModuleInstance = {
-        moduleName: string,
+        moduleKey: string,
         guildId: string,
         state: INSTANCE_STATES
     }
 
     export type Argument = {
         type: ARGUMENT_TYPES,
+        key: string,
         name: string,
-        displayName: string,
         desc: string
     }
 

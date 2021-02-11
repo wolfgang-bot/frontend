@@ -39,17 +39,17 @@ function ModuleListForGuild({ guild }: { guild: API.Guild }) {
         return <div>{ modulesError } <br/> { moduleInstancesError }</div>
     }
 
-    const activeModules = Object.values(modules).filter(module => module.name in moduleInstances)
-    const inactiveModules = Object.values(modules).filter(module => !(module.name in moduleInstances))
+    const activeModules = Object.values(modules).filter(module => module.key in moduleInstances)
+    const inactiveModules = Object.values(modules).filter(module => !(module.key in moduleInstances))
 
     return (
         <Grid container spacing={2}>
             { activeModules.concat(inactiveModules).map(module => (
-                <Grid item key={module.name}>
+                <Grid item key={module.key}>
                     <ModuleInstanceCard
                         guild={guild}
                         module={module}
-                        instance={moduleInstances[module.name]}
+                        instance={moduleInstances[module.key]}
                     />
                 </Grid>
             ))}

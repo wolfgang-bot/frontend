@@ -30,7 +30,7 @@ const modulesSlice = createSlice({
         [fetchModules.fulfilled.toString()]: (state, action: PayloadAction<API.Module[]>) => {
             state.status = "success"
             action.payload.forEach(module => {
-                state.data[module.name] = module
+                state.data[module.key] = module
             })
         },
         [fetchModules.rejected.toString()]: (state) => {
