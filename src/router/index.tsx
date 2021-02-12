@@ -6,6 +6,7 @@ import IndexPage from "../pages/IndexPage"
 import LoginPage from "../pages/LoginPage"
 import GuildPage from "../pages/GuildPage"
 import NotFoundPage from "../pages/NotFoundPage"
+import ModulePage from "../pages/ModulePage"
 
 function Router() {
     return (
@@ -17,6 +18,14 @@ function Router() {
 
                 <Route path="/login">
                     <LoginPage/>
+                </Route>
+
+                <Route path="/module/:key/:guildId">
+                    <ModulePage/>
+                </Route>
+
+                <Route path="/module/:key">
+                    <ModulePage/>
                 </Route>
 
                 <Route exact path="/">

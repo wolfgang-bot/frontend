@@ -1,4 +1,5 @@
 import React from "react"
+import { useHistory } from "react-router-dom"
 import { Card, CardHeader, CardActionArea, CardActions, Avatar, Typography } from "@material-ui/core"
 
 import { API, INSTANCE_STATES } from "../../config/types"
@@ -13,13 +14,19 @@ type Props = {
 }
 
 function ModuleCard({ module, instance, guild }: Props) {
+    const history = useHistory()
+
+    const handleClick = () => {
+        history.push(`/module/${module.key}/${guild.id}`)
+    }
+
     const commonButtonProps = { module, instance, guild }
 
     const isActive = instance?.state === INSTANCE_STATES.ACTIVE
 
     return (
         <Card>
-            <CardActionArea>
+            <CardActionArea onClick={handleClick}>
                 <CardHeader
                     disableTypography
                     avatar={<Avatar src={module.icon}/>}

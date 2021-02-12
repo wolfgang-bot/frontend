@@ -33,7 +33,7 @@ function App() {
     return (
         <>
             <CssBaseline/>
-            { status === "pending" ? <CircularProgress /> : <Router />}
+            { status === "idle" || status === "pending" ? <CircularProgress /> : <Router />}
         </>
     )
 }
