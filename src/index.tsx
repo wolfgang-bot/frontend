@@ -6,7 +6,7 @@ import { createMuiTheme, ThemeProvider } from "@material-ui/core"
 import store from "./store"
 import App from "./App"
 import "./index.css"
-import { DEBUG } from "./config/constants"
+import Logger  from "./utils/Logger"
 
 export const theme = createMuiTheme({
     palette: {
@@ -32,9 +32,7 @@ export const theme = createMuiTheme({
     }
 })
 
-if (DEBUG) {
-    console.log(theme)
-}
+Logger.debug(theme)
 
 ReactDOM.render(
     <Provider store={store}>

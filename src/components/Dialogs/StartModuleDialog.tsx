@@ -8,6 +8,7 @@ import ArgumentsForm from "../Forms/ArgumentsForm/ArgumentsForm"
 import ConfigForm, { RefHandle } from "../Forms/ConfigForm/ConfigForm"
 import api from "../../api"
 import { setConfig } from "../../features/guilds/guildsSlice"
+import Logger from "../../utils/Logger"
 
 function StartModuleDialog({ open, onClose, module, guild }: {
     open: boolean,
@@ -34,7 +35,7 @@ function StartModuleDialog({ open, onClose, module, guild }: {
 
             return true
         } catch (error) {
-            console.error(error)
+            Logger.error(error)
 
             if (typeof error.message === "object") {
                 configFormRef.current?.setErrors(error.message)

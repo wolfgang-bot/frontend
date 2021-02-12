@@ -4,6 +4,7 @@ import { API } from "../config/types"
 import format, { FORMATS } from "./format"
 import WebSocketReceiver from "./WebSocketReceiver"
 import opener from "../components/ComponentOpener"
+import Logger from "../utils/Logger"
 
 class WebSocketAPI {
     endpoint: string
@@ -47,10 +48,10 @@ class WebSocketAPI {
         }
 
         return new Promise((resolve, reject) => {
-            console.log(`%c[${event}]`, "color:blue", args)
+            Logger.info(`%c[${event}]`, "color:blue", args)
 
             this.socket!.emit(event, ...args, (res: API.Response<T>) => {
-                console.log(
+                Logger.info(
                     `%c[${event}]`, `color:${res.status === "error" ? "red" : "green"}`,
                     res
                 )

@@ -3,6 +3,7 @@ import { Socket } from "socket.io-client"
 import { API } from "../config/types"
 import store from "../store"
 import { updateInstances } from "../features/moduleInstances/moduleInstancesSlice"
+import Logger from "../utils/Logger"
 
 class WebSocketReceiver {
     socket: Socket
@@ -19,7 +20,7 @@ class WebSocketReceiver {
 
     addReceiver(event: string, receiver: (...args: any[]) => void) {
         this.socket.on(event, (...args: any[]) => {
-            console.log(`%c[${event}]`, "color: darkviolet", ...args)
+            Logger.info(`%c[${event}]`, "color: darkviolet", ...args)
             receiver(...args)
         })
     }
