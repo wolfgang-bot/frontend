@@ -79,6 +79,7 @@ export declare namespace API {
         isPrivate: boolean,
         icon?: string,
         translations: {
+            name: string,
             desc: string,
             features: string[],
             args: Argument[]

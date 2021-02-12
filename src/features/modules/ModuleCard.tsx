@@ -23,7 +23,7 @@ function ModuleCard({ module, instance, guild }: Props) {
                 <CardHeader
                     disableTypography
                     avatar={<Avatar src={module.icon}/>}
-                    title={<Typography variant="body1">{module.key}</Typography>}
+                    title={<Typography variant="body1">{module.translations.name}</Typography>}
                 />
             </CardActionArea>
 

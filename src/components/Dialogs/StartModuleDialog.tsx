@@ -62,7 +62,7 @@ function StartModuleDialog({ open, onClose, module, guild }: {
 
     return (
         <Dialog open={open} onClose={onClose}>
-            <DialogTitle>{ module.key }</DialogTitle>
+            <DialogTitle>{ module.translations.name }</DialogTitle>
 
             <DialogContent>
                 <FormProvider {...form}>
