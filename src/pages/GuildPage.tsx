@@ -1,12 +1,12 @@
 import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
-import { CircularProgress } from "@material-ui/core"
 
 import { RootState } from "../store"
 import Layout from "../components/Layout/Layout"
 import ModuleListForGuild from "../features/modules/ModuleListForGuild"
 import { fetchGuilds } from "../features/guilds/guildsSlice"
+import * as Skeletons from "../components/Skeletons"
 
 function GuildPage() {
     const { id } = useParams<{ id: string }>()
@@ -23,7 +23,7 @@ function GuildPage() {
         }
     }, [status, dispatch])
 
-    let child = <CircularProgress/>
+    let child = <Skeletons.ModuleListForGuild/>
 
     if (status === "success") {
         child = <ModuleListForGuild guild={guild} />

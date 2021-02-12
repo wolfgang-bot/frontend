@@ -7,6 +7,7 @@ import { API } from "../../config/types"
 import ModuleCard from "./ModuleCard"
 import { fetchModules } from "./modulesSlice"
 import { fetchModuleInstancesForGuild } from "../moduleInstances/moduleInstancesSlice"
+import * as Skeletons from "../../components/Skeletons"
 
 function ModuleListForGuild({ guild }: { guild: API.Guild }) {
     const dispatch = useDispatch()
@@ -54,15 +55,7 @@ function ModuleListForGuild({ guild }: { guild: API.Guild }) {
         return <div>{ modulesError } <br/> { moduleInstancesError }</div>
     }
 
-    return (
-        <Grid container spacing={2}>
-            {Array(5).fill(null).map((_, index) => (
-                <Grid item key={index}>
-                    <ModuleCard isLoading/>
-                </Grid>
-            ))}
-        </Grid>
-    )
+    return <Skeletons.ModuleListForGuild/>
 }
 
 export default ModuleListForGuild

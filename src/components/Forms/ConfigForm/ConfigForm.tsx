@@ -1,8 +1,7 @@
 import React, { useMemo, useState, useEffect, useImperativeHandle, ForwardedRef } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { useForm, FormProvider } from "react-hook-form"
-import { Paper, Box } from "@material-ui/core"
-import Skeleton from "@material-ui/lab/Skeleton"
+import { Paper } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 
 import { API } from "../../../config/types"
@@ -16,6 +15,7 @@ import {
     convertDescriptiveObjectToVanillaObject
 } from "../../../utils"
 import { fetchConfig } from "../../../features/guilds/guildsSlice"
+import * as Skeletons from "../../Skeletons"
 
 type Props = {
     guild: API.Guild,
@@ -107,19 +107,7 @@ function ConfigForm({ guild, module }: Props, ref?: ForwardedRef<RefHandle>) {
         )
     }
 
-    return (
-        <>
-            {new Array(3).fill(null).map((_, index) => (
-                <React.Fragment key={index}>
-                    <Skeleton height={22} />
-                    <Skeleton height={14} />
-                    <Box mt={1} mb={2}>
-                        <Skeleton variant="rect" height={56} />
-                    </Box>
-                </React.Fragment>
-            ))}
-        </>
-    )
+    return <Skeletons.ConfigForm/>
 }
 
 const ConfigFormWithRef = React.forwardRef<RefHandle, Props>(ConfigForm)
