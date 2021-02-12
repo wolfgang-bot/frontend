@@ -1,6 +1,7 @@
 export const DEBUG = process.env.NODE_ENV === "development"
 
 export const API_BASE_URL = window.location.origin + "/api"
+export const STORAGE_BASE_URL = window.location.origin + "/storage"
 export const WEB_SOCKET_API_URL = `ws://${window.location.host}`
 export const API_TOKEN_STORAGE_KEY = "token"
 export const API_TOKEN = localStorage.getItem(API_TOKEN_STORAGE_KEY)

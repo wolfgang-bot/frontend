@@ -100,8 +100,9 @@ class WebSocketAPI {
     /**
      * @fires get:modules
      */
-    getModules() {
-        return this.fetch<API.Module[]>("get:modules")
+    async getModules() {
+        const data = await this.fetch<API.Module[]>("get:modules")
+        return format<API.Module[]>(FORMATS.MODULES)(data)
     }
 
     /**

@@ -1,10 +1,12 @@
 import { API, ReduxAPIState } from "../config/types"
-import { DISCORD_CDN_BASE_URL, DEFAULT_AVATAR_URL } from "../config/constants"
+import { DISCORD_CDN_BASE_URL, DEFAULT_AVATAR_URL, STORAGE_BASE_URL } from "../config/constants"
 
 export enum FORMATS {
     USER,
     GUILD,
-    GUILDS
+    GUILDS,
+    MODULE,
+    MODULES
 }
 
 type Response<T> = {
@@ -40,16 +42,20 @@ function formatGuild(guild: API.Guild) {
     }
 }
 
-export default function format<T>(type: FORMATS) {
-    let fn: Function
+function formatModule(module: API.Module) {
+    module.icon = `${STORAGE_BASE_URL}/modules/${module.key}/icon.png`
+}
 
-    if (type === FORMATS.USER) {
-        fn = (data: Response<API.User>) => formatUser(data.data!)
-    } else if (type === FORMATS.GUILD) {
-        fn = (data: Response<API.Guild>) => formatGuild(data.data!)
-    } else if (type === FORMATS.GUILDS) {
-        fn = (data: Response<API.Guild[]>) => data.data!.map(formatGuild)
-    }
+const formatterMap: Record<FORMATS, (data: Response<any>) => void> = {
+    [FORMATS.USER]: (data: Response<API.User>) => formatUser(data.data!),
+    [FORMATS.GUILD]: (data: Response<API.Guild>) => formatGuild(data.data!),
+    [FORMATS.GUILDS]: (data: Response<API.Guild[]>) => data.data!.map(formatGuild),
+    [FORMATS.MODULE]: (data: Response<API.Module>) => formatModule(data.data!),
+    [FORMATS.MODULES]: (data: Response<API.Module[]>) => data.data!.map(formatModule)
+}
+
+export default function format<T>(type: FORMATS) {
+    let fn = formatterMap[type]
 
     return (data: Response<T>) => {
         return new Promise<Response<T>>(resolve => {

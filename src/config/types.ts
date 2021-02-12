@@ -66,7 +66,7 @@ export declare namespace API {
         username?: string,
         discriminator?: number,
         avatar?: string,
-        avatar_animated: string
+        avatar_animated?: string
     }
 
     export type DescriptiveConfig = DescriptiveObject
@@ -76,6 +76,7 @@ export declare namespace API {
         key: string,
         isGlobal: boolean,
         isPrivate: boolean,
+        icon?: string,
         translations: {
             desc: string,
             features: string[],

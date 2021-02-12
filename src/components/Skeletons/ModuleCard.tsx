@@ -1,5 +1,5 @@
 import React from "react"
-import { Card, CardActionArea, CardContent, CardActions, Typography, Box } from "@material-ui/core"
+import { Card, CardHeader, CardActionArea, CardActions, Typography, Box } from "@material-ui/core"
 import Skeleton from "@material-ui/lab/Skeleton"
 
 function IconButton() {
@@ -22,11 +22,11 @@ function ModuleCard({ seed }: { seed: number }) {
     return (
         <Card>
             <CardActionArea>
-                <CardContent>
-                    <Typography>
-                        <ModuleName seed={seed}/>
-                    </Typography>
-                </CardContent>
+                <CardHeader
+                    disableTypography
+                    avatar={<Skeleton variant="circle" width={40} height={40}/>}
+                    title={<Typography variant="body1"><ModuleName seed={seed}/></Typography>}
+                />
             </CardActionArea>
 
             <CardActions>

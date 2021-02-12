@@ -1,5 +1,5 @@
 import React from "react"
-import { Card, CardActionArea, CardContent, CardActions, Typography } from "@material-ui/core"
+import { Card, CardHeader, CardActionArea, CardActions, Avatar, Typography } from "@material-ui/core"
 
 import { API, INSTANCE_STATES } from "../../config/types"
 import StartButton from "./StartButton"
@@ -20,11 +20,11 @@ function ModuleCard({ module, instance, guild }: Props) {
     return (
         <Card>
             <CardActionArea>
-                <CardContent>
-                    <Typography>
-                        {module.key}
-                    </Typography>
-                </CardContent>
+                <CardHeader
+                    disableTypography
+                    avatar={<Avatar src={module.icon}/>}
+                    title={<Typography variant="body1">{module.key}</Typography>}
+                />
             </CardActionArea>
 
             <CardActions>
