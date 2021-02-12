@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { Select, MenuItem, Typography } from "@material-ui/core"
 import Skeleton from "@material-ui/lab/Skeleton"
 
 import { RootState } from "../../store"
 import { API } from "../../config/types"
-import { fetchLocale as fetchGuildLocale, setLocale as setGuildLocale } from "../../features/guilds/guildsSlice"
+import { fetchLocale as fetchGuildLocale, updateLocale as updateGuildLocaleAction } from "../../features/guilds/guildsSlice"
 import { fetchLocales } from "../../features/locales/localeSlice"
-import api from "../../api"
 import Logger from "../../utils/Logger"
 import opener from "../../components/ComponentOpener"
 
@@ -22,18 +21,27 @@ function LocaleSelect({ guild }: { guild: API.Guild }) {
     const guildLocale = useSelector((store: RootState) => store.guilds.data[guild.id]?.locale.data)
     const guildLocaleError = useSelector((store: RootState) => store.guilds.data[guild.id]?.locale.error)
 
+    const updateGuildLocale = async (value: API.Locale) => {
+        const resultAction = await dispatch(updateGuildLocaleAction({
+            guildId: guild.id,
+            value
+        })) as any
+
+        if (updateGuildLocaleAction.fulfilled.match(resultAction)) {
+            return true
+        } else {
+            Logger.error(resultAction.error)
+            return false
+        }
+    }
+
     const handleChange = async (event: React.ChangeEvent<{ value: unknown }>) => {
         const value = event.target.value as API.Locale
 
-        try {
-            await api.ws.setGuildLocale(guild.id, value)
-            dispatch(setGuildLocale({
-                guildId: guild.id,
-                value
-            }))
+        const success = await updateGuildLocale(value)
+
+        if (success) {
             opener.openSnackbar("Language updated")
-        } catch (error) {
-            Logger.error(error)
         }
     }
 
@@ -47,7 +55,7 @@ function LocaleSelect({ guild }: { guild: API.Guild }) {
         if (guildLocaleStatus === "idle") {
             dispatch(fetchGuildLocale(guild.id))
         }
-    }, [guildLocaleStatus, dispatch])
+    }, [guildLocaleStatus, dispatch, guild.id])
 
     let child = <Skeleton width={100} height={24} />
 

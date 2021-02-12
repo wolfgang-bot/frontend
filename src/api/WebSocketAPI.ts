@@ -86,14 +86,14 @@ class WebSocketAPI {
     /**
      * @fires get:guild/locale
      */
-    getGuildLocale(guildId: string) {
+    getLocale(guildId: string) {
         return this.fetch<API.Locale>("get:guild/locale", guildId)
     }
 
     /**
      * @fires post:guild/locale
      */
-    setGuildLocale(guildId: string, locale: API.Locale) {
+    updateLocale(guildId: string, locale: API.Locale) {
         return this.fetch<API.Locale>("post:guild/locale", guildId, locale)
     }
 

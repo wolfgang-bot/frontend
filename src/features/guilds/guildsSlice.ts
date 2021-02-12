@@ -44,6 +44,22 @@ export const fetchConfig = createAsyncThunk<
     }
 )
 
+export const updateConfig = createAsyncThunk<
+    API.DescriptiveConfig | undefined,
+    { guildId: string, value: API.Config },
+    { extra: ThunkExtraArgument }
+>(
+    "guilds/updateConfig",
+    async ({ guildId, value }, { extra: { api } }) => {
+        const res = await api.ws.updateConfig(guildId, value)
+        return res.data
+    },
+    {
+        // Accept nested error object (nested objects are removed by default)
+        serializeError: (value: any) => (value as API.Response<void>)?.message
+    }
+)
+
 export const fetchLocale = createAsyncThunk<
     API.Locale | undefined,
     string,
@@ -51,35 +67,26 @@ export const fetchLocale = createAsyncThunk<
 >(
     "guilds/fetchLocale",
     async (guildId, { extra: { api } }) => {
-        const res = await api.ws.getGuildLocale(guildId)
+        const res = await api.ws.getLocale(guildId)
         return res.data
+    }
+)
+
+export const updateLocale = createAsyncThunk<
+    void,
+    { guildId: string, value: API.Locale },
+    { extra: ThunkExtraArgument }
+>(
+    "guilds/updateLocale",
+    async ({ guildId, value }, { extra: { api } }) => {
+        await api.ws.updateLocale(guildId, value)
     }
 )
 
 const guildsSlice = createSlice({
     name: "guild",
     initialState,
-    reducers: {
-        setConfig: (state, action: PayloadAction<{
-            guildId: string,
-            value: API.DescriptiveConfig
-        }>) => {
-            const guild = state.data[action.payload.guildId]
-            if (guild) {
-                guild.config.data = action.payload.value
-            }
-        },
-
-        setLocale: (state, action: PayloadAction<{
-            guildId: string,
-            value: API.Locale
-        }>) => {
-            const guild = state.data[action.payload.guildId]
-            if (guild) {
-                guild.locale.data = action.payload.value
-            }
-        }
-    },
+    reducers: {},
     extraReducers: {
         /**
          * Thunk: guilds/fetchConfig
@@ -149,6 +156,16 @@ const guildsSlice = createSlice({
         },
 
         /**
+         * Thunk: guilds/updateConfig
+         */
+        [updateConfig.fulfilled.toString()]: (state, action) => {
+            const guild = state.data[action.meta.arg.guildId]
+            if (guild) {
+                guild.config.data = action.payload
+            }
+        },
+
+        /**
          * Thunk: guilds/fetchLocale
          */
         [fetchLocale.pending.toString()]: (state, action) => {
@@ -170,10 +187,18 @@ const guildsSlice = createSlice({
                 guild.locale.error = action.payload
                 guild.locale.status = "error"
             }
+        },
+
+        /**
+         * Thunk: guilds/updateLocale
+         */
+        [updateLocale.fulfilled.toString()]: (state, action) => {
+            const guild = state.data[action.meta.arg.guildId]
+            if (guild) {
+                guild.locale.data = action.meta.arg.value
+            }
         }
     }
 })
-
-export const { setConfig, setLocale } = guildsSlice.actions
 
 export default guildsSlice.reducer

@@ -6,9 +6,9 @@ import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from "@mate
 import { API } from "../../config/types"
 import ArgumentsForm from "../Forms/ArgumentsForm/ArgumentsForm"
 import ConfigForm, { RefHandle } from "../Forms/ConfigForm/ConfigForm"
-import api from "../../api"
-import { setConfig } from "../../features/guilds/guildsSlice"
+import { updateConfig as updateConfigAction } from "../../features/guilds/guildsSlice"
 import Logger from "../../utils/Logger"
+import api from "../../api"
 
 function StartModuleDialog({ open, onClose, module, guild }: {
     open: boolean,
@@ -23,22 +23,18 @@ function StartModuleDialog({ open, onClose, module, guild }: {
     const form = useForm()
 
     const updateConfig = async (value: API.Config) => {
-        try {
-            const res = await api.ws.updateConfig(guild.id, value)
+        const resultAction = await dispatch(updateConfigAction({
+            guildId: guild.id,
+            value
+        })) as any
 
-            if (res.data) {
-                dispatch(setConfig({
-                    guildId: guild.id,
-                    value: res.data
-                }))
-            }
-
+        if (updateConfigAction.fulfilled.match(resultAction)) {
             return true
-        } catch (error) {
-            Logger.error(error)
+        } else {
+            Logger.error(resultAction.error)
 
-            if (typeof error.message === "object") {
-                configFormRef.current?.setErrors(error.message)
+            if (typeof resultAction.error === "object") {
+                configFormRef.current?.setErrors(resultAction.error)
             }
 
             return false
