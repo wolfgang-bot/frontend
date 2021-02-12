@@ -44,6 +44,18 @@ export const fetchConfig = createAsyncThunk<
     }
 )
 
+export const fetchLocale = createAsyncThunk<
+    API.Locale | undefined,
+    string,
+    { extra: ThunkExtraArgument }
+>(
+    "guilds/fetchLocale",
+    async (guildId, { extra: { api } }) => {
+        const res = await api.ws.getGuildLocale(guildId)
+        return res.data
+    }
+)
+
 const guildsSlice = createSlice({
     name: "guild",
     initialState,
@@ -55,6 +67,16 @@ const guildsSlice = createSlice({
             const guild = state.data[action.payload.guildId]
             if (guild) {
                 guild.config.data = action.payload.value
+            }
+        },
+
+        setLocale: (state, action: PayloadAction<{
+            guildId: string,
+            value: API.Locale
+        }>) => {
+            const guild = state.data[action.payload.guildId]
+            if (guild) {
+                guild.locale.data = action.payload.value
             }
         }
     },
@@ -124,10 +146,34 @@ const guildsSlice = createSlice({
                 guild.config.error = action.payload
                 guild.config.status = "error"
             }
+        },
+
+        /**
+         * Thunk: guilds/fetchLocale
+         */
+        [fetchLocale.pending.toString()]: (state, action) => {
+            const guild = state.data[action.meta.arg]
+            if (guild) {
+                guild.locale.status = "pending"
+            }
+        },
+        [fetchLocale.fulfilled.toString()]: (state, action) => {
+            const guild = state.data[action.meta.arg]
+            if (guild) {
+                guild.locale.data = action.payload
+                guild.locale.status = "success"
+            }
+        },
+        [fetchLocale.rejected.toString()]: (state, action) => {
+            const guild = state.data[action.meta.arg]
+            if (guild) {
+                guild.locale.error = action.payload
+                guild.locale.status = "error"
+            }
         }
     }
 })
 
-export const { setConfig } = guildsSlice.actions
+export const { setConfig, setLocale } = guildsSlice.actions
 
 export default guildsSlice.reducer

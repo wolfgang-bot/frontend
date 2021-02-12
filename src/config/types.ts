@@ -58,7 +58,8 @@ export declare namespace API {
         owner: boolean,
         permissions: number,
         channels: ReduxAPIState<Record<string, Discord.GuildChannel>>,
-        config: ReduxAPIState<DescriptiveConfig>
+        config: ReduxAPIState<API.DescriptiveConfig>,
+        locale: ReduxAPIState<API.Locale>
     }
 
     export type User = {
@@ -98,6 +99,8 @@ export declare namespace API {
     }
 
     export type GuildChannel = Discord.GuildChannel
+
+    export type Locale = string
 }
 
 export type LoadingState = "idle" | "pending" | "success" | "error"

@@ -79,8 +79,22 @@ class WebSocketAPI {
     /**
      * @fires get:guild/channels
      */
-    async getGuildChannels(guildId: string) {
+    getGuildChannels(guildId: string) {
         return this.fetch<API.GuildChannel[]>("get:guild/channels", guildId)
+    }
+
+    /**
+     * @fires get:guild/locale
+     */
+    getGuildLocale(guildId: string) {
+        return this.fetch<API.Locale>("get:guild/locale", guildId)
+    }
+
+    /**
+     * @fires post:guild/locale
+     */
+    setGuildLocale(guildId: string, locale: API.Locale) {
+        return this.fetch<API.Locale>("post:guild/locale", guildId, locale)
     }
 
     /**
@@ -131,6 +145,13 @@ class WebSocketAPI {
      */
     restartModuleInstance(guildId: string, moduleName: string) {
         return this.fetch("post:module-instances/restart", guildId, moduleName)
+    }
+
+    /**
+     * @fires get:locales
+     */
+    getLocales() {
+        return this.fetch<API.Locale[]>("get:locales")
     }
 }
 
