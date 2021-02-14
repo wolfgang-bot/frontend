@@ -1,9 +1,11 @@
 import React from "react"
 import { useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
+import { Typography } from "@material-ui/core"
 
 import { RootState } from "../store"
 import Layout from "../components/Layout/Layout"
+import MemberCount from "../features/guilds/MemberCount"
 import LocaleSelect from "../features/locales/LocaleSelect"
 import ModuleListForGuild from "../features/modules/ModuleListForGuild"
 import * as Skeletons from "../components/Skeletons"
@@ -20,6 +22,9 @@ function GuildPage() {
     if (status === "success") {
         child = (
             <>
+                <Typography variant="h6">Member Count</Typography>
+                <MemberCount guild={guild}/>
+                <Typography variant="h6">Language</Typography>
                 <LocaleSelect guild={guild}/>
                 <ModuleListForGuild guild={guild} />
             </>

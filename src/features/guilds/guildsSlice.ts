@@ -83,6 +83,18 @@ export const updateLocale = createAsyncThunk<
     }
 )
 
+export const fetchMemberCount = createAsyncThunk<
+    API.MemberCount | undefined,
+    string,
+    { extra: ThunkExtraArgument }
+>(
+    "guilds/fetchMemberCount",
+    async (guildId, { extra: { api } }) => {
+        const res = await api.ws.getMemberCount(guildId)
+        return res.data
+    }
+)
+
 const guildsSlice = createSlice({
     name: "guild",
     initialState,
@@ -197,7 +209,31 @@ const guildsSlice = createSlice({
             if (guild) {
                 guild.locale.data = action.meta.arg.value
             }
-        }
+        },
+
+        /**
+         * Thunk: guilds/fetchMemberCount
+         */
+        [fetchMemberCount.pending.toString()]: (state, action) => {
+            const guild = state.data[action.meta.arg]
+            if (guild) {
+                guild.memberCount.status = "pending"
+            }
+        },
+        [fetchMemberCount.fulfilled.toString()]: (state, action) => {
+            const guild = state.data[action.meta.arg]
+            if (guild) {
+                guild.memberCount.data = action.payload
+                guild.memberCount.status = "success"
+            }
+        },
+        [fetchMemberCount.rejected.toString()]: (state, action) => {
+            const guild = state.data[action.meta.arg]
+            if (guild) {
+                guild.memberCount.error = action.payload
+                guild.memberCount.status = "error"
+            }
+        },
     }
 })
 

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { Select, MenuItem, Typography } from "@material-ui/core"
+import { Select, MenuItem } from "@material-ui/core"
 import Skeleton from "@material-ui/lab/Skeleton"
 
 import { RootState } from "../../store"
@@ -80,12 +80,7 @@ function LocaleSelect({ guild }: { guild: API.Guild }) {
         )
     }
 
-    return (
-        <>
-            <Typography variant="body1">Language</Typography>
-            {child}
-        </>
-    )
+    return child
 }
 
 export default LocaleSelect

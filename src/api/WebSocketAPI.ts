@@ -98,6 +98,13 @@ class WebSocketAPI {
     }
 
     /**
+     * @fires get:guild/member-count
+     */
+    getMemberCount(guildId: string) {
+        return this.fetch<API.MemberCount>("get:guild/member-count", guildId)
+    }
+
+    /**
      * @fires get:config-descriptive
      */
     getConfigDescriptive(guildId: string) {
@@ -152,6 +159,20 @@ class WebSocketAPI {
      */
     getLocales() {
         return this.fetch<API.Locale[]>("get:locales")
+    }
+
+    /**
+     * @fires post:subscribe
+     */
+    subscribe(eventStream: API.EVENT_STREAM, guildId: string) {
+        return this.fetch("post:subscribe", eventStream, { guildId })
+    }
+
+    /**
+     * @fires post:unsubscribe
+     */
+    unsubscribe(eventStream: API.EVENT_STREAM, guildId: string) {
+        return this.fetch("post:unsubscribe", eventStream, { guildId })
     }
 }
 

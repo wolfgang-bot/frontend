@@ -11,6 +11,14 @@ export enum ARGUMENT_TYPES {
     CATEGORY_CHANNEL = "category_channel"
 }
 
+export enum EVENT_TYPES {
+    GUILD_MEMBER_ADD,
+    GUILD_MEMBER_REMOVE,
+    MESSAGE_SEND,
+    VOICECHANNEL_JOIN,
+    VOICECHANNEL_LEAVE
+}
+
 export declare namespace Discord {
     export type Channel = {
         id: string,
@@ -59,7 +67,8 @@ export declare namespace API {
         permissions: number,
         channels: ReduxAPIState<Record<string, Discord.GuildChannel>>,
         config: ReduxAPIState<API.DescriptiveConfig>,
-        locale: ReduxAPIState<API.Locale>
+        locale: ReduxAPIState<API.Locale>,
+        memberCount: ReduxAPIState<API.MemberCount>
     }
 
     export type User = {
@@ -102,6 +111,17 @@ export declare namespace API {
     export type GuildChannel = Discord.GuildChannel
 
     export type Locale = string
+    
+    export type MemberCount = number
+
+    export type EVENT_STREAM = "module-instances" | "members" | "messages" | "voice"
+
+    export type Event<TMeta = undefined> = {
+        type: EVENT_TYPES,
+        timestamp: number,
+        guild_id?: string,
+        meta?: TMeta
+    }
 }
 
 export type LoadingState = "idle" | "pending" | "success" | "error"

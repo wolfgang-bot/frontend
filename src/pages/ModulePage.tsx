@@ -63,7 +63,7 @@ function ModulePage() {
         if (guildId && guildsStatus === "idle") {
             dispatch(fetchGuilds())
         }
-    }, [guildsStatus, dispatch])
+    }, [guildsStatus, dispatch, guildId])
 
     let child = <CircularProgress/>
 

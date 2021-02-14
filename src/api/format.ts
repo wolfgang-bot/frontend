@@ -36,6 +36,7 @@ function formatGuild(guild: API.Guild) {
         value: null
     })
     guild.locale = makeReduxAPIState<API.Locale>("")
+    guild.memberCount = makeReduxAPIState<API.MemberCount>(-1)
 
     if (guild.icon) {
         guild.icon = `${DISCORD_CDN_BASE_URL}/icons/${guild.id}/${guild.icon}.png`
