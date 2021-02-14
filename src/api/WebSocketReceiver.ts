@@ -15,7 +15,7 @@ class WebSocketReceiver {
     }
 
     attachEventReceivers() {
-        this.addReceiver("push:module-instances", this.receiveModuleInstances)
+        this.addReceiver("push:stream/module-instances", this.receiveModuleInstances)
     }
 
     addReceiver(event: string, receiver: (...args: any[]) => void) {
@@ -26,7 +26,7 @@ class WebSocketReceiver {
     }
 
     /**
-     * @listens push:module-instances
+     * @listens push:stream/module-instances
      */
     receiveModuleInstances(instances: API.ModuleInstance[]) {
         store.dispatch(updateInstances(instances))

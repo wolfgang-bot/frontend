@@ -122,6 +122,12 @@ export declare namespace API {
         guild_id?: string,
         meta?: TMeta
     }
+
+    export type Stream<T> = {
+        type: EVENT_STREAM,
+        status: "flowing" | "paused",
+        data: T[]
+    }
 }
 
 export type LoadingState = "idle" | "pending" | "success" | "error"

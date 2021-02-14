@@ -5,11 +5,13 @@ import authReducer from "../features/auth/authSlice"
 import moduleReducer from "../features/modules/modulesSlice"
 import moduleInstancesReducer from "../features/moduleInstances/moduleInstancesSlice"
 import localesReducer from "../features/locales/localeSlice"
+import streamsSlice from "../features/streams/streamsSlice"
 
 export default combineReducers({
     auth: authReducer,
     guilds: guildsReducer,
     modules: moduleReducer,
     moduleInstances: moduleInstancesReducer,
-    locales: localesReducer
+    locales: localesReducer,
+    streams: streamsSlice
 })

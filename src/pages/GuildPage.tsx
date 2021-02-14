@@ -26,6 +26,7 @@ function GuildPage() {
                 <MemberCount guild={guild}/>
                 <Typography variant="h6">Language</Typography>
                 <LocaleSelect guild={guild}/>
+                <Typography variant="h6">Modules</Typography>
                 <ModuleListForGuild guild={guild} />
             </>
         )
