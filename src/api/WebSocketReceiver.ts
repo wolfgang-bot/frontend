@@ -2,7 +2,7 @@ import { Socket } from "socket.io-client"
 
 import { API } from "../config/types"
 import store from "../store"
-import { updateInstances } from "../features/moduleInstances/moduleInstancesSlice"
+import { data as dataAction } from "../features/streams/streamsSlice"
 import Logger from "../utils/Logger"
 
 class WebSocketReceiver {
@@ -15,7 +15,7 @@ class WebSocketReceiver {
     }
 
     attachEventReceivers() {
-        this.addReceiver("push:stream/module-instances", this.receiveModuleInstances)
+        this.addReceiver("push:stream", this.receiveStreamData)
     }
 
     addReceiver(event: string, receiver: (...args: any[]) => void) {
@@ -25,11 +25,8 @@ class WebSocketReceiver {
         })
     }
 
-    /**
-     * @listens push:stream/module-instances
-     */
-    receiveModuleInstances(instances: API.ModuleInstance[]) {
-        store.dispatch(updateInstances(instances))
+    receiveStreamData(args: API.StreamArgs, data: any) {
+        store.dispatch(dataAction({ args, data }))
     }
 }
 

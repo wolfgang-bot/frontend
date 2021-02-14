@@ -6,7 +6,7 @@ import { RootState } from "../../store"
 import { API } from "../../config/types"
 import ModuleCard from "./ModuleCard"
 import { fetchModules } from "./modulesSlice"
-import { fetchModuleInstancesForGuild } from "../moduleInstances/moduleInstancesSlice"
+import { subscribe, pause, resume } from "../streams/streamsSlice"
 import * as Skeletons from "../../components/Skeletons"
 
 function ModuleListForGuild({ guild }: { guild: API.Guild }) {
@@ -18,7 +18,8 @@ function ModuleListForGuild({ guild }: { guild: API.Guild }) {
 
     const moduleInstances = useSelector((state: RootState) => state.moduleInstances.guilds[guild.id]?.data)
     const moduleInstancesStatus = useSelector((state: RootState) => state.moduleInstances.guilds[guild.id]?.status)
-    const moduleInstancesError = useSelector((state: RootState) => state.moduleInstances.guilds[guild.id]?.error)
+
+    const streamStatus = useSelector((state: RootState) => state.streams[guild.id]?.["module-instances"].status)
 
     useEffect(() => {
         if (modulesStatus === "idle") {
@@ -27,10 +28,21 @@ function ModuleListForGuild({ guild }: { guild: API.Guild }) {
     }, [modulesStatus, dispatch])
 
     useEffect(() => {
-        if (moduleInstancesStatus === "idle") {
-            dispatch(fetchModuleInstancesForGuild(guild.id))
+        const args: API.StreamArgs = {
+            eventStream: "module-instances",
+            guildId: guild.id
         }
-    }, [moduleInstancesStatus, dispatch, guild.id])
+
+        if (streamStatus === "idle") {
+            dispatch(subscribe(args))
+        } else if (streamStatus === "paused") {
+            dispatch(resume(args))
+        }
+
+        return () => {
+            dispatch(pause(args))
+        }
+    }, [])
 
     if (modulesStatus === "success" && moduleInstancesStatus === "success") {
         const activeModules = Object.values(modules).filter(module => module.key in moduleInstances)
@@ -38,7 +50,7 @@ function ModuleListForGuild({ guild }: { guild: API.Guild }) {
 
         return (
             <Grid container spacing={2}>
-                { activeModules.concat(inactiveModules).map(module => (
+                {activeModules.concat(inactiveModules).map(module => (
                     <Grid item key={module.key}>
                         <ModuleCard
                             guild={guild}
@@ -51,8 +63,8 @@ function ModuleListForGuild({ guild }: { guild: API.Guild }) {
         )
     }
 
-    if (modulesStatus === "error" || moduleInstancesStatus === "error") {
-        return <div>{ modulesError } <br/> { moduleInstancesError }</div>
+    if (modulesStatus === "error") {
+        return <div>{modulesError}</div>
     }
 
     return <Skeletons.ModuleListForGuild/>

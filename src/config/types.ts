@@ -123,10 +123,23 @@ export declare namespace API {
         meta?: TMeta
     }
 
+    export type MemberEventMeta = {
+        memberCount: API.MemberCount
+    }
+
+    export type VoiceEventMeta = {
+        duration: number
+    }
+
     export type Stream<T> = {
         type: EVENT_STREAM,
-        status: "flowing" | "paused",
+        status: "idle" | "flowing" | "paused",
         data: T[]
+    }
+
+    export type StreamArgs = {
+        eventStream: EVENT_STREAM,
+        guildId: string
     }
 }
 

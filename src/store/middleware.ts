@@ -5,6 +5,7 @@ import store from "./index"
 import { API } from "../config/types"
 import { API_TOKEN_STORAGE_KEY } from "../config/constants"
 import { fetchUser, init } from "../features/auth/authSlice"
+import { updateInstances } from "../features/moduleInstances/moduleInstancesSlice"
 import api from "../api"
 
 export const authMiddleware: Middleware = () => next => (action: PayloadAction<{
@@ -36,25 +37,41 @@ export const authMiddleware: Middleware = () => next => (action: PayloadAction<{
     next(action)
 }
 
-export const streamMiddleware: Middleware = () => next => (action: PayloadAction<{
-    stream: API.EVENT_STREAM,
-    guildId: string
-}>) => {
+export const streamControlMiddleware: Middleware = () => next => (action: PayloadAction<API.StreamArgs>) => {
     switch (action.type) {
         case "streams/subscribe":
-            api.ws.subscribeToStream(action.payload.stream, action.payload.guildId)
+            api.ws.subscribeToStream(action.payload.eventStream, action.payload.guildId)
             break
 
         case "streams/unsubscribe":
-            api.ws.unsubscribeFromStream(action.payload.stream, action.payload.guildId)
+            api.ws.unsubscribeFromStream(action.payload.eventStream, action.payload.guildId)
             break
 
         case "streams/pause":
-            api.ws.pauseStream(action.payload.stream, action.payload.guildId)
+            api.ws.pauseStream(action.payload.eventStream, action.payload.guildId)
             break
         
         case "streams/resume":
-            api.ws.resumeStream(action.payload.stream, action.payload.guildId)
+            api.ws.resumeStream(action.payload.eventStream, action.payload.guildId)
+            break
+    }
+
+    next(action)
+}
+
+export const streamDataMiddleware: Middleware = () => next => (action: PayloadAction<{
+    args: API.StreamArgs,
+    data: any
+}>) => {
+    if (action.type === "streams/data") {
+        switch (action.payload.args.eventStream) {
+            case "module-instances":
+                store.dispatch(updateInstances({
+                    guildId: action.payload.args.guildId,
+                    data: action.payload.data
+                }))
+                return
+        }
     }
 
     next(action)

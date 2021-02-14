@@ -1,7 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit"
 
 import rootReducer from "./rootReducer"
-import { authMiddleware, streamMiddleware } from "./middleware"
+import {
+    authMiddleware,
+    streamControlMiddleware,
+    streamDataMiddleware
+} from "./middleware"
 import api from "../api"
 
 const store = configureStore({
@@ -12,7 +16,8 @@ const store = configureStore({
         }
     })
         .concat(authMiddleware)
-        .concat(streamMiddleware)
+        .concat(streamControlMiddleware)
+        .concat(streamDataMiddleware)
 })
 
 export default store 
