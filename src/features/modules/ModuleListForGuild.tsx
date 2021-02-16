@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useMemo } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Grid } from "@material-ui/core"
 
@@ -10,6 +10,11 @@ import { subscribe, pause, resume } from "../streams/streamsSlice"
 import * as Skeletons from "../../components/Skeletons"
 
 function ModuleListForGuild({ guild }: { guild: API.Guild }) {
+    const streamArgs = useMemo<API.StreamArgs>(() => ({
+        eventStream: "module-instances",
+        guildId: guild.id
+    }), [guild.id])
+
     const dispatch = useDispatch()
 
     const modules = useSelector((state: RootState) => state.modules.data)
@@ -28,21 +33,18 @@ function ModuleListForGuild({ guild }: { guild: API.Guild }) {
     }, [modulesStatus, dispatch])
 
     useEffect(() => {
-        const args: API.StreamArgs = {
-            eventStream: "module-instances",
-            guildId: guild.id
-        }
-
         if (streamStatus === "idle") {
-            dispatch(subscribe(args))
+            dispatch(subscribe(streamArgs))
         } else if (streamStatus === "paused") {
-            dispatch(resume(args))
+            dispatch(resume(streamArgs))
         }
+    }, [streamStatus, streamArgs, dispatch])
 
+    useEffect(() => {
         return () => {
-            dispatch(pause(args))
+            dispatch(pause(streamArgs))
         }
-    }, [])
+    }, [dispatch, streamArgs])
 
     if (modulesStatus === "success" && moduleInstancesStatus === "success") {
         const activeModules = Object.values(modules).filter(module => module.key in moduleInstances)

@@ -23,8 +23,10 @@
     "@types/react-router-dom": "^5.1.7",
     "axios": "^0.19.2",
     "change-case": "^4.1.1",
+    "chart.js": "^2.9.4",
     "clsx": "^1.1.1",
     "react": "^16.13.1",
+    "react-chartjs-2": "^2.11.1",
     "react-dom": "^16.13.1",
     "react-hook-form": "^6.3.2",
     "react-redux": "^7.2.1",
@@ -51,6 +53,7 @@
     ]
   },
   "devDependencies": {
+    "@types/chart.js": "^2.9.30",
     "@types/react-redux": "^7.1.16"
   }
 }
