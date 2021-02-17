@@ -1,14 +1,12 @@
-import React, { useEffect, useMemo, useRef } from "react"
-import { useSelector, useDispatch } from "react-redux"
-import { CircularProgress, useTheme } from "@material-ui/core"
+import { useEffect, useMemo, useRef } from "react"
+import { useTheme } from "@material-ui/core"
 import { createChart, CrosshairMode, ISeriesApi } from "lightweight-charts"
 
 import { API } from "../../config/types"
-import { RootState } from "../../store"
-import { subscribe, pause, resume } from "../../features/streams/streamsSlice"
 import { createOHLCDataSet, chunkTimestampsIntoDays } from "./utils"
+import withStreamSubscription from "../../features/streams/withStreamSubscription"
 
-function Chart({ data }: {
+function MemberChart({ data }: {
     data: API.Event<API.MemberEventMeta>[]
 }) {
     const theme = useTheme()
@@ -56,6 +54,8 @@ function Chart({ data }: {
         candleStickSeriesRef.current = chart.addCandlestickSeries()
 
         candleStickSeriesRef.current.setData(memberCountsOHLC)
+
+        // eslint-disable-next-line
     }, [])
 
     return (
@@ -63,42 +63,4 @@ function Chart({ data }: {
     )
 }
 
-function MemberChart({ guild }: { guild: API.Guild }) {
-    const streamArgs = useMemo<API.StreamArgs>(() => ({
-        eventStream: "members",
-        guildId: guild.id
-    }), [guild.id])
-
-    const dispatch = useDispatch()
-
-    const status = useSelector((store: RootState) => store.streams[guild.id]?.members.status)
-    const data = useSelector(
-        (store: RootState) => store.streams[guild.id]?.members.data as API.Event<API.MemberEventMeta>[]
-    )
-
-    useEffect(() => {
-        if (status === "idle") {
-            dispatch(subscribe(streamArgs))
-        } else if (status === "paused") {
-            dispatch(resume(streamArgs))
-        }
-    }, [streamArgs, status, dispatch])
-
-    useEffect(() => {
-        return () => {
-            dispatch(pause(streamArgs))
-        }
-    }, [streamArgs, dispatch])
-
-    if (status === "flowing") {
-        if (data.length === 0) {
-            return <div>No data available</div>
-        }
-
-        return <Chart data={data}/>
-    }
-
-    return <CircularProgress/>
-}
-
-export default MemberChart
+export default withStreamSubscription(MemberChart, "members")
