@@ -120,7 +120,7 @@ export declare namespace API {
         type: EVENT_TYPES,
         timestamp: number,
         guild_id?: string,
-        meta?: TMeta
+        meta: TMeta
     }
 
     export type MemberEventMeta = {
