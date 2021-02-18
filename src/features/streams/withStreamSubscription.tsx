@@ -1,10 +1,41 @@
 import React, { useEffect, useMemo } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { CircularProgress } from "@material-ui/core"
+import { CircularProgress, Typography } from "@material-ui/core"
+import { makeStyles } from "@material-ui/core/styles"
 
 import { RootState } from "../../store"
 import { API } from "../../config/types"
 import { subscribe, pause, resume } from "./streamsSlice"
+
+const useStyles = makeStyles({
+    overlayContainer: {
+        position: "relative"
+    },
+
+    overlay: {
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        zIndex: 1
+    }    
+})
+
+function Overlay({ overlay, children }: React.PropsWithChildren<{
+    overlay: React.ReactElement
+}>) {
+    const classes = useStyles()
+
+    return (
+        <div className={classes.overlayContainer}>
+            {children}
+
+            {React.cloneElement(React.Children.only(overlay), {
+                className: classes.overlay
+            })}
+        </div>
+    )
+}
 
 function withStreamSubscription(
     Child: React.FunctionComponent<any>,
@@ -42,7 +73,13 @@ function withStreamSubscription(
         if (status === "flowing") {
             if (data.length === 0) {
                 return (
-                    <div>No data available</div>
+                    <Overlay
+                        overlay={(
+                            <Typography variant="h6">No data available</Typography>
+                        )}
+                    >
+                        <Child data={[]}/>
+                    </Overlay>
                 )
             }
 

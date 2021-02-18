@@ -148,6 +148,10 @@ export function forEachDayInTimestamps<T extends TimestampObject>(
         currentDay: number
     ) => void
 ) {
+    if (data.length === 0) {
+        return new Map<number, number | null>()
+    }
+
     const dayMap: Map<number, number | null> = createEmptyDayMap(
         data[0].timestamp,
         Date.now()
@@ -200,6 +204,10 @@ export function forEachDayInTimestamps<T extends TimestampObject>(
  * }
  */
 export function chunkTimestampsIntoDays<T extends TimestampObject>(data: T[]) {
+    if (data.length === 0) {
+        return new Map<number, T[] | null>()
+    }
+
     const dayMap: Map<number, T[] | null> = createEmptyDayMap(
         data[0].timestamp,
         Date.now()

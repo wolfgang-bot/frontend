@@ -47,16 +47,16 @@ function MemberChart({ data }: {
         )
 
         return [ohlcDataset, histogramDataset]
-    }, [data])
+    }, [data, theme.palette.error.main, theme.palette.success.main])
 
     useEffect(() => {
-        if (candleStickSeriesRef.current) {
+        if (candleStickSeriesRef.current && memberCountsOHLC.length > 0) {
             candleStickSeriesRef.current.update(
                 memberCountsOHLC[memberCountsOHLC.length - 1]
             )
         }
 
-        if (histogramSeriesRef.current) {
+        if (histogramSeriesRef.current && memberVolumes.length > 0) {
             histogramSeriesRef.current.update(
                 memberVolumes[memberVolumes.length - 1]
             )
