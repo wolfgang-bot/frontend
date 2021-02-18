@@ -13,7 +13,10 @@ const store = configureStore({
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
         thunk: {
             extraArgument: { api }
-        }
+        },
+        serializableCheck: false,
+        immutableCheck: false
+
     })
         .concat(authMiddleware)
         .concat(streamControlMiddleware)

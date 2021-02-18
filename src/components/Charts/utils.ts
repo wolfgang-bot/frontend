@@ -280,3 +280,62 @@ export function createOHLCDataSet<T>(
 
     return dataset
 }
+
+/**
+ * Create a histogram dataset from a map where the keys are
+ * timestamps and the values are arrays of some datatype T.
+ * The second parameter defines how to generate an entry for
+ * the dataset consisting of a value and a color out of an
+ * array of T.
+ *
+ * --Example--
+ *
+ * Input:
+ *
+ * Map: {
+ *      [UNIX for 01.01.2021 12:00]: [
+ *          { abc: 10 },
+ *          { abc: 5 },
+ *          { abc: 13 }
+ *      ]
+ * }
+ * (values) => ({
+ *      time: [UNIX for 01.01.2021 12:00],
+ *      value: values.length,
+ *      color: "blue"
+ * })
+ *
+ * Output:
+ *
+ * [
+ *      {
+ *          time: [UNIX for 01.01.2021 12:00],
+ *          value: 3,
+ *          color: "blue"
+ *      }
+ * ]
+ */
+export function createHistogramDataset<T>(
+    dayMap: Map<number, T[] | null>,
+    getValuesForDay: (values: T[]) => {
+        value: number,
+        color: string
+    }
+) {
+    const dataset: (BarData | WhitespaceData)[] = []
+
+    dayMap.forEach((values, key) => {
+        const time = new Date(key).toUTCString()
+
+        if (!values || values.length === 0) {
+            dataset.push({ time })
+        } else {
+            dataset.push({
+                time,
+                ...getValuesForDay(values)
+            })
+        }
+    })
+
+    return dataset
+}

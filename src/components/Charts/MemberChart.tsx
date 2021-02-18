@@ -2,9 +2,10 @@ import { useEffect, useMemo, useRef } from "react"
 import { useTheme } from "@material-ui/core"
 import { createChart, CrosshairMode, ISeriesApi } from "lightweight-charts"
 
-import { API } from "../../config/types"
+import { API, EVENT_TYPES } from "../../config/types"
 import { createOHLCDataSet, chunkTimestampsIntoDays } from "./utils"
 import withStreamSubscription from "../../features/streams/withStreamSubscription"
+import { createHistogramDataset } from "./utils"
 
 function MemberChart({ data }: {
     data: API.Event<API.MemberEventMeta>[]
@@ -14,13 +15,37 @@ function MemberChart({ data }: {
     const containerRef = useRef<HTMLDivElement>(null)
     const candleStickSeriesRef = useRef<ISeriesApi<"Candlestick">>()
     
-    const memberCountsOHLC = useMemo(() => {
-        return createOHLCDataSet(
-            chunkTimestampsIntoDays(data),
+    const [memberCountsOHLC, memberVolumes] = useMemo(() => {
+        const dayMap = chunkTimestampsIntoDays(data)
+
+        const ohlcDataset = createOHLCDataSet(
+            dayMap,
             (events) => {
                 return events.map(event => event.meta.memberCount)
             }
         )
+
+        const histogramDataset = createHistogramDataset(
+            dayMap,
+            (events) => {
+                let delta = 0
+
+                events.forEach(event => {
+                    if (event.type === EVENT_TYPES.GUILD_MEMBER_ADD) {
+                        delta++
+                    } else if (event.type === EVENT_TYPES.GUILD_MEMBER_REMOVE) {
+                        delta--
+                    }
+                })
+
+                return {
+                    value: events.length,
+                    color: delta < 0 ? theme.palette.error.main : theme.palette.success.main
+                }
+            }
+        )
+
+        return [ohlcDataset, histogramDataset]
     }, [data])
 
     useEffect(() => {
@@ -54,6 +79,10 @@ function MemberChart({ data }: {
         candleStickSeriesRef.current = chart.addCandlestickSeries()
 
         candleStickSeriesRef.current.setData(memberCountsOHLC)
+
+        const volumeSeries = chart.addHistogramSeries()
+        
+        volumeSeries.setData(memberVolumes)
 
         // eslint-disable-next-line
     }, [])
