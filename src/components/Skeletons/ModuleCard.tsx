@@ -18,7 +18,7 @@ function ModuleName({ seed }: { seed: number }) {
     )
 }
 
-function ModuleCard({ seed }: { seed: number }) {
+function ModuleCard({ seed, guild }: { seed: number, guild?: boolean }) {
     return (
         <Card>
             <CardActionArea>
@@ -29,11 +29,13 @@ function ModuleCard({ seed }: { seed: number }) {
                 />
             </CardActionArea>
 
-            <CardActions>
-                <IconButton/>
-                <IconButton/>
-                <IconButton/>
-            </CardActions>
+            {guild && (
+                <CardActions>
+                    <IconButton />
+                    <IconButton />
+                    <IconButton />
+                </CardActions>
+            )}
         </Card>
     )
 }

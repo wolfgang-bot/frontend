@@ -28,7 +28,7 @@ function ModuleListForGuild({ guild }: { guild: API.Guild }) {
 
     useEffect(() => {
         if (modulesStatus === "idle") {
-            dispatch(fetchModules())
+            dispatch(fetchModules("ws"))
         }
     }, [modulesStatus, dispatch])
 

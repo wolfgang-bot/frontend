@@ -11,16 +11,16 @@ for (let i = 0; i < AMOUNT_OF_CARDS; i++) {
     seeds[i] = Math.random()
 }
 
-function ModuleListForGuild() {
+function ModuleList() {
     return (
         <Grid container spacing={2}>
             {seeds.map((seed, index) => (
                 <Grid item key={index}>
-                    <ModuleCard seed={seed} guild/>
+                    <ModuleCard seed={seed} />
                 </Grid>
             ))}
         </Grid>
     )
 }
 
-export default ModuleListForGuild
+export default ModuleList

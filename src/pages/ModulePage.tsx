@@ -55,7 +55,8 @@ function ModulePage({ renderSidebar }: { renderSidebar?: boolean }) {
 
     useEffect(() => {
         if (moduleStatus === "idle") {
-            dispatch(fetchModules())
+            const api = guildId ? "ws" : "http"
+            dispatch(fetchModules(api))
         }
     }, [moduleStatus, dispatch])
 

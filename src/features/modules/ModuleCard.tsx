@@ -10,17 +10,21 @@ import RestartButton from "./RestartButton"
 type Props = {
     module: API.Module,
     instance?: API.ModuleInstance,
-    guild: API.Guild
+    guild?: API.Guild
 }
 
 function ModuleCard({ module, instance, guild }: Props) {
     const history = useHistory()
 
     const handleClick = () => {
-        history.push(`/dashboard/${guild.id}/module/${module.key}`)
+        if (guild) {
+            history.push(`/dashboard/${guild.id}/module/${module.key}`)
+        } else {
+            history.push(`/module/${module.key}`)
+        }
     }
 
-    const commonButtonProps = { module, instance, guild }
+    const commonButtonProps = { module, instance, guild: guild! }
 
     const isActive = instance?.state === INSTANCE_STATES.ACTIVE
 
@@ -34,23 +38,25 @@ function ModuleCard({ module, instance, guild }: Props) {
                 />
             </CardActionArea>
 
-            <CardActions>
-                <StartButton
-                    {...commonButtonProps}
-                    disabled={isActive}
-                    size="small"
-                />
-                <StopButton
-                    {...commonButtonProps}
-                    disabled={!isActive}
-                    size="small"
-                />
-                <RestartButton
-                    {...commonButtonProps}
-                    disabled={!isActive}
-                    size="small"
-                />
-            </CardActions>
+            {guild && (
+                <CardActions>
+                    <StartButton
+                        {...commonButtonProps}
+                        disabled={isActive}
+                        size="small"
+                    />
+                    <StopButton
+                        {...commonButtonProps}
+                        disabled={!isActive}
+                        size="small"
+                    />
+                    <RestartButton
+                        {...commonButtonProps}
+                        disabled={!isActive}
+                        size="small"
+                    />
+                </CardActions>
+            )}
         </Card>
     )
 }

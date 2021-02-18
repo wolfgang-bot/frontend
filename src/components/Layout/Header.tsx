@@ -51,7 +51,7 @@ function Header({ renderSidebar }: { renderSidebar?: boolean }) {
         <AppBar className={classes.header} position="fixed">
             <Toolbar className={classes.toolbar}>
                 <Grid item container justify="space-between" wrap="nowrap">
-                    <Box>
+                    <Box display="flex" alignItems="center">
                         {!renderSidebar && (
                             <Link to="/">
                                 <Typography color="textPrimary" variant="h6">

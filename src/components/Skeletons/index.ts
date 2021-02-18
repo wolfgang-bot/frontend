@@ -1,11 +1,5 @@
-import ModuleCard from "./ModuleCard"
-import ModuleListForGuild from "./ModuleListForGuild"
-import ConfigForm from "./ConfigForm"
-import ChannelInput from "./ChannelInput"
-
-export {
-    ModuleCard,
-    ModuleListForGuild,
-    ConfigForm,
-    ChannelInput
-}
+export { default as ModuleCard } from "./ModuleCard"
+export { default as ModuleList } from "./ModuleList"
+export { default as ModuleListForGuild } from "./ModuleListForGuild"
+export { default as ConfigForm } from "./ConfigForm"
+export { default as ChannelInput } from "./ChannelInput"
