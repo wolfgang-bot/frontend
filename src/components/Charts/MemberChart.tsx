@@ -14,6 +14,7 @@ function MemberChart({ data }: {
 
     const containerRef = useRef<HTMLDivElement>(null)
     const candleStickSeriesRef = useRef<ISeriesApi<"Candlestick">>()
+    const histogramSeriesRef = useRef<ISeriesApi<"Histogram">>()
     
     const [memberCountsOHLC, memberVolumes] = useMemo(() => {
         const dayMap = chunkTimestampsIntoDays(data)
@@ -54,7 +55,13 @@ function MemberChart({ data }: {
                 memberCountsOHLC[memberCountsOHLC.length - 1]
             )
         }
-    }, [memberCountsOHLC])
+
+        if (histogramSeriesRef.current) {
+            histogramSeriesRef.current.update(
+                memberVolumes[memberVolumes.length - 1]
+            )
+        }
+    }, [memberCountsOHLC, memberVolumes])
 
     useEffect(() => {
         if (!containerRef.current) {
@@ -77,12 +84,10 @@ function MemberChart({ data }: {
         })
 
         candleStickSeriesRef.current = chart.addCandlestickSeries()
-
         candleStickSeriesRef.current.setData(memberCountsOHLC)
 
-        const volumeSeries = chart.addHistogramSeries()
-        
-        volumeSeries.setData(memberVolumes)
+        histogramSeriesRef.current = chart.addHistogramSeries()
+        histogramSeriesRef.current.setData(memberVolumes)
 
         // eslint-disable-next-line
     }, [])

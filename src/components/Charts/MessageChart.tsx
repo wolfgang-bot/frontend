@@ -2,17 +2,23 @@ import { useMemo } from "react"
 import { useTheme } from "@material-ui/core"
 import { Bar } from "react-chartjs-2"
 
-import { countTimestampsOfDays } from "./utils"
+import { forEachDayInTimestamps } from "./utils"
 import withStreamSubscription from "../../features/streams/withStreamSubscription"
 
 function MessageChart({ data }: { data: number[] }) {
     const theme = useTheme()
     
-    const partitions = useMemo(() => {
-        return countTimestampsOfDays(data)
+    const messagesPerDayMap = useMemo(() => {
+        return forEachDayInTimestamps(
+            data.map(timestamp => ({ timestamp })),
+            (_entry, dayMap, currentDay) => {
+                const currentValue = dayMap.get(currentDay) || 0
+                dayMap.set(currentDay, currentValue + 1)
+            }
+        )
     }, [data])
 
-    const labels = Array.from(partitions.keys())
+    const labels = Array.from(messagesPerDayMap.keys())
         .map((timestamp: number) => new Date(timestamp).toLocaleDateString())
 
     return (
@@ -22,7 +28,7 @@ function MessageChart({ data }: { data: number[] }) {
                 datasets: [
                     {
                         label: "Messages",
-                        data: Array.from(partitions.values()),
+                        data: Array.from(messagesPerDayMap.values()),
                         backgroundColor: theme.palette.secondary.main
                     }
                 ]

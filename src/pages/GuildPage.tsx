@@ -10,6 +10,7 @@ import LocaleSelect from "../features/locales/LocaleSelect"
 import ModuleListForGuild from "../features/modules/ModuleListForGuild"
 import MemberChart from "../components/Charts/MemberChart"
 import MessageChart from "../components/Charts/MessageChart"
+import VoiceDurationChart from "../components/Charts/VoiceDurationChart"
 import * as Skeletons from "../components/Skeletons"
 
 function GuildPage() {
@@ -32,6 +33,8 @@ function GuildPage() {
                 <MemberChart guild={guild}/>
                 <Typography variant="h6">Message Chart</Typography>
                 <MessageChart guild={guild}/>
+                <Typography variant="h6">Voice Duration Chart</Typography>
+                <VoiceDurationChart guild={guild}/>
                 <Typography variant="h6">Modules</Typography>
                 <ModuleListForGuild guild={guild} />
             </>

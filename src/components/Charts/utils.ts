@@ -117,9 +117,8 @@ export function createEmptyDayMap(
 
 /**
  * Create a map where the keys are timestamps for each day at 00:00 since
- * the earliest timestamp in the given array. The values are the amount of
- * timestamps in the given array which are in between the beginning and the
- * end of the day.
+ * the earliest timestamp in the given array. The values may be generated
+ * by the given callback.
  * Assumes that the given array of timestamps is sorted in ascending order.
  * 
  * --Example--
@@ -136,27 +135,33 @@ export function createEmptyDayMap(
  * Output:
  * 
  * Map: {
- *      [UNIX for 01.01.2021]: 3,
- *      [UNIX for 02.01.2021]: null,
- *      [UNIX for 03.01.2021]: 1
+ *      [UNIX for 01.01.2021]: ... (default: null),
+ *      [UNIX for 02.01.2021]: ... (default: null),
+ *      [UNIX for 03.01.2021]: ... (default: null)
  * }
  */
-export function countTimestampsOfDays(timestamps: number[]) {
+export function forEachDayInTimestamps<T extends TimestampObject>(
+    data: T[],
+    callback: (
+        entry: T,
+        dayMap: Map<number, number | null>,
+        currentDay: number
+    ) => void
+) {
     const dayMap: Map<number, number | null> = createEmptyDayMap(
-        timestamps[0],
+        data[0].timestamp,
         Date.now()
     )
 
     const days = Array.from(dayMap.keys())
     let currentDayIndex = 0
 
-    for (let timestamp of timestamps) {
-        while (timestamp >= days[currentDayIndex + 1]) {
+    for (let entry of data) {
+        while (entry.timestamp >= days[currentDayIndex + 1]) {
             currentDayIndex++
         }
 
-        const currentValue = dayMap.get(days[currentDayIndex]) || 0
-        dayMap.set(days[currentDayIndex], currentValue + 1)
+        callback(entry, dayMap, days[currentDayIndex])
     }
 
     return dayMap
