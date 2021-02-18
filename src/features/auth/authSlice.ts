@@ -31,8 +31,9 @@ const authSlice = createSlice({
         },
         logout: (state) => {
             state.data.user = undefined
+            state.status = "idle"
         },
-        init: (state, action: PayloadAction<{
+        initAPI: (state, action: PayloadAction<{
             token?: string | null
         }>) => {
             state.status = "pending"
@@ -53,6 +54,6 @@ const authSlice = createSlice({
     }
 })
 
-export const { login, logout, init } = authSlice.actions
+export const { login, logout, initAPI } = authSlice.actions
 
 export default authSlice.reducer

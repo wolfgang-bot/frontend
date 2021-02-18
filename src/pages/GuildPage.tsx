@@ -14,9 +14,9 @@ import VoiceDurationChart from "../components/Charts/VoiceDurationChart"
 import * as Skeletons from "../components/Skeletons"
 
 function GuildPage() {
-    const { id } = useParams<{ id: string }>()
+    const { guildId } = useParams<{ guildId: string }>()
 
-    const guild = useSelector((store: RootState) => store.guilds.data[id])
+    const guild = useSelector((store: RootState) => store.guilds.data[guildId])
     const status = useSelector((store: RootState) => store.guilds.status)
     const error = useSelector((store: RootState) => store.guilds.error)
 
@@ -47,6 +47,7 @@ function GuildPage() {
 
     return (
         <Layout
+            renderSidebar
             sidebarProps={{
                 activeGuildId: guild?.id
             }}

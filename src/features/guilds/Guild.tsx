@@ -18,7 +18,7 @@ function Guild({ guild, active = false }: {
         if (!guild.isActive) {
             window.open(DISCORD_BOT_INVITE_URL + "&guild_id=" + guild.id, "_blank", "noopener,noreferrer")
         } else {
-            history.push("/guild/" + guild.id)
+            history.push("/dashboard/" + guild.id)
         }
     }
 

@@ -17,7 +17,7 @@ function ModuleCard({ module, instance, guild }: Props) {
     const history = useHistory()
 
     const handleClick = () => {
-        history.push(`/module/${module.key}/${guild.id}`)
+        history.push(`/dashboard/${guild.id}/module/${module.key}`)
     }
 
     const commonButtonProps = { module, instance, guild }

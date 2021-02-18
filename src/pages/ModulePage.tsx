@@ -12,7 +12,7 @@ import { API } from "../config/types"
 import Logger from "../utils/Logger"
 import opener from "../components/ComponentOpener"
 
-function ModulePage() {
+function ModulePage({ renderSidebar }: { renderSidebar?: boolean }) {
     const { key, guildId } = useParams<{
         key: string,
         guildId: string
@@ -140,7 +140,7 @@ function ModulePage() {
     }
 
     return (
-        <Layout>
+        <Layout renderSidebar={renderSidebar}>
             {child}
         </Layout>
     )

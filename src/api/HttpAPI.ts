@@ -11,13 +11,20 @@ class HttpAPI {
         this.endpoint = endpoint
     }
 
-    init(token: string) {
+    init() {
         this.axios = axios.create({
-            baseURL: this.endpoint,
-            headers: {
-                "Authorization": "Baerer " + token
-            }
+            baseURL: this.endpoint
         })
+    }
+
+    login(token: string) {
+        if (!this.axios) {
+            return
+        }
+
+        this.axios.defaults.headers = {
+            "Authorization": "Baerer " + token
+        }
     }
 
     fetch<T>(config: AxiosRequestConfig): Promise<AxiosResponse<T>> {
@@ -35,6 +42,15 @@ class HttpAPI {
     async getProfile() {
         return await this.get<API.User>("/oauth/discord/profile")
             .then(format<API.User>(FORMATS.USER))
+    }
+
+    async getModules() {
+        return await this.get<API.Module[]>("/modules")
+            .then(format<API.Module[]>(FORMATS.MODULES))
+    }
+
+    async getCommands() {
+        return await this.get<API.Command[]>("/commands")
     }
 }
 

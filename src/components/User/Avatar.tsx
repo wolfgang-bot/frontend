@@ -14,7 +14,7 @@ type StyleProps = {
 
 const useStyles = makeStyles<typeof theme, StyleProps>({
     avatar: props => ({
-        cursor: !props.clickable ? "pointer" : "",
+        cursor: props.clickable ? "pointer" : "",
         width: props.size,
         height: props.size
     })

@@ -11,10 +11,16 @@ class API {
     }) {
         this.http = new HttpAPI(httpEndpoint)
         this.ws = new WebSocketAPI(webSocketEndpoint)
+
+        this.init()
     }
 
-    async init(token: string) {
-        this.http.init(token)
+    async init() {
+        this.http.init()
+    }
+
+    async login(token: string) {
+        this.http.login(token)
         await this.ws.init(token)
     }
 }

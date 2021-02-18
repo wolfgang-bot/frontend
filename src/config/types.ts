@@ -141,6 +141,20 @@ export declare namespace API {
         eventStream: EVENT_STREAM,
         guildId: string
     }
+
+    export type ExecutableCommand = {
+        name: string,
+        group: string,
+        module: string,
+        description: string,
+        usage: string
+    }
+
+    export type CommandRegistry = ExecutableCommand & {
+        commands: Command[]
+    }
+
+    export type Command = ExecutableCommand | CommandRegistry
 }
 
 export type LoadingState = "idle" | "pending" | "success" | "error"
