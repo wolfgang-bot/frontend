@@ -1,11 +1,20 @@
 import React from "react"
 import { useHistory } from "react-router-dom"
-import { Card, CardHeader, CardActionArea, CardActions, Avatar, Typography } from "@material-ui/core"
+import { Card, CardHeader, CardActionArea, CardActions, Typography } from "@material-ui/core"
+import { makeStyles } from "@material-ui/core/styles"
 
 import { API, INSTANCE_STATES } from "../../config/types"
 import StartButton from "./StartButton"
 import StopButton from "./StopButton"
 import RestartButton from "./RestartButton"
+
+const useStyles = makeStyles({
+    icon: {
+        borderRadius: "50%",
+        width: 32,
+        height: 32
+    }
+})
 
 type Props = {
     module: API.Module,
@@ -15,6 +24,8 @@ type Props = {
 
 function ModuleCard({ module, instance, guild }: Props) {
     const history = useHistory()
+
+    const classes = useStyles()
 
     const handleClick = () => {
         if (guild) {
@@ -29,11 +40,11 @@ function ModuleCard({ module, instance, guild }: Props) {
     const isActive = instance?.state === INSTANCE_STATES.ACTIVE
 
     return (
-        <Card>
+        <Card variant="outlined">
             <CardActionArea onClick={handleClick}>
                 <CardHeader
                     disableTypography
-                    avatar={<Avatar src={module.icon}/>}
+                    avatar={<img src={module.icon} className={classes.icon}/>}
                     title={<Typography variant="body1">{module.translations.name}</Typography>}
                 />
             </CardActionArea>

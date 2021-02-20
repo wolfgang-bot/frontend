@@ -4,7 +4,6 @@ import { makeStyles } from "@material-ui/core/styles"
 
 import { theme } from "../../index"
 import Header from "./Header"
-import Sidebar from "./Sidebar"
 import ComponentOpener from "../ComponentOpener/ComponentOpener"
 
 type StyleProps = {
@@ -17,7 +16,8 @@ type Props = React.PropsWithChildren<{
 
 const useStyles = makeStyles<typeof theme, StyleProps>(theme => ({
     layout: {
-        display: "flex"
+        display: "flex",
+        paddingTop: theme.spacing(8)
     },
     
     body: props => props.center ? {

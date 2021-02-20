@@ -62,14 +62,14 @@ function Header() {
                         
                         {!isLoggedIn ? (
                             <Link to="/login">
-                                <Button variant="contained">
+                                <Button variant="outlined">
                                     Login
                                 </Button>
                             </Link>
                         ) : (
                             <Box display="flex" alignItems="center">
                                 <Button
-                                    variant="contained"
+                                    variant="outlined"
                                     onClick={handleLogin}
                                     className={classes.spacingRight}
                                 >
