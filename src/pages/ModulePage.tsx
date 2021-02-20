@@ -1,7 +1,9 @@
 import React, { useEffect, useRef } from "react"
 import { useParams } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
-import { CircularProgress, Grid, Avatar, Typography, List, ListItem, ListItemText, Box, Button } from "@material-ui/core"
+import { CircularProgress, Grid, Typography, Box, Button } from "@material-ui/core"
+import { makeStyles } from "@material-ui/core/styles"
+import ChevronRightIcon from "@material-ui/icons/ChevronRight"
 
 import { RootState } from "../store"
 import Layout from "../components/Layout/Layout"
@@ -13,11 +15,47 @@ import Logger from "../utils/Logger"
 import opener from "../components/ComponentOpener"
 import CommandListForModule from "../features/commands/CommandListForModule"
 
+const useStyles = makeStyles(theme => ({
+    title: {
+        margin: `${theme.spacing(4)}px 0`
+    },
+
+    icon: {
+        borderRadius: "50%",
+        width: 32,
+        height: 32
+    },
+
+    listItem: {
+        display: "flex",
+        alignItems: "center",
+        marginBottom: theme.spacing(1)
+    },
+
+    bullet: {
+        width: 20,
+        height: 20,
+        marginRight: theme.spacing(1)
+    }
+}))
+
+function Title(props: React.PropsWithChildren<any>) {
+    const classes = useStyles()
+
+    return (
+        <Typography variant="h5" className={classes.title}>
+            {props.children}
+        </Typography>
+    )
+}
+
 function ModulePage() {
     const { key, guildId } = useParams<{
         key: string,
         guildId: string
     }>()
+
+    const classes = useStyles()
 
     const configFormRef = useRef<RefHandle>(null)
 
@@ -76,63 +114,47 @@ function ModulePage() {
         (!guildId || guildsStatus === "success")
     ) {
         child = (
-            <div>
-                <Box mb={4}>
+            <>
+                <Box mt={4}>
                     <Grid container spacing={2}>
                         <Grid item>
-                            <Avatar src={module.icon}/>
+                            <img src={module.icon} className={classes.icon}/>
                         </Grid>
                         <Grid item>
-                            <Typography variant="h5">{module.translations.name}</Typography>
+                            <Typography variant="h5">
+                                {module.translations.name}
+                            </Typography>
                         </Grid>
                     </Grid>
                 </Box>
 
-                <Box mb={4}>
-                    <Grid container spacing={2}>
-                        <Grid item xs>
-                            <Typography variant="h6">Features</Typography>
-                            <List>
-                                {module.translations.features.map((feature, index) => (
-                                    <ListItem key={index}>
-                                        <ListItemText primary={feature}/>
-                                    </ListItem>
-                                ))}
-                            </List>
-                        </Grid>
-                        <Grid item xs>
-                            <Typography variant="h6">Arguments</Typography>
-                            <List>
-                                {module.translations.args.map(arg => (
-                                    <ListItem key={arg.key}>
-                                        <ListItemText
-                                            primary={arg.name}
-                                            secondary={arg.desc}
-                                        />
-                                    </ListItem>
-                                ))}
-                            </List>
-                        </Grid>
+                <Grid container spacing={2}>
+                    <Grid item xs>
+                        <Title>Features</Title>
+                        {module.translations.features.map((feature, index) => (
+                            <Typography variant="body1" className={classes.listItem}>
+                                <ChevronRightIcon className={classes.bullet}/>
+                                {feature}
+                            </Typography>
+                        ))}
                     </Grid>
-                </Box>
+                </Grid>
 
-                <Box mb={4}>
-                    <Typography variant="h6">Commands</Typography>
-                    <CommandListForModule moduleKey={module.key}/>
-                </Box>
+                <Title>Commands</Title>
+                <CommandListForModule moduleKey={module.key}/>
 
                 { guildId && (
-                    <div>
-                        <Typography variant="h6">Configuration</Typography>
+                    <>
+                        <Title>Configuration</Title>
                         <ConfigForm
                             guild={guild}
                             module={module}
                             ref={configFormRef}    
                         />
                         <Button variant="outlined" onClick={handleUpdateConfig}>Save</Button>
-                    </div>
+                    </>
                 ) }
-            </div>
+            </>
         )
     }
     
