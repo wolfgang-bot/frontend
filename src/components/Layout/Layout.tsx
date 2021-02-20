@@ -29,6 +29,10 @@ const useStyles = makeStyles<typeof theme, StyleProps>(theme => ({
     } : {}
 }))
 
+export const LayoutContext = React.createContext({
+    isDashboard: false
+})
+
 function Layout({
     center = false,
     children

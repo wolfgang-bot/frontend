@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useContext } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { useHistory, Link } from "react-router-dom"
 import { AppBar, Toolbar, Button, Grid, Divider, Container, Box, Typography } from "@material-ui/core"
@@ -8,6 +8,7 @@ import { RootState } from "../../store"
 import { logout } from "../../features/auth/authSlice"
 import Avatar from "../User/Avatar"
 import Brand from "./Brand"
+import { LayoutContext } from "./Layout"
 
 const useStyles = makeStyles(theme => ({
     header: {
@@ -30,6 +31,8 @@ const useStyles = makeStyles(theme => ({
 }))
 
 function Header() {
+    const context = useContext(LayoutContext)
+
     const classes = useStyles()
 
     const history = useHistory()
@@ -39,7 +42,7 @@ function Header() {
     const user = useSelector((store: RootState) => store.auth.data.user)
     const isLoggedIn = !!user
 
-    const handleLogin = () => {
+    const handleDashboardClick = () => {
         history.push("/dashboard")
     }
 
@@ -69,11 +72,13 @@ function Header() {
                         ) : (
                             <Box display="flex" alignItems="center">
                                 <Button
-                                    variant="outlined"
-                                    onClick={handleLogin}
+                                    variant={
+                                        context.isDashboard ? "text" : "outlined"
+                                    }
+                                    onClick={handleDashboardClick}
                                     className={classes.spacingRight}
                                 >
-                                    Dashboard
+                                    {context.isDashboard ? "Guilds" : "Dashboard"}
                                 </Button>
 
                                 <Button

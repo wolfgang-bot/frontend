@@ -105,7 +105,11 @@ function ModulePage() {
                 <Box mt={4}>
                     <Grid container spacing={2}>
                         <Grid item>
-                            <img src={module.icon} className={classes.icon}/>
+                            <img
+                                src={module.icon}
+                                className={classes.icon}
+                                alt="Icon"
+                            />
                         </Grid>
                         <Grid item>
                             <Typography variant="h5">

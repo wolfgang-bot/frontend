@@ -9,6 +9,8 @@ import DiscordOAuth from "../components/OAuth/DiscordOAuth"
 import { API_TOKEN } from "../config/constants"
 import { initAPI } from "../features/auth/authSlice"
 
+const DEFAULT_REDIRECT = "/dashboard"
+
 function LoginPage() {
     const location = useLocation()
     
@@ -28,7 +30,7 @@ function LoginPage() {
 
     if (status === "success") {
         const redirect = new URLSearchParams(location.search).get("redirect_to")
-        return <Redirect to={redirect || "/"}/>
+        return <Redirect to={redirect || DEFAULT_REDIRECT}/>
     }
 
     if (status === "idle") {

@@ -1,9 +1,10 @@
-import React from "react"
-import { useSelector } from "react-redux"
-import { useParams } from "react-router-dom"
+import React, { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { Redirect, useParams } from "react-router-dom"
 import { Typography } from "@material-ui/core"
 
 import { RootState } from "../store"
+import { fetchGuilds } from "../features/guilds/guildsSlice"
 import Layout from "../components/Layout/Layout"
 import MemberCount from "../features/guilds/MemberCount"
 import LocaleSelect from "../features/locales/LocaleSelect"
@@ -16,13 +17,25 @@ import * as Skeletons from "../components/Skeletons"
 function GuildPage() {
     const { guildId } = useParams<{ guildId: string }>()
 
+    const dispatch = useDispatch()
+
     const guild = useSelector((store: RootState) => store.guilds.data[guildId])
     const status = useSelector((store: RootState) => store.guilds.status)
     const error = useSelector((store: RootState) => store.guilds.error)
 
+    useEffect(() => {
+        if (status === "idle") {
+            dispatch(fetchGuilds())
+        }
+    }, [status, dispatch])
+
     let child = <Skeletons.ModuleListForGuild/>
 
     if (status === "success") {
+        if (!guild.isActive) {
+            return <Redirect to="/not-found" />
+        }
+        
         child = (
             <>
                 <Typography variant="h6">Member Count</Typography>

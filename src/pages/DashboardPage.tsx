@@ -11,7 +11,7 @@ import Title from "../components/Styled/Title"
 
 const useStyles = makeStyles(theme => ({
     guildCard: {
-        marginTop: theme.spacing(3)
+        marginTop: theme.spacing(2)
     }
 }))
 
@@ -28,7 +28,7 @@ function DashboardPage() {
         if (status === "idle") {
             dispatch(fetchGuilds())
         }
-    }, [])
+    }, [status, dispatch])
 
     let child = <CircularProgress/>
 

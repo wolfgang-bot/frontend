@@ -44,8 +44,18 @@ function ModuleCard({ module, instance, guild }: Props) {
             <CardActionArea onClick={handleClick}>
                 <CardHeader
                     disableTypography
-                    avatar={<img src={module.icon} className={classes.icon}/>}
-                    title={<Typography variant="body1">{module.translations.name}</Typography>}
+                    avatar={
+                        <img
+                            src={module.icon}
+                            className={classes.icon}
+                            alt="Icon"
+                        />
+                    }
+                    title={
+                        <Typography variant="body1">
+                            {module.translations.name}
+                        </Typography>
+                    }
                 />
             </CardActionArea>
 

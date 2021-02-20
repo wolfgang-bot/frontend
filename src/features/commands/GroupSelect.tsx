@@ -14,6 +14,8 @@ function GroupSelect({ groups, onChange, className }: {
 
     useEffect(() => {
         onChange(groups[value])
+
+        // eslint-disable-next-line
     }, [value])
 
     return (
