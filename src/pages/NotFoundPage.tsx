@@ -6,7 +6,7 @@ import notFoundAnimation from "../assets/images/not-found.webp"
 function NotFoundPage() {
     return (
         <Layout center>
-            <img src={notFoundAnimation} alt="Funny Vincent Vega GIF ;)"/>
+            <img src={notFoundAnimation} alt="Page not found"/>
         </Layout>
     )
 }

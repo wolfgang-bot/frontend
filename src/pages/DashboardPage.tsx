@@ -1,36 +1,63 @@
-import React from "react"
-import { Switch, Route, useRouteMatch } from "react-router-dom"
+import React, { useEffect } from "react"
+import { useSelector, useDispatch } from "react-redux"
+import { CircularProgress } from "@material-ui/core"
+import { makeStyles } from "@material-ui/core/styles"
 
+import { RootState } from "../store"
+import { fetchGuilds } from "../features/guilds/guildsSlice"
 import Layout from "../components/Layout/Layout"
-import GuildPage from "./GuildPage"
-import ModulePage from "./ModulePage"
+import GuildCard from "../features/guilds/GuildCard"
+import Title from "../components/Styled/Title"
+
+const useStyles = makeStyles(theme => ({
+    guildCard: {
+        marginTop: theme.spacing(3)
+    }
+}))
 
 function DashboardPage() {
+    const classes = useStyles()
+
+    const dispatch = useDispatch()
+
+    const status = useSelector((store: RootState) => store.guilds.status)
+    const data = useSelector((store: RootState) => store.guilds.data)
+    const error = useSelector((store: RootState) => store.guilds.error)
+
+    useEffect(() => {
+        if (status === "idle") {
+            dispatch(fetchGuilds())
+        }
+    }, [])
+
+    let child = <CircularProgress/>
+
+    if (status === "success") {
+        child = (
+            <>
+                <Title>Guild Selection</Title>
+
+                {Object.values(data).map(guild => (
+                    <GuildCard
+                        key={guild.id}
+                        guild={guild}
+                        className={classes.guildCard}
+                    />
+                ))}
+            </>
+        )
+    }
+
+    if (status === "error") {
+        child = (
+            <div>{error}</div>
+        )
+    }
+
     return (
         <Layout>
-            Dashboard
+            {child}
         </Layout>
     )
 }
-
-function DashboardRouter() {
-    const { path } = useRouteMatch()
-
-    return (
-        <Switch>
-            <Route exact path={path}>
-                <DashboardPage/>
-            </Route>
-
-            <Route path={`${path}/:guildId/module/:key`}>
-                <ModulePage/>
-            </Route>
-
-            <Route path={`${path}/:guildId`}>
-                <GuildPage/>
-            </Route>
-        </Switch>
-    )
-}
-
-export default DashboardRouter
+export default DashboardPage

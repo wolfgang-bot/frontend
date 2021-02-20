@@ -14,12 +14,9 @@ import { API } from "../config/types"
 import Logger from "../utils/Logger"
 import opener from "../components/ComponentOpener"
 import CommandListForModule from "../features/commands/CommandListForModule"
+import Title from "../components/Styled/Title"
 
 const useStyles = makeStyles(theme => ({
-    title: {
-        margin: `${theme.spacing(4)}px 0`
-    },
-
     icon: {
         borderRadius: "50%",
         width: 32,
@@ -38,16 +35,6 @@ const useStyles = makeStyles(theme => ({
         marginRight: theme.spacing(1)
     }
 }))
-
-function Title(props: React.PropsWithChildren<any>) {
-    const classes = useStyles()
-
-    return (
-        <Typography variant="h5" className={classes.title}>
-            {props.children}
-        </Typography>
-    )
-}
 
 function ModulePage() {
     const { key, guildId } = useParams<{
