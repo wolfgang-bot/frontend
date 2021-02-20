@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Redirect, useParams } from "react-router-dom"
-import { Tabs, Tab, Box } from "@material-ui/core"
+import { Tabs, Tab, Box, Grid } from "@material-ui/core"
 
 import { RootState } from "../store"
+import { API } from "../config/types"
 import { fetchGuilds } from "../features/guilds/guildsSlice"
 import Layout from "../components/Layout/Layout"
 import Title from "../components/Styled/Title"
@@ -17,6 +18,120 @@ import MemberChart from "../components/Charts/MemberChart"
 import MessageChart from "../components/Charts/MessageChart"
 import VoiceDurationChart from "../components/Charts/VoiceDurationChart"
 import * as Skeletons from "../components/Skeletons"
+
+function Header({ guild }: { guild: API.Guild }) {
+    return (
+        <Title>
+            <Box display="flex" justifyContent="space-between">
+                <Box display="flex">
+                    <Box mr={2}>
+                        <GuildIcon guild={guild} />
+                    </Box>
+                    {guild.name}
+                </Box>
+
+
+                <LocaleSelect guild={guild} />
+            </Box>
+        </Title>
+    )
+}
+
+function Overview({ guild }: { guild: API.Guild }) {
+    return (
+        <>
+            <Header guild={guild}/>
+
+            <Box
+                display="flex"
+                justifyContent="space-between"
+                mb={3}
+            >
+                <StatisticCard
+                    main={<MemberCount guild={guild} />}
+                    secondary="Member Count"
+                />
+            </Box>
+
+            <Box
+                display="flex"
+                justifyContent="space-between"
+                mb={3}
+            >
+                <ChartCard
+                    chart={<MemberChart guild={guild} />}
+                    label="Members"
+                />
+
+                <ChartCard
+                    chart={<MessageChart guild={guild} />}
+                    label="Messages"
+                />
+
+                <ChartCard
+                    chart={<VoiceDurationChart guild={guild} />}
+                    label="Voicechat"
+                />
+            </Box>
+
+            <ModuleListForGuild guild={guild} />
+        </>
+    )
+}
+
+function Statistics({ guild }: { guild: API.Guild }) {
+    return (
+        <>
+            <Header guild={guild}/>
+
+            <Box mb={3}>
+                <ChartCard
+                    chart={
+                        <MemberChart
+                            guild={guild}
+                            width={null}
+                            height={400}
+                        />
+                    }
+                    width="100%"
+                    label="Members"
+                />
+            </Box>
+
+            <Grid container justify="space-between" spacing={3}>
+                <Grid item xs>
+                    <ChartCard
+                        chart={
+                            <MessageChart
+                                guild={guild}
+                                width={null}
+                                height={400}
+                            />
+                        }
+                        width="100%"
+                        label="Messages"
+                    />
+                </Grid>
+
+                <Grid item xs>
+                    <ChartCard
+                        chart={
+                            <VoiceDurationChart
+                                guild={guild}
+                                width={null}
+                                height={400}
+                            />
+                        }
+                        width="100%"
+                        label="Voicechat"
+                    />
+                </Grid>
+            </Grid>
+        </>
+    )
+}
+
+const tabs = [Overview, Statistics]
 
 function GuildPage() {
     const { guildId } = useParams<{ guildId: string }>()
@@ -46,57 +161,9 @@ function GuildPage() {
             return <Redirect to="/not-found" />
         }
 
-        child = (
-            <>
-                <Title>
-                    <Box display="flex" justifyContent="space-between">
-                        <Box display="flex">
-                            <Box mr={2}>
-                                <GuildIcon guild={guild}/>
-                            </Box>
-                            {guild.name}
-                        </Box>
-
-
-                        <LocaleSelect guild={guild}/>
-                    </Box>
-                </Title>
-
-                <Box
-                    display="flex"
-                    justifyContent="space-between"
-                    mb={3}
-                >
-                    <StatisticCard
-                        main={<MemberCount guild={guild}/>}
-                        secondary="Member Count"
-                    />
-                </Box>
-
-                <Box
-                    display="flex"
-                    justifyContent="space-between"
-                    mb={3}
-                >
-                    <ChartCard
-                        chart={<MemberChart guild={guild}/>}
-                        label="Members"
-                    />
-
-                    <ChartCard
-                        chart={<MessageChart guild={guild}/>}
-                        label="Messages"
-                    />
-
-                    <ChartCard
-                        chart={<VoiceDurationChart guild={guild}/>}
-                        label="Voicechat"
-                    />
-                </Box>
-
-                <ModuleListForGuild guild={guild}/>
-            </>
-        )
+        child = React.createElement(tabs[currentTab], {
+            guild
+        })
     }
     
     if (status === "error") {
@@ -109,7 +176,6 @@ function GuildPage() {
                 <Tabs value={currentTab} onChange={handleTabChange}>
                     <Tab label="Overview" />
                     <Tab label="Statistics" />
-                    <Tab label="Modules" />
                 </Tabs>
             }
         >

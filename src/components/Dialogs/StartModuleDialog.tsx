@@ -80,7 +80,12 @@ function StartModuleDialog({ open, onClose, module, guild }: {
             </DialogContent>
 
             <DialogActions>
-                <Button onClick={handleSubmit}>Start</Button>
+                <Button 
+                    onClick={handleSubmit} 
+                    color="primary"
+                >
+                    Start
+                </Button>
             </DialogActions>
         </Dialog>
     )

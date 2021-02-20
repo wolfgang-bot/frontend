@@ -84,7 +84,7 @@ function withStreamSubscription(
             }
 
             return (
-                <Child data={data}/>
+                <Child data={data} {...props}/>
             )
         }
 

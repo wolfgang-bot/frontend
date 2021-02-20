@@ -1,25 +1,26 @@
 import React from "react"
 import { Paper, Box, Typography, Divider } from "@material-ui/core"
 
-function ChartCard({ chart, label, className }: {
+function ChartCard({ chart, label, className, width = 370 }: {
     chart: React.ReactNode,
     label: React.ReactNode,
+    width?: number | string | null,
     className?: string
 }) {
     return (
-        <Paper variant="outlined" className={className}>
-            <Box width={370}>
-                <Box mx={3} my={2}>
-                    <Typography variant="body1">{label}</Typography>
-                </Box>
+        <Box width={width}>
+            <Paper variant="outlined" className={className}>
+                    <Box mx={3} my={2}>
+                        <Typography variant="body1">{label}</Typography>
+                    </Box>
 
-                <Divider/>
+                    <Divider/>
 
-                <Box mt={2}>
-                    {chart}
-                </Box>
-            </Box>
-        </Paper>
+                    <Box mt={2}>
+                        {chart}
+                    </Box>
+            </Paper>
+        </Box>
     )
 }
 
