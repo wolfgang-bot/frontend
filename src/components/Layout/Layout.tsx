@@ -1,5 +1,5 @@
 import React from "react"
-import { Container } from "@material-ui/core"
+import { Container, Paper } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 
 import { theme } from "../../index"
@@ -11,13 +11,14 @@ type StyleProps = {
 }
 
 type Props = React.PropsWithChildren<{
-    center?: boolean
+    center?: boolean,
+    navbar?: React.ReactElement
 }>
 
 const useStyles = makeStyles<typeof theme, StyleProps>(theme => ({
     layout: {
-        display: "flex",
-        paddingTop: theme.spacing(8)
+        paddingTop: theme.spacing(8),
+        paddingBottom: theme.spacing(8)
     },
     
     body: props => props.center ? {
@@ -35,6 +36,7 @@ export const LayoutContext = React.createContext({
 
 function Layout({
     center = false,
+    navbar,
     children
 }: Props) {
     const classes = useStyles({ center })
@@ -42,6 +44,14 @@ function Layout({
     return (
         <div className={classes.layout}>
             <Header/>
+
+            {navbar && (
+                <Paper variant="outlined" square>
+                    <Container>
+                        {navbar}
+                    </Container>
+                </Paper>
+            )}
 
             <Container className={classes.body}>
                 { children || <React.Fragment/> }

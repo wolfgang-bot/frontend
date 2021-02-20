@@ -20,14 +20,14 @@ function MemberCount({ guild }: { guild: API.Guild }) {
     }, [status, dispatch, guild.id])
 
     if (status === "success") {
-        return <div>{memberCount}</div>
+        return <>{memberCount}</>
     }
 
     if (status === "error") {
-        return <div>{error}</div>
+        return <>{error}</>
     }
 
-    return <Skeleton variant="rect" width={50} height={20}/>
+    return <Skeleton variant="rect" width={50} height={41}/>
 }
 
 export default MemberCount

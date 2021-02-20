@@ -16,8 +16,10 @@ function roundToTwoPlaces(number: number) {
     return Math.floor(number * 100) / 100
 }
 
-function VoiceDurationChart({ data }: {
-    data: API.Event<API.VoiceEventMeta>[]
+function VoiceDurationChart({ data, width, height = 300 }: {
+    data: API.Event<API.VoiceEventMeta>[],
+    width?: number,
+    height?: number
 }) {
     const theme = useTheme()
 
@@ -41,17 +43,20 @@ function VoiceDurationChart({ data }: {
 
     return (
         <Bar
+            width={width}
+            height={height}
             data={{
                 labels,
                 datasets: [
                     {
                         label: "Voice Duration",
                         data: values,
-                        backgroundColor: theme.palette.secondary.main
+                        backgroundColor: theme.palette.primary.main
                     }
                 ]
             }}
             options={{
+                maintainAspectRatio: false,
                 scales: {
                     yAxes: [
                         {

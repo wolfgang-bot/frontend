@@ -123,7 +123,11 @@ function ModulePage() {
                     <Grid item xs>
                         <Title>Features</Title>
                         {module.translations.features.map((feature, index) => (
-                            <Typography variant="body1" className={classes.listItem}>
+                            <Typography
+                                key={index}
+                                variant="body1"
+                                className={classes.listItem}
+                            >
                                 <ChevronRightIcon className={classes.bullet}/>
                                 {feature}
                             </Typography>

@@ -5,7 +5,11 @@ import { Bar } from "react-chartjs-2"
 import { forEachDayInTimestamps } from "./utils"
 import withStreamSubscription from "../../features/streams/withStreamSubscription"
 
-function MessageChart({ data }: { data: number[] }) {
+function MessageChart({ data, width, height = 300 }: {
+    data: number[],
+    width?: number,
+    height?: number
+}) {
     const theme = useTheme()
     
     const messagesPerDayMap = useMemo(() => {
@@ -23,17 +27,20 @@ function MessageChart({ data }: { data: number[] }) {
 
     return (
         <Bar
+            width={width}
+            height={height}
             data={{ 
                 labels,
                 datasets: [
                     {
                         label: "Messages",
                         data: Array.from(messagesPerDayMap.values()),
-                        backgroundColor: theme.palette.secondary.main
+                        backgroundColor: theme.palette.primary.main
                     }
                 ]
             }}
             options={{
+                maintainAspectRatio: false,
                 scales: {
                     yAxes: [
                         {

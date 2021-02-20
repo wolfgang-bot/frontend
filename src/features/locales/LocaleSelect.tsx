@@ -57,7 +57,7 @@ function LocaleSelect({ guild }: { guild: API.Guild }) {
         }
     }, [guildLocaleStatus, dispatch, guild.id])
 
-    let child = <Skeleton width={100} height={24} />
+    let child = <Skeleton width={42} height={32} />
 
     if (localesStatus === "success" && guildLocaleStatus === "success") {
         child = (

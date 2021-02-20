@@ -65,16 +65,19 @@ function ModuleCard({ module, instance, guild }: Props) {
                         {...commonButtonProps}
                         disabled={isActive}
                         size="small"
+                        color="primary"
                     />
                     <StopButton
                         {...commonButtonProps}
                         disabled={!isActive}
                         size="small"
+                        color="secondary"
                     />
                     <RestartButton
                         {...commonButtonProps}
                         disabled={!isActive}
                         size="small"
+                        color="secondary"
                     />
                 </CardActions>
             )}

@@ -5,8 +5,8 @@ import { createMuiTheme, ThemeProvider } from "@material-ui/core"
 
 import store from "./store"
 import App from "./App"
-import "./index.css"
 import Logger  from "./utils/Logger"
+import "./index.css"
 
 export const theme = createMuiTheme({
     palette: {

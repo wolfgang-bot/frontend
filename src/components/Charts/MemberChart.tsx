@@ -7,8 +7,10 @@ import { createOHLCDataSet, chunkTimestampsIntoDays } from "./utils"
 import withStreamSubscription from "../../features/streams/withStreamSubscription"
 import { createHistogramDataset } from "./utils"
 
-function MemberChart({ data }: {
-    data: API.Event<API.MemberEventMeta>[]
+function MemberChart({ data, width, height = 300 }: {
+    data: API.Event<API.MemberEventMeta>[],
+    width?: number,
+    height?: number
 }) {
     const theme = useTheme()
 
@@ -69,8 +71,8 @@ function MemberChart({ data }: {
         }
 
         const chart = createChart(containerRef.current, {
-            width: 600,
-            height: 300,
+            width,
+            height,
             crosshair: {
                 mode: CrosshairMode.Normal
             },
@@ -78,7 +80,7 @@ function MemberChart({ data }: {
                 priceFormatter: Math.floor
             },
             layout: {
-                backgroundColor: theme.palette.background.default,
+                backgroundColor: theme.palette.background.paper,
                 textColor: theme.palette.common.white
             }
         })

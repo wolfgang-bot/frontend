@@ -51,7 +51,7 @@ function ModuleListForGuild({ guild }: { guild: API.Guild }) {
         const inactiveModules = Object.values(modules).filter(module => !(module.key in moduleInstances))
 
         return (
-            <Grid container spacing={2}>
+            <Grid container justify="space-between">
                 {activeModules.concat(inactiveModules).map(module => (
                     <Grid item key={module.key}>
                         <ModuleCard
