@@ -12,17 +12,23 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-function IndexPage() {
+function Title(props: React.PropsWithChildren<any>) {
     const classes = useStyles()
 
     return (
+        <Typography variant="h5" className={classes.title}>
+            {props.children}
+        </Typography>
+    )
+}
+
+function IndexPage() {
+    return (
         <Layout>
-            <Typography variant="h5" className={classes.title}>
-                Modules
-            </Typography>
+            <Title>Modules</Title>
             <ModuleList/>
-            {/* <Typography variant="h6">Commands</Typography>
-            <CommandListForModule moduleKey="main"/> */}
+            <Title>Commands</Title>
+            <CommandListForModule moduleKey="main"/>
         </Layout>
     )
 }

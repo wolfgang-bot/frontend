@@ -155,3 +155,15 @@ export function createListeners(target: EventTarget | Emittable, events: Array<[
         target.removeEventListener(name, listener)
     })
 }
+
+/**
+ * Copy text to the clipboard
+ */
+export async function copyToClipboard(text: string) {
+    try {
+        await navigator.clipboard.writeText(text)
+        return true
+    } catch {
+        return false
+    }
+}

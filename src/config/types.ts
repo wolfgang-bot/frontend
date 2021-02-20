@@ -144,6 +144,7 @@ export declare namespace API {
 
     export type ExecutableCommand = {
         name: string,
+        callableName: string,
         group: string,
         module: string,
         description: string,
@@ -151,7 +152,7 @@ export declare namespace API {
     }
 
     export type CommandRegistry = ExecutableCommand & {
-        commands: Command[]
+        commands: Record<string, Command>
     }
 
     export type Command = ExecutableCommand | CommandRegistry
