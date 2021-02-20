@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef } from "react"
 import { useTheme } from "@material-ui/core"
-import { createChart, CrosshairMode, ISeriesApi } from "lightweight-charts"
+import { createChart, CrosshairMode, ISeriesApi, IChartApi } from "lightweight-charts"
 
 import { API, EVENT_TYPES } from "../../config/types"
 import { createOHLCDataSet, chunkTimestampsIntoDays } from "./utils"
@@ -17,6 +17,7 @@ function MemberChart({ data, width, height = 300 }: {
     const containerRef = useRef<HTMLDivElement>(null)
     const candleStickSeriesRef = useRef<ISeriesApi<"Candlestick">>()
     const histogramSeriesRef = useRef<ISeriesApi<"Histogram">>()
+    const chartRef = useRef<IChartApi>()
     
     const [memberCountsOHLC, memberVolumes] = useMemo(() => {
         const dayMap = chunkTimestampsIntoDays(data)
@@ -70,7 +71,7 @@ function MemberChart({ data, width, height = 300 }: {
             return
         }
 
-        const chart = createChart(containerRef.current, {
+        chartRef.current = createChart(containerRef.current, {
             width,
             height,
             crosshair: {
@@ -78,21 +79,30 @@ function MemberChart({ data, width, height = 300 }: {
             },
             localization: {
                 priceFormatter: Math.floor
-            },
+            }
+        })
+
+        candleStickSeriesRef.current = chartRef.current.addCandlestickSeries()
+        candleStickSeriesRef.current.setData(memberCountsOHLC)
+
+        histogramSeriesRef.current = chartRef.current.addHistogramSeries()
+        histogramSeriesRef.current.setData(memberVolumes)
+
+        // eslint-disable-next-line
+    }, [])
+
+    useEffect(() => {
+        if (!chartRef.current) {
+            return
+        }
+
+        chartRef.current.applyOptions({
             layout: {
                 backgroundColor: theme.palette.background.paper,
                 textColor: theme.palette.common.white
             }
         })
-
-        candleStickSeriesRef.current = chart.addCandlestickSeries()
-        candleStickSeriesRef.current.setData(memberCountsOHLC)
-
-        histogramSeriesRef.current = chart.addHistogramSeries()
-        histogramSeriesRef.current.setData(memberVolumes)
-
-        // eslint-disable-next-line
-    }, [])
+    }, [theme])
 
     return (
         <div ref={containerRef}/>

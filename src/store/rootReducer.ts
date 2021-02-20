@@ -7,6 +7,7 @@ import moduleInstancesReducer from "../features/moduleInstances/moduleInstancesS
 import localesReducer from "../features/locales/localeSlice"
 import streamsSlice from "../features/streams/streamsSlice"
 import commandsSlice from "../features/commands/commandsSlice"
+import settingsSlice from "../features/settings/settingsSlice"
 
 export default combineReducers({
     auth: authReducer,
@@ -15,5 +16,6 @@ export default combineReducers({
     moduleInstances: moduleInstancesReducer,
     locales: localesReducer,
     streams: streamsSlice,
-    commands: commandsSlice
+    commands: commandsSlice,
+    settings: settingsSlice
 })

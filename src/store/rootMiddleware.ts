@@ -5,7 +5,8 @@ import api from "../api"
 import {
     authMiddleware,
     streamControlMiddleware,
-    streamDataMiddleware
+    streamDataMiddleware,
+    settingsMiddleware
 } from "./middleware"
 
 function rootMiddleware() {
@@ -24,6 +25,7 @@ function rootMiddleware() {
         .concat(authMiddleware)
         .concat(streamControlMiddleware)
         .concat(streamDataMiddleware)
+        .concat(settingsMiddleware)
 }
 
 export default rootMiddleware

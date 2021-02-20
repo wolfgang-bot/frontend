@@ -3,7 +3,7 @@ import { PayloadAction } from "@reduxjs/toolkit"
 
 import store from "./index"
 import { API } from "../config/types"
-import { API_TOKEN_STORAGE_KEY } from "../config/constants"
+import { API_TOKEN_STORAGE_KEY, LOCAL_STORAGE_REDUX_SETTINGS_KEY } from "../config/constants"
 import { fetchUser, initAPI } from "../features/auth/authSlice"
 import { updateInstances } from "../features/moduleInstances/moduleInstancesSlice"
 import api from "../api"
@@ -72,6 +72,14 @@ export const streamDataMiddleware: Middleware = () => next => (action: PayloadAc
                 }))
                 return
         }
+    }
+
+    next(action)
+}
+
+export const settingsMiddleware: Middleware = () => next => (action: PayloadAction<any>) => {
+    if (action.type === "settings/set") {
+        localStorage.setItem(LOCAL_STORAGE_REDUX_SETTINGS_KEY, JSON.stringify(action.payload))
     }
 
     next(action)

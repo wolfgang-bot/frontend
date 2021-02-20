@@ -18,3 +18,5 @@ export const DEFAULT_AVATAR_URL = "https://cdn.discordapp.com/embed/avatars/{}.p
 export const DISCORD_BOT_INVITE_URL = `https://discord.com/oauth2/authorize?client_id=${
         process.env.REACT_APP_DISCORD_BOT_CLIENT_ID
     }&scope=bot&permissions=1342318608`
+
+export const LOCAL_STORAGE_REDUX_SETTINGS_KEY = "settings"

@@ -1,8 +1,7 @@
 import React from "react"
-import { Container, Paper } from "@material-ui/core"
+import { Container, Paper, Theme } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 
-import { theme } from "../../index"
 import Header from "./Header"
 import ComponentOpener from "../ComponentOpener/ComponentOpener"
 
@@ -15,7 +14,7 @@ type Props = React.PropsWithChildren<{
     navbar?: React.ReactElement
 }>
 
-const useStyles = makeStyles<typeof theme, StyleProps>(theme => ({
+const useStyles = makeStyles<Theme, StyleProps>(theme => ({
     layout: {
         paddingTop: theme.spacing(8),
         paddingBottom: theme.spacing(8)

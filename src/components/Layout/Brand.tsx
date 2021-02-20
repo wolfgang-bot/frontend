@@ -8,7 +8,7 @@ const useStyles = makeStyles(theme => ({
     },
 
     logo: {
-        color: theme.palette.common.black,
+        color: theme.palette.text.primary,
         fontSize: 32,
         marginRight: theme.spacing(2)
     }
