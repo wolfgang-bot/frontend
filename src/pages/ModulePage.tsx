@@ -11,6 +11,7 @@ import ConfigForm, { RefHandle } from "../components/Forms/ConfigForm/ConfigForm
 import { API } from "../config/types"
 import Logger from "../utils/Logger"
 import opener from "../components/ComponentOpener"
+import CommandListForModule from "../features/commands/CommandListForModule"
 
 function ModulePage({ renderSidebar }: { renderSidebar?: boolean }) {
     const { key, guildId } = useParams<{
@@ -58,6 +59,8 @@ function ModulePage({ renderSidebar }: { renderSidebar?: boolean }) {
             const api = guildId ? "ws" : "http"
             dispatch(fetchModules(api))
         }
+
+        // eslint-disable-next-line
     }, [moduleStatus, dispatch])
 
     useEffect(() => {
@@ -111,6 +114,11 @@ function ModulePage({ renderSidebar }: { renderSidebar?: boolean }) {
                             </List>
                         </Grid>
                     </Grid>
+                </Box>
+
+                <Box mb={4}>
+                    <Typography variant="h6">Commands</Typography>
+                    <CommandListForModule moduleKey={module.key}/>
                 </Box>
 
                 { guildId && (

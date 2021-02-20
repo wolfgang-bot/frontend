@@ -43,8 +43,9 @@ const modulesSlice = createSlice({
                 state.data[module.key] = module
             })
         },
-        [fetchModules.rejected.toString()]: (state) => {
+        [fetchModules.rejected.toString()]: (state, action) => {
             state.status = "error"
+            state.error = action.payload
         }
     }
 })

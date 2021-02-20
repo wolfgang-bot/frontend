@@ -24,7 +24,7 @@ function ModuleList() {
         return (
             <Grid container spacing={2}>
                 {Object.values(data).map(module => (
-                    <Grid item>
+                    <Grid item key={module.key}>
                         <ModuleCard module={module}/>
                     </Grid>                    
                 ))}

@@ -1,26 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit"
 
 import rootReducer from "./rootReducer"
-import {
-    authMiddleware,
-    streamControlMiddleware,
-    streamDataMiddleware
-} from "./middleware"
+import rootMiddleware from "./rootMiddleware"
 import api from "../api"
 
 const store = configureStore({
     reducer: rootReducer,
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware({
-        thunk: {
-            extraArgument: { api }
-        },
-        serializableCheck: false,
-        immutableCheck: false
-
-    })
-        .concat(authMiddleware)
-        .concat(streamControlMiddleware)
-        .concat(streamDataMiddleware)
+    middleware: rootMiddleware
 })
 
 export default store 
