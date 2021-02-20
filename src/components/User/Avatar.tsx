@@ -1,4 +1,5 @@
 import React from "react"
+import clsx from "clsx"
 import { useHistory } from "react-router-dom"
 import { useSelector } from "react-redux"
 import { Avatar as MuiAvatar } from "@material-ui/core"
@@ -20,10 +21,10 @@ const useStyles = makeStyles<typeof theme, StyleProps>({
     })
 })
 
-function Avatar({ size, clickable = true }: {
+function Avatar({ size, clickable = true, ...props }: {
     size?: number,
     clickable?: boolean
-}) {
+} & React.ComponentProps<typeof MuiAvatar>) {
     const classes = useStyles({ size, clickable })
 
     const history = useHistory()
@@ -35,7 +36,11 @@ function Avatar({ size, clickable = true }: {
     }
 
     return (
-        <MuiAvatar className={classes.avatar} onClick={handleClick} src={user?.avatar} />
+        <MuiAvatar
+            className={clsx(classes.avatar, props.className)}
+            onClick={handleClick}
+            src={user?.avatar}
+        />
     )
 }
 

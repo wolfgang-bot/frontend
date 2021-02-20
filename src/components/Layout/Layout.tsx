@@ -8,28 +8,21 @@ import Sidebar from "./Sidebar"
 import ComponentOpener from "../ComponentOpener/ComponentOpener"
 
 type StyleProps = {
-    center?: boolean,
-    renderSidebar?: boolean
+    center?: boolean
 }
 
 type Props = React.PropsWithChildren<{
-    sidebarProps?: React.ComponentProps<typeof Sidebar>,
-    center?: boolean,
-    renderSidebar?: boolean
+    center?: boolean
 }>
 
 const useStyles = makeStyles<typeof theme, StyleProps>(theme => ({
     layout: {
         display: "flex"
     },
-
-    body: props => ({
-        width: props.renderSidebar ? `calc(100% - ${250}px)` : "100%",
+    
+    body: props => props.center ? {
         marginTop: theme.spacing(12),
-        marginBottom: theme.spacing(8)
-    }),
-
-    content: props => props.center ? {
+        marginBottom: theme.spacing(8),
         display: "flex",
         flexDirection: "column",
         alignItems: "center"
@@ -37,24 +30,18 @@ const useStyles = makeStyles<typeof theme, StyleProps>(theme => ({
 }))
 
 function Layout({
-    renderSidebar = false,
-    sidebarProps = {},
     center = false,
     children
 }: Props) {
-    const classes = useStyles({ center, renderSidebar })
+    const classes = useStyles({ center })
 
     return (
         <div className={classes.layout}>
-            <Header renderSidebar={renderSidebar}/>
+            <Header/>
 
-            {renderSidebar && <Sidebar {...sidebarProps} />}
-
-            <div className={classes.body}>
-                <Container className={classes.content}>
-                    { children as React.ReactChildren }
-                </Container>
-            </div>
+            <Container className={classes.body}>
+                { children || <React.Fragment/> }
+            </Container>
 
             <ComponentOpener/>
         </div>

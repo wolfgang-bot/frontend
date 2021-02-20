@@ -10,26 +10,33 @@ import Logger  from "./utils/Logger"
 
 export const theme = createMuiTheme({
     palette: {
-        type: "dark",
-
         background: {
-            default: "#282833",
-            paper: "#333340"
-        },
-
-        primary: {
-            main: "#BB86FC"
-        },
-
-        secondary: {
-            main: "#03DAC5",
-            dark: "#336D6F"
-        },
-
-        error: {
-            main: "#CF6679"
+            default: "#F5F7FB",
+            paper: "#FFFFFF"
         }
     }
+
+    // palette: {
+    //     type: "dark",
+
+    //     background: {
+    //         default: "#282833",
+    //         paper: "#333340"
+    //     },
+
+    //     primary: {
+    //         main: "#BB86FC"
+    //     },
+
+    //     secondary: {
+    //         main: "#03DAC5",
+    //         dark: "#336D6F"
+    //     },
+
+    //     error: {
+    //         main: "#CF6679"
+    //     }
+    // }
 })
 
 Logger.debug(theme)

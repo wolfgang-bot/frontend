@@ -13,7 +13,7 @@ import Logger from "../utils/Logger"
 import opener from "../components/ComponentOpener"
 import CommandListForModule from "../features/commands/CommandListForModule"
 
-function ModulePage({ renderSidebar }: { renderSidebar?: boolean }) {
+function ModulePage() {
     const { key, guildId } = useParams<{
         key: string,
         guildId: string
@@ -149,7 +149,7 @@ function ModulePage({ renderSidebar }: { renderSidebar?: boolean }) {
     }
 
     return (
-        <Layout renderSidebar={renderSidebar}>
+        <Layout>
             {child}
         </Layout>
     )

@@ -46,12 +46,7 @@ function GuildPage() {
     }
 
     return (
-        <Layout
-            renderSidebar
-            sidebarProps={{
-                activeGuildId: guild?.id
-            }}
-        >
+        <Layout>
             { child }
         </Layout>
     )

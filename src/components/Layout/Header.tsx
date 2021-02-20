@@ -1,42 +1,43 @@
 import React from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { useHistory, Link } from "react-router-dom"
-import { AppBar, Toolbar, Button, Grid, Divider, Typography, Box } from "@material-ui/core"
+import { AppBar, Toolbar, Button, Grid, Divider, Container, Box, Typography } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 
-import { theme } from "../../index"
 import { RootState } from "../../store"
-import Avatar from "../User/Avatar"
 import { logout } from "../../features/auth/authSlice"
+import Avatar from "../User/Avatar"
+import Brand from "./Brand"
 
-type StyleProps = {
-    renderSidebar?: boolean
-}
-
-const useStyles = makeStyles<typeof theme, StyleProps>(theme => ({
-    header: props => ({
+const useStyles = makeStyles(theme => ({
+    header: {
         ...theme.mixins.toolbar,
-        backgroundColor: theme.palette.background.default,
+        backgroundColor: theme.palette.background.paper,
+        color: theme.palette.text.primary,
         boxShadow: "none",
-        marginBottom: theme.spacing(2),
-        width: props.renderSidebar ? `calc(100% - ${250}px)` : ''
-    }),
+        marginBottom: theme.spacing(2)
+    },
 
     toolbar: theme.mixins.toolbar,
 
     spacingRight: {
+        marginRight: theme.spacing(2)
+    },
+
+    avatar: {
         marginRight: theme.spacing(1)
     }
 }))
 
-function Header({ renderSidebar }: { renderSidebar?: boolean }) {
-    const classes = useStyles({ renderSidebar })
+function Header() {
+    const classes = useStyles()
 
     const history = useHistory()
 
     const dispatch = useDispatch()
 
-    const isLoggedIn = useSelector((store: RootState) => !!store.auth.data.user)
+    const user = useSelector((store: RootState) => store.auth.data.user)
+    const isLoggedIn = !!user
 
     const handleLogin = () => {
         history.push("/dashboard")
@@ -50,28 +51,31 @@ function Header({ renderSidebar }: { renderSidebar?: boolean }) {
     return (
         <AppBar className={classes.header} position="fixed">
             <Toolbar className={classes.toolbar}>
-                <Grid item container justify="space-between" wrap="nowrap">
-                    <Box display="flex" alignItems="center">
-                        {!renderSidebar && (
+                <Container>
+                    <Grid item container justify="space-between" wrap="nowrap">
+                        <Box display="flex" alignItems="center">
                             <Link to="/">
-                                <Typography color="textPrimary" variant="h6">
-                                    Javascript Bot
-                                </Typography>
+                                <Brand/>
                             </Link>
-                        )}
-                    </Box>
+                        </Box>
 
-                    <Box display="flex">
-                        <Button
-                            variant="contained"
-                            onClick={handleLogin}
-                            className={classes.spacingRight}
-                        >
-                            Dashboard
-                        </Button>
+                        
+                        {!isLoggedIn ? (
+                            <Link to="/login">
+                                <Button variant="contained">
+                                    Login
+                                </Button>
+                            </Link>
+                        ) : (
+                            <Box display="flex" alignItems="center">
+                                <Button
+                                    variant="contained"
+                                    onClick={handleLogin}
+                                    className={classes.spacingRight}
+                                >
+                                    Dashboard
+                                </Button>
 
-                        {isLoggedIn && (
-                            <>
                                 <Button
                                     onClick={handleLogout}
                                     variant="text"
@@ -79,11 +83,16 @@ function Header({ renderSidebar }: { renderSidebar?: boolean }) {
                                 >
                                     Logout
                                 </Button>
-                                <Avatar/>
-                            </>
+                                
+                                <Avatar className={classes.avatar}/>
+
+                                <Typography variant="subtitle1">
+                                    {user?.username}
+                                </Typography>
+                            </Box>
                         )}
-                    </Box>
-                </Grid>
+                    </Grid>
+                </Container>
             </Toolbar>
 
             <Divider/>

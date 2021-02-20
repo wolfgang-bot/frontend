@@ -8,12 +8,18 @@ import CommandListForModule from "../features/commands/CommandListForModule"
 function IndexPage() {
     return (
         <Layout>
-            <Typography variant="h6">Modules</Typography>
-            <ModuleList/>
-            <Typography variant="h6">Commands</Typography>
-            <CommandListForModule moduleKey="main"/>
+            
         </Layout>
     )
+
+    // return (
+    //     <Layout>
+    //         <Typography variant="h6">Modules</Typography>
+    //         <ModuleList/>
+    //         <Typography variant="h6">Commands</Typography>
+    //         <CommandListForModule moduleKey="main"/>
+    //     </Layout>
+    // )
 }
 
 export default IndexPage

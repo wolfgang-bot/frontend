@@ -7,7 +7,7 @@ import ModulePage from "./ModulePage"
 
 function DashboardPage() {
     return (
-        <Layout renderSidebar>
+        <Layout>
             Dashboard
         </Layout>
     )
@@ -23,7 +23,7 @@ function DashboardRouter() {
             </Route>
 
             <Route path={`${path}/:guildId/module/:key`}>
-                <ModulePage renderSidebar/>
+                <ModulePage/>
             </Route>
 
             <Route path={`${path}/:guildId`}>
