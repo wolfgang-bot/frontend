@@ -64,8 +64,7 @@ function _MemberTrend({ data }: {
         const currentCount = data[data.length - 1].meta.memberCount
         const lastCount = yesterdayEvents[yesterdayEvents.length - 1].meta.memberCount
 
-        const trend = (currentCount - lastCount) / lastCount
-        return Math.floor(trend * 100)
+        return (currentCount - lastCount) / lastCount
     }, [data])
 
     return <Trend value={trend}/>

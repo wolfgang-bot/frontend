@@ -23,13 +23,15 @@ function Trend({ value }: { value: number }) {
     const Icon = value < 0 ? ChevronDownIcon : ChevronUpIcon
     const sign = value < 0 ? "-" : "+"
 
+    const newValue = Math.floor(value * 100)
+
     return (
         <Box
             display="flex"
             alignItems="center"
             className={value < 0 ? classes.error : classes.success}
         >
-            <Box>{sign}{value}%</Box>
+            <Box>{sign}{newValue}%</Box>
             <Icon className={classes.icon}/>
         </Box>
     )
