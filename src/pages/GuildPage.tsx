@@ -14,7 +14,7 @@ import ChartCard from "../components/Styled/ChartCard"
 import ModuleListForGuild from "../features/modules/ModuleListForGuild"
 import MemberCount, { MemberTrend } from "../features/streams/MemberCount"
 import MemberTrendAtDay, { MemberTrendAtDayTrend } from "../features/streams/MemberTrendAtDay"
-import MessagesAtDay from "../features/streams/MessagesAtDay"
+import MessagesAtDay, { MessagesAtDayTrend } from "../features/streams/MessagesAtDay"
 import VoiceDurationAtDay from "../features/streams/VoiceDurationAtDay"
 import LocaleSelect from "../features/locales/LocaleSelect"
 import MemberChart from "../features/streams/MemberChart"
@@ -64,6 +64,7 @@ function Overview({ guild }: { guild: API.Guild }) {
 
                 <StatisticCard
                     main={<MessagesAtDay guild={guild} />}
+                    trend={<MessagesAtDayTrend guild={guild} />}
                     label="Messages Today"
                 />
 
