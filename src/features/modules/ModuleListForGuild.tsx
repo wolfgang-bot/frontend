@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react"
+import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Grid } from "@material-ui/core"
 
@@ -6,15 +6,10 @@ import { RootState } from "../../store"
 import { API } from "../../config/types"
 import ModuleCard from "./ModuleCard"
 import { fetchModules } from "./modulesSlice"
-import { subscribe, pause, resume } from "../streams/streamsSlice"
 import * as Skeletons from "../../components/Skeletons"
+import withStreamSubscription from "../streams/withStreamSubscription"
 
 function ModuleListForGuild({ guild }: { guild: API.Guild }) {
-    const streamArgs = useMemo<API.StreamArgs>(() => ({
-        eventStream: "module-instances",
-        guildId: guild.id
-    }), [guild.id])
-
     const dispatch = useDispatch()
 
     const modules = useSelector((state: RootState) => state.modules.data)
@@ -24,27 +19,11 @@ function ModuleListForGuild({ guild }: { guild: API.Guild }) {
     const moduleInstances = useSelector((state: RootState) => state.moduleInstances.guilds[guild.id]?.data)
     const moduleInstancesStatus = useSelector((state: RootState) => state.moduleInstances.guilds[guild.id]?.status)
 
-    const streamStatus = useSelector((state: RootState) => state.streams[guild.id]?.["module-instances"].status)
-
     useEffect(() => {
         if (modulesStatus === "idle") {
             dispatch(fetchModules("ws"))
         }
     }, [modulesStatus, dispatch])
-
-    useEffect(() => {
-        if (streamStatus === "idle") {
-            dispatch(subscribe(streamArgs))
-        } else if (streamStatus === "paused") {
-            dispatch(resume(streamArgs))
-        }
-    }, [streamStatus, streamArgs, dispatch])
-
-    useEffect(() => {
-        return () => {
-            dispatch(pause(streamArgs))
-        }
-    }, [dispatch, streamArgs])
 
     if (modulesStatus === "success" && moduleInstancesStatus === "success") {
         const activeModules = Object.values(modules).filter(module => module.key in moduleInstances)
@@ -72,4 +51,6 @@ function ModuleListForGuild({ guild }: { guild: API.Guild }) {
     return <Skeletons.ModuleListForGuild/>
 }
 
-export default ModuleListForGuild
+export default withStreamSubscription(ModuleListForGuild, "module-instances", {
+    showOverlayIfEmpty: false
+})

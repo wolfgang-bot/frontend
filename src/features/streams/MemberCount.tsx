@@ -4,9 +4,13 @@ import Skeleton from "@material-ui/lab/Skeleton"
 
 import { API } from "../../config/types"
 import { RootState } from "../../store"
-import { fetchMemberCount } from "./guildsSlice"
+import { fetchMemberCount } from "../guilds/guildsSlice"
+import withStreamSubscription from "./withStreamSubscription"
 
-function MemberCount({ guild }: { guild: API.Guild }) {
+function MemberCount({ guild, data }: {
+    guild: API.Guild,
+    data: API.Event<API.MemberEventMeta>
+}) {
     const dispatch = useDispatch()
 
     const status = useSelector((store: RootState) => store.guilds.data[guild.id]?.memberCount.status)
@@ -30,4 +34,6 @@ function MemberCount({ guild }: { guild: API.Guild }) {
     return <Skeleton variant="rect" width={50} height={41}/>
 }
 
-export default MemberCount
+export default withStreamSubscription(MemberCount, "members", {
+    showOverlayIfEmpty: false
+})

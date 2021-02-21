@@ -7,6 +7,10 @@ import { RootState } from "../../store"
 import { API } from "../../config/types"
 import { subscribe, pause, resume } from "./streamsSlice"
 
+export type SubscriptionOptions = {
+    showOverlayIfEmpty: boolean
+}
+
 const useStyles = makeStyles({
     overlayContainer: {
         position: "relative"
@@ -39,7 +43,8 @@ function Overlay({ overlay, children }: React.PropsWithChildren<{
 
 function withStreamSubscription(
     Child: React.FunctionComponent<any>,
-    stream: API.EVENT_STREAM
+    stream: API.EVENT_STREAM,
+    options?: SubscriptionOptions
 ) {
     return function StreamWrapper(props: React.ComponentProps<typeof Child>) {
         if (!props.guild) {
@@ -71,14 +76,14 @@ function withStreamSubscription(
         }, [streamArgs, dispatch])
 
         if (status === "flowing") {
-            if (data.length === 0) {
+            if (data.length === 0 && options?.showOverlayIfEmpty !== false) {
                 return (
                     <Overlay
                         overlay={(
                             <Typography variant="h6">No data available</Typography>
                         )}
                     >
-                        <Child data={[]}/>
+                        <Child data={[]} {...props}/>
                     </Overlay>
                 )
             }

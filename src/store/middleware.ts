@@ -37,10 +37,16 @@ export const authMiddleware: Middleware = () => next => (action: PayloadAction<{
     next(action)
 }
 
+function getStreamStatus(stream: API.EVENT_STREAM, guildId: string) {
+    return store.getState().streams[guildId]?.[stream]?.status
+}
+
 export const streamControlMiddleware: Middleware = () => next => (action: PayloadAction<API.StreamArgs>) => {
     switch (action.type) {
         case "streams/subscribe":
-            api.ws.subscribeToStream(action.payload.eventStream, action.payload.guildId)
+            if (getStreamStatus(action.payload.eventStream, action.payload.guildId) !== "flowing") {
+                api.ws.subscribeToStream(action.payload.eventStream, action.payload.guildId)
+            }
             break
 
         case "streams/unsubscribe":
