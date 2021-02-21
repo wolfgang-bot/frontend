@@ -12,7 +12,7 @@ import GuildIcon from "../components/Discord/GuildIcon"
 import StatisticCard from "../components/Styled/StatisticCard"
 import ChartCard from "../components/Styled/ChartCard"
 import ModuleListForGuild from "../features/modules/ModuleListForGuild"
-import MemberCount from "../features/streams/MemberCount"
+import MemberCount, { MemberTrend } from "../features/streams/MemberCount"
 import MemberVolumeAtDay from "../features/streams/MemberVolumeAtDay"
 import MessagesAtDay from "../features/streams/MessagesAtDay"
 import VoiceDurationAtDay from "../features/streams/VoiceDurationAtDay"
@@ -52,22 +52,23 @@ function Overview({ guild }: { guild: API.Guild }) {
             >
                 <StatisticCard
                     main={<MemberCount guild={guild} />}
-                    secondary="Member Count"
+                    trend={<MemberTrend guild={guild} />}
+                    label="Member Count"
                 />
 
                 <StatisticCard
                     main={<MemberVolumeAtDay guild={guild} />}
-                    secondary="Member Volume Today"
+                    label="Member Volume Today"
                 />
 
                 <StatisticCard
                     main={<MessagesAtDay guild={guild} />}
-                    secondary="Messages Today"
+                    label="Messages Today"
                 />
 
                 <StatisticCard
                     main={<VoiceDurationAtDay guild={guild} />}
-                    secondary="Voicechat Today"
+                    label="Voicechat Today"
                 />
             </Box>
 
