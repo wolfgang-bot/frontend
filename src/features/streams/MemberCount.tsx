@@ -9,12 +9,12 @@ import withStreamSubscription from "./withStreamSubscription"
 
 function MemberCount({ guild, data }: {
     guild: API.Guild,
-    data: API.Event<API.MemberEventMeta>
+    data: API.Event<API.MemberEventMeta>[]
 }) {
     const dispatch = useDispatch()
 
     const status = useSelector((store: RootState) => store.guilds.data[guild.id]?.memberCount.status)
-    const memberCount = useSelector((store: RootState) => store.guilds.data[guild.id]?.memberCount.data)
+    const apiMemberCount = useSelector((store: RootState) => store.guilds.data[guild.id]?.memberCount.data)
     const error = useSelector((store: RootState) => store.guilds.data[guild.id]?.memberCount.error)
 
     useEffect(() => {
@@ -23,8 +23,16 @@ function MemberCount({ guild, data }: {
         }
     }, [status, dispatch, guild.id])
 
-    if (status === "success") {
-        return <>{memberCount}</>
+    if (status === "success" || data.length > 0) {
+        return (
+            <>
+                {
+                    data.length > 0 ?
+                    data[data.length - 1].meta.memberCount :
+                    apiMemberCount
+                }
+            </>
+        )
     }
 
     if (status === "error") {
