@@ -119,6 +119,18 @@ function ModulePage() {
                     </Grid>
                 </Box>
 
+                {guildId && (
+                    <>
+                        <Title>Configuration</Title>
+                        <ConfigForm
+                            guild={guild}
+                            module={module}
+                            ref={configFormRef}
+                        />
+                        <Button variant="outlined" onClick={handleUpdateConfig}>Save</Button>
+                    </>
+                )}
+
                 <Grid container spacing={2}>
                     <Grid item xs>
                         <Title>Features</Title>
@@ -137,18 +149,6 @@ function ModulePage() {
 
                 <Title>Commands</Title>
                 <CommandListForModule moduleKey={module.key}/>
-
-                { guildId && (
-                    <>
-                        <Title>Configuration</Title>
-                        <ConfigForm
-                            guild={guild}
-                            module={module}
-                            ref={configFormRef}    
-                        />
-                        <Button variant="outlined" onClick={handleUpdateConfig}>Save</Button>
-                    </>
-                ) }
             </>
         )
     }

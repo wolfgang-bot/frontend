@@ -74,9 +74,6 @@ function MemberChart({ data, width, height = 300 }: {
         chartRef.current = createChart(containerRef.current, {
             width,
             height,
-            crosshair: {
-                mode: CrosshairMode.Normal
-            },
             localization: {
                 priceFormatter: Math.floor
             }
@@ -99,7 +96,7 @@ function MemberChart({ data, width, height = 300 }: {
         chartRef.current.applyOptions({
             layout: {
                 backgroundColor: theme.palette.background.paper,
-                textColor: theme.palette.common.white
+                textColor: theme.palette.text.primary
             }
         })
     }, [theme])
