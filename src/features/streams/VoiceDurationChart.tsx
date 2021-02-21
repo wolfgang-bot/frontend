@@ -3,7 +3,7 @@ import { Bar } from "react-chartjs-2"
 import { useTheme } from "@material-ui/core"
 
 import { API } from "../../config/types"
-import withStreamSubscription from "../../features/streams/withStreamSubscription"
+import withStreamSubscription from "./withStreamSubscription"
 import { forEachDayInTimestamps } from "./utils"
 
 const MILLISECONDS_PER_HOUR = 60 * 60 * 1000

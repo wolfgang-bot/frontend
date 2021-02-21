@@ -3,7 +3,7 @@ import { useTheme } from "@material-ui/core"
 import { Bar } from "react-chartjs-2"
 
 import { forEachDayInTimestamps } from "./utils"
-import withStreamSubscription from "../../features/streams/withStreamSubscription"
+import withStreamSubscription from "./withStreamSubscription"
 
 function MessageChart({ data, width, height = 300 }: {
     data: number[],

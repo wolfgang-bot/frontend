@@ -14,9 +14,9 @@ import ChartCard from "../components/Styled/ChartCard"
 import ModuleListForGuild from "../features/modules/ModuleListForGuild"
 import MemberCount from "../features/guilds/MemberCount"
 import LocaleSelect from "../features/locales/LocaleSelect"
-import MemberChart from "../components/Charts/MemberChart"
-import MessageChart from "../components/Charts/MessageChart"
-import VoiceDurationChart from "../components/Charts/VoiceDurationChart"
+import MemberChart from "../features/streams/MemberChart"
+import MessageChart from "../features/streams/MessageChart"
+import VoiceDurationChart from "../features/streams/VoiceDurationChart"
 import * as Skeletons from "../components/Skeletons"
 
 function Header({ guild }: { guild: API.Guild }) {

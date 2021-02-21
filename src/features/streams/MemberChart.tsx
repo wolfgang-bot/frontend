@@ -4,7 +4,7 @@ import { createChart, CrosshairMode, ISeriesApi, IChartApi } from "lightweight-c
 
 import { API, EVENT_TYPES } from "../../config/types"
 import { createOHLCDataSet, chunkTimestampsIntoDays } from "./utils"
-import withStreamSubscription from "../../features/streams/withStreamSubscription"
+import withStreamSubscription from "./withStreamSubscription"
 import { createHistogramDataset } from "./utils"
 
 function MemberChart({ data, width, height = 300 }: {

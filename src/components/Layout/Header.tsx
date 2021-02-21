@@ -67,18 +67,17 @@ function Header() {
                         <Box display="flex" alignItems="center">
                             {!isLoggedIn ? (
                                 <Link to="/login">
-                                    <Button variant="outlined">
+                                    <Button variant="contained" color="secondary">
                                         Login
                                     </Button>
                                 </Link>
                             ) : (
                                 <>
                                     <Button
-                                        variant={
-                                            context.isDashboard ? "text" : "outlined"
-                                        }
+                                        variant={context.isDashboard ? "text" : "contained"}
                                         onClick={handleDashboardClick}
                                         className={classes.spacingRight}
+                                        color={context.isDashboard ? "default" : "secondary"}
                                     >
                                         {context.isDashboard ? "Guilds" : "Dashboard"}
                                     </Button>
