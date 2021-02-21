@@ -1,26 +1,36 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Redirect, useParams } from "react-router-dom"
 import { Tabs, Tab, Box, Grid } from "@material-ui/core"
 
 import { RootState } from "../store"
 import { API } from "../config/types"
+import { RefHandle as StreamRefHandle, StreamProps } from "../features/streams/withStreamSubscription"
 import { fetchGuilds } from "../features/guilds/guildsSlice"
+
 import Layout from "../components/Layout/Layout"
 import Title from "../components/Styled/Title"
 import GuildIcon from "../components/Discord/GuildIcon"
+import ModuleListForGuild from "../features/modules/ModuleListForGuild"
+import LocaleSelect from "../features/locales/LocaleSelect"
 import StatisticCard from "../components/Styled/StatisticCard"
 import ChartCard from "../components/Styled/ChartCard"
-import ModuleListForGuild from "../features/modules/ModuleListForGuild"
+
 import MemberCount, { MemberTrend } from "../features/streams/MemberCount"
 import MemberTrendAtDay, { MemberTrendAtDayTrend } from "../features/streams/MemberTrendAtDay"
 import MessagesAtDay, { MessagesAtDayTrend } from "../features/streams/MessagesAtDay"
 import VoiceDurationAtDay, { VoiceDurationAtDayTrend } from "../features/streams/VoiceDurationAtDay"
-import LocaleSelect from "../features/locales/LocaleSelect"
 import MemberChart from "../features/streams/MemberChart"
 import MessageChart from "../features/streams/MessageChart"
 import VoiceDurationChart from "../features/streams/VoiceDurationChart"
+
 import * as Skeletons from "../components/Skeletons"
+
+export type TabProps = {
+    guild: API.Guild,
+    getStreamRef: (refs: StreamRefHandle) => void,
+    onClearStreamRefs: () => void
+}
 
 function Header({ guild }: { guild: API.Guild }) {
     return (
@@ -40,7 +50,15 @@ function Header({ guild }: { guild: API.Guild }) {
     )
 }
 
-function Overview({ guild }: { guild: API.Guild }) {
+function Overview({ guild, getStreamRef, onClearStreamRefs }: TabProps) {
+    const streamProps: Record<string, any> & StreamProps = {
+        guild,
+        ref: getStreamRef,
+        useAutomatedStreamPausing: false
+    }
+
+    onClearStreamRefs()
+
     return (
         <>
             <Header guild={guild}/>
@@ -51,26 +69,26 @@ function Overview({ guild }: { guild: API.Guild }) {
                 mb={3}
             >
                 <StatisticCard
-                    main={<MemberCount guild={guild} />}
-                    trend={<MemberTrend guild={guild} />}
+                    main={<MemberCount {...streamProps} />}
+                    trend={<MemberTrend {...streamProps} />}
                     label="Member Count"
                 />
 
                 <StatisticCard
-                    main={<MemberTrendAtDay guild={guild} />}
-                    trend={<MemberTrendAtDayTrend guild={guild} />}
+                    main={<MemberTrendAtDay {...streamProps} />}
+                    trend={<MemberTrendAtDayTrend {...streamProps} />}
                     label="Member Trend Today"
                 />
 
                 <StatisticCard
-                    main={<MessagesAtDay guild={guild} />}
-                    trend={<MessagesAtDayTrend guild={guild} />}
+                    main={<MessagesAtDay {...streamProps} />}
+                    trend={<MessagesAtDayTrend {...streamProps} />}
                     label="Messages Today"
                 />
 
                 <StatisticCard
-                    main={<VoiceDurationAtDay guild={guild} />}
-                    trend={<VoiceDurationAtDayTrend guild={guild} />}
+                    main={<VoiceDurationAtDay {...streamProps} />}
+                    trend={<VoiceDurationAtDayTrend {...streamProps} />}
                     label="Voicechat Today"
                 />
             </Box>
@@ -81,27 +99,35 @@ function Overview({ guild }: { guild: API.Guild }) {
                 mb={3}
             >
                 <ChartCard
-                    chart={<MemberChart guild={guild} />}
+                    chart={<MemberChart {...streamProps} />}
                     label="Members"
                 />
 
                 <ChartCard
-                    chart={<MessageChart guild={guild} />}
+                    chart={<MessageChart {...streamProps} />}
                     label="Messages"
                 />
 
                 <ChartCard
-                    chart={<VoiceDurationChart guild={guild} />}
+                    chart={<VoiceDurationChart {...streamProps} />}
                     label="Voicechat"
                 />
             </Box>
 
-            <ModuleListForGuild guild={guild} />
+            <ModuleListForGuild {...streamProps} />
         </>
     )
 }
 
-function Statistics({ guild }: { guild: API.Guild }) {
+function Statistics({ guild, getStreamRef, onClearStreamRefs }: TabProps) {
+    const streamProps: Record<string, any> & StreamProps = {
+        guild,
+        ref: getStreamRef,
+        useAutomatedStreamPausing: false
+    }
+
+    onClearStreamRefs()
+    
     return (
         <>
             <Header guild={guild}/>
@@ -110,7 +136,7 @@ function Statistics({ guild }: { guild: API.Guild }) {
                 <ChartCard
                     chart={
                         <MemberChart
-                            guild={guild}
+                            {...streamProps}
                             width={null}
                             height={400}
                         />
@@ -125,7 +151,7 @@ function Statistics({ guild }: { guild: API.Guild }) {
                     <ChartCard
                         chart={
                             <MessageChart
-                                guild={guild}
+                                {...streamProps}
                                 width={null}
                                 height={400}
                             />
@@ -139,7 +165,7 @@ function Statistics({ guild }: { guild: API.Guild }) {
                     <ChartCard
                         chart={
                             <VoiceDurationChart
-                                guild={guild}
+                                {...streamProps}
                                 width={null}
                                 height={400}
                             />
@@ -160,6 +186,8 @@ function GuildPage() {
 
     const [currentTab, setCurrentTab] = useState(0)
 
+    const streamRefs = useRef<StreamRefHandle[]>([])
+    
     const dispatch = useDispatch()
 
     const guild = useSelector((store: RootState) => store.guilds.data[guildId])
@@ -167,6 +195,7 @@ function GuildPage() {
     const error = useSelector((store: RootState) => store.guilds.error)
 
     const handleTabChange = (_event: React.ChangeEvent<{}>, newValue: number) => {
+        streamRefs.current = []
         setCurrentTab(newValue)
     }
 
@@ -176,6 +205,14 @@ function GuildPage() {
         }
     }, [status, dispatch])
 
+    useEffect(() => {
+        return () => {
+            streamRefs.current.forEach(ref => {
+                ref.pauseStream()
+            })
+        }
+    }, [])
+
     let child = <Skeletons.ModuleListForGuild/>
 
     if (status === "success") {
@@ -184,12 +221,22 @@ function GuildPage() {
         }
 
         child = React.createElement(tabs[currentTab], {
-            guild
+            guild,
+            getStreamRef: (ref: StreamRefHandle) => {
+                if (!ref) {
+                    return
+                }
+
+                streamRefs.current.push(ref)
+            },
+            onClearStreamRefs: () => {
+                streamRefs.current = []
+            }
         })
     }
     
     if (status === "error") {
-        child = <div>{ error }</div>
+        child = <div>{error}</div>
     }
 
     return (
@@ -201,8 +248,7 @@ function GuildPage() {
                 </Tabs>
             }
         >
-
-            { child }
+            {child}
         </Layout>
     )
 }

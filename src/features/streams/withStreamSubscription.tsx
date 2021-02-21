@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react"
+import React, { ForwardedRef, useEffect, useMemo, useImperativeHandle } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { CircularProgress, Typography } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
@@ -9,6 +9,14 @@ import { subscribe, pause, resume } from "./streamsSlice"
 
 export type SubscriptionOptions = {
     showOverlayIfEmpty: boolean
+}
+
+export type RefHandle = {
+    pauseStream: () => void
+}
+
+export type StreamProps = {
+    useAutomatedStreamPausing: boolean
 }
 
 const useStyles = makeStyles(theme => ({
@@ -55,7 +63,9 @@ function withStreamSubscription(
     stream: API.EVENT_STREAM,
     options?: SubscriptionOptions
 ) {
-    return function StreamWrapper(props: React.ComponentProps<typeof Child>) {
+    type Props = React.ComponentProps<typeof Child> & StreamProps
+
+    function StreamWrapper(props: Props, ref: ForwardedRef<RefHandle>) {
         if (!props.guild) {
             throw new Error(`Missing prop: 'guild'`)
         }
@@ -79,10 +89,20 @@ function withStreamSubscription(
         }, [streamArgs, status, dispatch])
 
         useEffect(() => {
+            if (props.useAutomatedStreamPausing === false) {
+                return
+            }
+
             return () => {
                 dispatch(pause(streamArgs))
             }
-        }, [streamArgs, dispatch])
+        }, [props.useAutomatedStreamPausing, streamArgs, dispatch])
+
+        useImperativeHandle(ref, () => ({
+            pauseStream: () => {
+                dispatch(pause(streamArgs))
+            }
+        }), [dispatch, streamArgs])
 
         if (status === "flowing") {
             if (data.length === 0 && options?.showOverlayIfEmpty !== false) {
@@ -92,18 +112,20 @@ function withStreamSubscription(
                             <Typography variant="h6">No data available</Typography>
                         )}
                     >
-                        <Child data={[]} {...props}/>
+                        <Child data={[]} {...props} />
                     </Overlay>
                 )
             }
 
             return (
-                <Child data={data} {...props}/>
+                <Child data={data} {...props} />
             )
         }
 
-        return <CircularProgress/>
+        return <CircularProgress />
     }
+
+    return React.forwardRef<RefHandle, Props>(StreamWrapper)
 }
 
 export default withStreamSubscription
