@@ -11,7 +11,7 @@ export type SubscriptionOptions = {
     showOverlayIfEmpty: boolean
 }
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
     overlayContainer: {
         position: "relative"
     },
@@ -27,10 +27,12 @@ const useStyles = makeStyles({
         justifyContent: "center",
         alignItems: "center",
         textAlign: "center",
-        backgroundColor: "rgba(255, 255, 255, .67)",
+        backgroundColor: theme.palette.type === "dark" ?
+            "rgba(0, 0, 0, .35)" :
+            "rgba(255, 255, 255, .67)",
         zIndex: 1
     }    
-})
+}))
 
 function Overlay({ overlay, children }: React.PropsWithChildren<{
     overlay: React.ReactElement

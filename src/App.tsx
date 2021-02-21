@@ -3,8 +3,9 @@ import { useSelector } from "react-redux"
 import { CssBaseline, createMuiTheme, ThemeProvider } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 
-import Router from "./router"
 import { RootState } from "./store"
+import Router from "./router"
+import Logger from "./utils/Logger"
 
 export const lightTheme = createMuiTheme({
     palette: {
@@ -34,8 +35,12 @@ function App() {
 
     const isDarkMode = useSelector((store: RootState) => store.settings.isDarkMode)
 
+    const theme = isDarkMode ? darkTheme : lightTheme
+
+    Logger.debug(theme)
+
     return (
-        <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+        <ThemeProvider theme={theme}>
             <CssBaseline/>
             <Router/>
         </ThemeProvider>
