@@ -352,3 +352,23 @@ export function createHistogramDataset<T>(
 
     return dataset
 }
+
+/**
+ * Get all timestamp objects where the timestamp is in between
+ * to given timestamps.
+ */
+export function getTimestampsBetween<T extends TimestampObject>(
+    data: T[],
+    from: number,
+    to: number
+) {
+    const result: T[] = []
+
+    for (let entry of data) {
+        if (entry.timestamp >= from && entry.timestamp <= to) {
+            result.push(entry)
+        }
+    }
+
+    return result
+}
