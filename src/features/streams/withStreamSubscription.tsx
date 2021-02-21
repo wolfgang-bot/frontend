@@ -21,6 +21,13 @@ const useStyles = makeStyles({
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        textAlign: "center",
+        backgroundColor: "rgba(255, 255, 255, .67)",
         zIndex: 1
     }    
 })
@@ -34,9 +41,9 @@ function Overlay({ overlay, children }: React.PropsWithChildren<{
         <div className={classes.overlayContainer}>
             {children}
 
-            {React.cloneElement(React.Children.only(overlay), {
-                className: classes.overlay
-            })}
+            <div className={classes.overlay}>
+                {overlay}
+            </div>
         </div>
     )
 }
