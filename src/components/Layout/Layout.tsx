@@ -1,5 +1,5 @@
 import React from "react"
-import { Container, Paper, Theme } from "@material-ui/core"
+import { Container, Divider, Theme } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 
 import Header from "./Header"
@@ -18,6 +18,10 @@ const useStyles = makeStyles<Theme, StyleProps>(theme => ({
     layout: {
         paddingTop: theme.spacing(8),
         paddingBottom: theme.spacing(8)
+    },
+
+    navbar: {
+        backgroundColor: theme.palette.background.paper
     },
     
     body: props => props.center ? {
@@ -45,11 +49,13 @@ function Layout({
             <Header/>
 
             {navbar && (
-                <Paper variant="outlined" square>
+                <div className={classes.navbar}>
                     <Container>
                         {navbar}
                     </Container>
-                </Paper>
+
+                    <Divider/>
+                </div>
             )}
 
             <Container className={classes.body}>
