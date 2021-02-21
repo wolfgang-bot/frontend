@@ -28,11 +28,11 @@ function MemberVolumeAtDay({ data, timestamp = Date.now() }: {
         const to = timestamp
         const from = roundToLastFullDay(to)
 
-        const eventsToday = getTimestampsBetween(data, from, to)
+        const eventsAtDay = getTimestampsBetween(data, from, to)
 
         let amountUp = 0, amountDown = 0
 
-        for (let event of eventsToday) {
+        for (let event of eventsAtDay) {
             if (event.type === EVENT_TYPES.GUILD_MEMBER_ADD) {
                 amountUp++
             } else if (event.type === EVENT_TYPES.GUILD_MEMBER_REMOVE) {

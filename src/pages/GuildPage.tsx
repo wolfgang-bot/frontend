@@ -15,6 +15,7 @@ import ModuleListForGuild from "../features/modules/ModuleListForGuild"
 import MemberCount from "../features/streams/MemberCount"
 import MemberVolumeAtDay from "../features/streams/MemberVolumeAtDay"
 import MessagesAtDay from "../features/streams/MessagesAtDay"
+import VoiceDurationAtDay from "../features/streams/VoiceDurationAtDay"
 import LocaleSelect from "../features/locales/LocaleSelect"
 import MemberChart from "../features/streams/MemberChart"
 import MessageChart from "../features/streams/MessageChart"
@@ -62,6 +63,11 @@ function Overview({ guild }: { guild: API.Guild }) {
                 <StatisticCard
                     main={<MessagesAtDay guild={guild} />}
                     secondary="Messages Today"
+                />
+
+                <StatisticCard
+                    main={<VoiceDurationAtDay guild={guild} />}
+                    secondary="Voicechat Today"
                 />
             </Box>
 

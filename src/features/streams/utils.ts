@@ -4,7 +4,8 @@ export type TimestampObject = {
     timestamp: number
 }
 
-export const MILLISECONDS_PER_DAY = 24 * 60 * 60 * 1000
+export const MILLISECONDS_PER_HOUR = 60 * 60 * 1000
+export const MILLISECONDS_PER_DAY = 24 * MILLISECONDS_PER_HOUR
 
 /**
  * Round a UNIX timestamp to the last full hour
@@ -371,4 +372,19 @@ export function getTimestampsBetween<T extends TimestampObject>(
     }
 
     return result
+}
+
+/**
+ * Convert milliseconds to hours
+ */
+export function millisecondsToHours(milliseconds: number) {
+    return milliseconds / MILLISECONDS_PER_HOUR
+}
+
+/**
+ * Round a number to n places
+ */
+export function roundToPlaces(number: number, places: number) {
+    const factor = Math.pow(10, places)
+    return Math.floor(number * factor) / factor
 }

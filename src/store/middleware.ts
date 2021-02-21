@@ -37,28 +37,34 @@ export const authMiddleware: Middleware = () => next => (action: PayloadAction<{
     next(action)
 }
 
-function getStreamStatus(stream: API.EVENT_STREAM, guildId: string) {
-    return store.getState().streams[guildId]?.[stream]?.status
+function getStreamStatus(args: API.StreamArgs) {
+    return store.getState().streams[args.guildId]?.[args.eventStream]?.status
 }
 
 export const streamControlMiddleware: Middleware = () => next => (action: PayloadAction<API.StreamArgs>) => {
     switch (action.type) {
         case "streams/subscribe":
-            if (getStreamStatus(action.payload.eventStream, action.payload.guildId) !== "flowing") {
+            if (getStreamStatus(action.payload) !== "flowing") {
                 api.ws.subscribeToStream(action.payload.eventStream, action.payload.guildId)
             }
             break
 
         case "streams/unsubscribe":
-            api.ws.unsubscribeFromStream(action.payload.eventStream, action.payload.guildId)
+            if (getStreamStatus(action.payload)) {
+                api.ws.unsubscribeFromStream(action.payload.eventStream, action.payload.guildId)
+            }
             break
 
         case "streams/pause":
-            api.ws.pauseStream(action.payload.eventStream, action.payload.guildId)
+            if (getStreamStatus(action.payload) === "flowing") {
+                api.ws.pauseStream(action.payload.eventStream, action.payload.guildId)
+            }
             break
         
         case "streams/resume":
-            api.ws.resumeStream(action.payload.eventStream, action.payload.guildId)
+            if (getStreamStatus(action.payload) === "paused") {
+                api.ws.resumeStream(action.payload.eventStream, action.payload.guildId)
+            }
             break
     }
 

@@ -4,17 +4,7 @@ import { useTheme } from "@material-ui/core"
 
 import { API } from "../../config/types"
 import withStreamSubscription from "./withStreamSubscription"
-import { forEachDayInTimestamps } from "./utils"
-
-const MILLISECONDS_PER_HOUR = 60 * 60 * 1000
-
-function millisecondsToHours(milliseconds: number) {
-    return milliseconds / MILLISECONDS_PER_HOUR
-}
-
-function roundToTwoPlaces(number: number) {
-    return Math.floor(number * 100) / 100
-}
+import { forEachDayInTimestamps, roundToPlaces, millisecondsToHours } from "./utils"
 
 function VoiceDurationChart({ data, width, height = 300 }: {
     data: API.Event<API.VoiceEventMeta>[],
@@ -38,7 +28,7 @@ function VoiceDurationChart({ data, width, height = 300 }: {
 
     const values = Array.from(voiceDurationPerDayMap.values())
         .map((duration: number | null) => (
-            duration === null ? null : roundToTwoPlaces(millisecondsToHours(duration))
+            duration === null ? null : roundToPlaces(millisecondsToHours(duration), 2)
         ))
 
     return (
