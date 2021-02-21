@@ -18,13 +18,14 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-function MemberVolumeAtDay({ data }: {
-    data: API.Event<API.MemberEventMeta>[]
+function MemberVolumeAtDay({ data, timestamp = Date.now() }: {
+    data: API.Event<API.MemberEventMeta>[],
+    timestamp?: number
 }) {
     const classes = useStyles()
     
     const [amountUp, amountDown] = useMemo(() => {
-        const to = Date.now()
+        const to = timestamp
         const from = roundToLastFullDay(to)
 
         const eventsToday = getTimestampsBetween(data, from, to)
@@ -40,7 +41,7 @@ function MemberVolumeAtDay({ data }: {
         }
 
         return [amountUp, amountDown]
-    }, [data])
+    }, [data, timestamp])
 
     return (
         <Grid container spacing={2}>

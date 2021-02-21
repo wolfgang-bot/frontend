@@ -14,6 +14,7 @@ import ChartCard from "../components/Styled/ChartCard"
 import ModuleListForGuild from "../features/modules/ModuleListForGuild"
 import MemberCount from "../features/streams/MemberCount"
 import MemberVolumeAtDay from "../features/streams/MemberVolumeAtDay"
+import MessagesAtDay from "../features/streams/MessagesAtDay"
 import LocaleSelect from "../features/locales/LocaleSelect"
 import MemberChart from "../features/streams/MemberChart"
 import MessageChart from "../features/streams/MessageChart"
@@ -56,6 +57,11 @@ function Overview({ guild }: { guild: API.Guild }) {
                 <StatisticCard
                     main={<MemberVolumeAtDay guild={guild} />}
                     secondary="Member Volume Today"
+                />
+
+                <StatisticCard
+                    main={<MessagesAtDay guild={guild} />}
+                    secondary="Messages Today"
                 />
             </Box>
 
