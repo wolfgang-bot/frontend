@@ -21,7 +21,7 @@ function Trend({ value }: { value: number }) {
     const classes = useStyles()
 
     const Icon = value < 0 ? ChevronDownIcon : ChevronUpIcon
-    const sign = value < 0 ? "-" : "+"
+    const sign = value >= 0 ? "+" : ""
 
     const newValue = Math.floor(value * 100)
 

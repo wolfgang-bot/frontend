@@ -15,7 +15,7 @@ import ModuleListForGuild from "../features/modules/ModuleListForGuild"
 import MemberCount, { MemberTrend } from "../features/streams/MemberCount"
 import MemberTrendAtDay, { MemberTrendAtDayTrend } from "../features/streams/MemberTrendAtDay"
 import MessagesAtDay, { MessagesAtDayTrend } from "../features/streams/MessagesAtDay"
-import VoiceDurationAtDay from "../features/streams/VoiceDurationAtDay"
+import VoiceDurationAtDay, { VoiceDurationAtDayTrend } from "../features/streams/VoiceDurationAtDay"
 import LocaleSelect from "../features/locales/LocaleSelect"
 import MemberChart from "../features/streams/MemberChart"
 import MessageChart from "../features/streams/MessageChart"
@@ -70,6 +70,7 @@ function Overview({ guild }: { guild: API.Guild }) {
 
                 <StatisticCard
                     main={<VoiceDurationAtDay guild={guild} />}
+                    trend={<VoiceDurationAtDayTrend guild={guild} />}
                     label="Voicechat Today"
                 />
             </Box>
