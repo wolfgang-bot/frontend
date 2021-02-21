@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef } from "react"
 import { useTheme } from "@material-ui/core"
-import { createChart, CrosshairMode, ISeriesApi, IChartApi } from "lightweight-charts"
+import { createChart, ISeriesApi, IChartApi } from "lightweight-charts"
 
 import { API, EVENT_TYPES } from "../../config/types"
 import { createOHLCDataSet, chunkTimestampsIntoDays } from "./utils"

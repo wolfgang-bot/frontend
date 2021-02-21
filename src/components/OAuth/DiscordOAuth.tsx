@@ -55,7 +55,11 @@ function OAuthDiscord({ children }: PropsWithChildren<{}>) {
     })
 
     return (
-        <Button variant="outlined" onClick={handleClick}>{ children }</Button>
+        <Button
+            variant="contained"
+            onClick={handleClick}
+            color="secondary"
+        >{ children }</Button>
     )
 }
 

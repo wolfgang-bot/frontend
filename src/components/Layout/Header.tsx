@@ -1,14 +1,15 @@
-import React, { useContext } from "react"
-import { useSelector, useDispatch } from "react-redux"
-import { useHistory, Link } from "react-router-dom"
+import React, { useContext, useState, useRef } from "react"
+import clsx from "clsx"
+import { useSelector } from "react-redux"
+import { Link } from "react-router-dom"
 import { AppBar, Toolbar, Button, Grid, Divider, Container, Box, Typography } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 
 import { RootState } from "../../store"
-import { logout } from "../../features/auth/authSlice"
 import DarkModeSwitch from "../../features/settings/DarkModeSwitch"
 import Avatar from "../User/Avatar"
 import Brand from "./Brand"
+import Menu from "./Menu"
 import { LayoutContext } from "./Layout"
 
 const useStyles = makeStyles(theme => ({
@@ -22,8 +23,14 @@ const useStyles = makeStyles(theme => ({
 
     toolbar: theme.mixins.toolbar,
 
+    user: {
+        cursor: "pointer",
+        display: "flex",
+        alignItems: "center"
+    },
+
     spacingRight: {
-        marginRight: theme.spacing(2)
+        marginRight: theme.spacing(3)
     },
 
     avatar: {
@@ -36,20 +43,20 @@ function Header() {
 
     const classes = useStyles()
 
-    const history = useHistory()
-
-    const dispatch = useDispatch()
+    const menuAnchorRef = useRef<HTMLElement | null>(null)
 
     const user = useSelector((store: RootState) => store.auth.data.user)
     const isLoggedIn = !!user
 
-    const handleDashboardClick = () => {
-        history.push("/dashboard")
+    const [isMenuOpen, setIsMenuOpen] = useState(false)
+
+    const handleUserClick = (event: React.MouseEvent<HTMLElement>) => {
+        menuAnchorRef.current = event.currentTarget
+        setIsMenuOpen(!isMenuOpen)
     }
 
-    const handleLogout = () => {
-        dispatch(logout())
-        history.push("/")
+    const handleMenuClose = () => {
+        setIsMenuOpen(false)
     }
 
     return (
@@ -67,46 +74,63 @@ function Header() {
                         <Box display="flex" alignItems="center">
                             {!isLoggedIn ? (
                                 <Link to="/login">
-                                    <Button variant="contained" color="secondary">
+                                    <Button
+                                        variant="contained"
+                                        className={classes.spacingRight}
+                                        color="secondary"
+                                    >
                                         Login
                                     </Button>
                                 </Link>
                             ) : (
                                 <>
-                                    <Button
-                                        variant={context.isDashboard ? "text" : "contained"}
-                                        onClick={handleDashboardClick}
-                                        className={classes.spacingRight}
-                                        color={context.isDashboard ? "default" : "secondary"}
-                                    >
-                                        {context.isDashboard ? "Guilds" : "Dashboard"}
-                                    </Button>
-
-                                    <Button
-                                        onClick={handleLogout}
-                                        variant="text"
-                                        className={classes.spacingRight}
-                                    >
-                                        Logout
-                                    </Button>
+                                    {!context.isDashboard && (
+                                        <Link to="/dashboard">
+                                            <Button
+                                                variant="contained"
+                                                className={classes.spacingRight}
+                                                color="secondary"
+                                            >
+                                                Dashboard
+                                            </Button>
+                                        </Link>
+                                    )}
                                     
-                                    <Avatar className={classes.avatar}/>
+                                    <div
+                                        className={clsx(classes.user, classes.spacingRight)}
+                                        onClick={handleUserClick}
+                                    >
+                                        <Avatar className={classes.avatar}/>
 
-                                    <Typography variant="subtitle1">
-                                        {user?.username}
-                                    </Typography>
+                                        <Typography variant="subtitle1">
+                                            {user?.username}
+                                        </Typography>
+                                    </div>
                                 </>
                             )}
 
-                            <Box ml={2}>
-                                <DarkModeSwitch />
-                            </Box>
+                            <DarkModeSwitch />
                         </Box>
                     </Grid>
                 </Container>
             </Toolbar>
 
             <Divider/>
+
+            <Menu
+                open={isMenuOpen}
+                onClose={handleMenuClose}
+                anchorEl={menuAnchorRef.current}
+                getContentAnchorEl={null}
+                anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "left"
+                }}
+                transformOrigin={{
+                    vertical: "top",
+                    horizontal: "left"
+                }}
+            />
         </AppBar>
     )
 }
