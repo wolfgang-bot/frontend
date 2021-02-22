@@ -56,6 +56,22 @@ function ModulePage() {
     const guild = useSelector((store: RootState) => store.guilds.data?.[guildId])
     const guildsError = useSelector((store: RootState) => store.guilds.error)
 
+    let status = "pending"
+
+    if (
+        moduleStatus === "success" &&
+        (!guildId || guildsStatus === "success")
+    ) {
+        status = "success"
+    }
+
+    if (
+        moduleStatus === "error" ||
+        (guildId && guildsStatus === "error")
+    ) {
+        status = "error"
+    }
+
     const handleUpdateConfig = async () => {
         const value = configFormRef.current?.getValues() as API.Config
 
@@ -96,10 +112,7 @@ function ModulePage() {
 
     let child = <CircularProgress/>
 
-    if (
-        moduleStatus === "success" &&
-        (!guildId || guildsStatus === "success")
-    ) {
+    if (status === "success") {
         child = (
             <>
                 <Box mt={4}>
@@ -153,10 +166,7 @@ function ModulePage() {
         )
     }
     
-    if (
-        moduleStatus === "error" ||
-        (guildId && guildsStatus === "error")
-    ) {
+    if (status === "error") {
         child = (
             <div>
                 {moduleError}
@@ -166,7 +176,7 @@ function ModulePage() {
     }
 
     return (
-        <Layout>
+        <Layout center={status === "pending"}>
             {child}
         </Layout>
     )

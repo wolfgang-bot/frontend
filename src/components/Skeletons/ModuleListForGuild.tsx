@@ -3,7 +3,7 @@ import { Grid } from "@material-ui/core"
 
 import ModuleCard from "./ModuleCard"
 
-const AMOUNT_OF_CARDS = 5
+const AMOUNT_OF_CARDS = 4
 
 const seeds: number[] = []
 
