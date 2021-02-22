@@ -1,10 +1,10 @@
 import React, { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { CircularProgress } from "@material-ui/core"
 
 import { RootState } from "../../store"
 import { fetchCommands } from "./commandsSlice"
 import CommandGroups from "./CommandGroups"
+import * as Skeletons from "../../components/Skeletons"
 
 function CommandListForModule({ moduleKey }: {
     moduleKey: string
@@ -38,7 +38,7 @@ function CommandListForModule({ moduleKey }: {
     }
     
     return (
-        <CircularProgress/>
+        <Skeletons.CommandListForModule/>
     )
 }
 

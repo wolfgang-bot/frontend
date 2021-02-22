@@ -9,7 +9,7 @@ import opener from "../../components/ComponentOpener"
 
 const useStyles = makeStyles(theme => ({
     command: {
-        padding: theme.spacing(3)
+        padding: theme.spacing(2.5)
     },
 
     gutterBottom: {

@@ -28,7 +28,6 @@ function GroupSelect({ groups, onChange, className }: {
                 value={value}
                 onChange={handleChange}
                 variant="fullWidth"
-
             >
                 {groups.map(group => (
                     <Tab label={group} key={group}/>
