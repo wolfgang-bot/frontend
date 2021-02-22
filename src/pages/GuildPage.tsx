@@ -213,7 +213,7 @@ function GuildPage() {
         }
     }, [])
 
-    let child = <Skeletons.ModuleListForGuild/>
+    let child = <Skeletons.GuildPage/>
 
     if (status === "success") {
         if (!guild.isActive) {

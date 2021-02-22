@@ -13,7 +13,7 @@ for (let i = 0; i < AMOUNT_OF_CARDS; i++) {
 
 function ModuleListForGuild() {
     return (
-        <Grid container spacing={2}>
+        <Grid container spacing={2} justify="space-between">
             {seeds.map((seed, index) => (
                 <Grid item key={index}>
                     <ModuleCard seed={seed} guild/>
