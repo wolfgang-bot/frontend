@@ -6,6 +6,7 @@ import { makeStyles } from "@material-ui/core/styles"
 import { RootState } from "./store"
 import Router from "./router"
 import Logger from "./utils/Logger"
+import useLogin from "./utils/useLogin"
 
 export const lightTheme = createMuiTheme({
     palette: {
@@ -36,6 +37,8 @@ const useStyles = makeStyles({
 
 function App() {
     useStyles()
+
+    useLogin()
 
     const isDarkMode = useSelector((store: RootState) => store.settings.isDarkMode)
 
