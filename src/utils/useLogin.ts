@@ -16,7 +16,9 @@ function useLogin() {
                 token: API_TOKEN
             }))
         }
-    }, [status, dispatch])
+
+        // eslint-disable-next-line
+    }, [])
 
     return status
 }
