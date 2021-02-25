@@ -6,7 +6,8 @@
     "start": "npx react-scripts start",
     "build": "npx react-scripts build",
     "test": "npx react-scripts test",
-    "eject": "npx react-scripts eject"
+    "eject": "npx react-scripts eject",
+    "serve": "node server.js"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.0",
@@ -25,6 +26,9 @@
     "change-case": "^4.1.1",
     "chart.js": "^2.9.4",
     "clsx": "^1.1.1",
+    "dotenv": "^8.2.0",
+    "fastify": "^3.12.0",
+    "fastify-static": "^4.0.1",
     "lightweight-charts": "^3.3.0",
     "react": "^16.13.1",
     "react-chartjs-2": "^2.11.1",
