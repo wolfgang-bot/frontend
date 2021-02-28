@@ -77,6 +77,13 @@ class WebSocketAPI {
     }
 
     /**
+     * @fires get:guild/member-count
+     */
+    getMemberCount(guildId: string) {
+        return this.fetch<API.MemberCount>("get:guild/member-count", guildId)
+    }
+
+    /**
      * @fires get:guild/channels
      */
     getGuildChannels(guildId: string) {
@@ -84,10 +91,10 @@ class WebSocketAPI {
     }
 
     /**
-     * @fires get:guild/member-count
+     * @fires get:guild/roles
      */
-    getMemberCount(guildId: string) {
-        return this.fetch<API.MemberCount>("get:guild/member-count", guildId)
+    getGuildRoles(guildId: string) {
+        return this.fetch<API.Role[]>("get:guild/roles", guildId)
     }
 
     /**

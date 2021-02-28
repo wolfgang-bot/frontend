@@ -32,6 +32,18 @@ export const fetchChannels = createAsyncThunk<
     }
 )
 
+export const fetchRoles = createAsyncThunk<
+    API.Role[] | undefined,
+    string,
+    { extra: ThunkExtraArgument }
+>(
+    "guilds/fetchRoles",
+    async (guildId, { extra: { api } }) => {
+        const res = await api.ws.getGuildRoles(guildId)
+        return res.data
+    }
+)
+
 export const fetchConfig = createAsyncThunk<
     object | undefined,
     string,
@@ -117,6 +129,32 @@ const guildsSlice = createSlice({
             if (guild) {
                 guild.channels.error = action.payload
                 guild.channels.status = "error"
+            }
+        },
+
+        /**
+         * Thunk: guilds/fetchRoles
+         */
+        [fetchRoles.pending.toString()]: (state, action) => {
+            const guild = state.data[action.meta.arg]
+            if (guild) {
+                guild.roles.status = "pending"
+            }
+        },
+        [fetchRoles.fulfilled.toString()]: (state, action) => {
+            const guild = state.data[action.meta.arg]
+            if (guild) {
+                action.payload.forEach((role: Discord.Role) => {
+                    guild.roles.data[role.id] = role
+                })
+                guild.roles.status = "success"
+            }
+        },
+        [fetchRoles.rejected.toString()]: (state, action) => {
+            const guild = state.data[action.meta.arg]
+            if (guild) {
+                guild.roles.error = action.payload
+                guild.roles.status = "error"
             }
         },
 

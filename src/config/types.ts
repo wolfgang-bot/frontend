@@ -8,7 +8,8 @@ export enum INSTANCE_STATES {
 export enum ARGUMENT_TYPES {
     TEXT_CHANNEL = "text_channel",
     VOICE_CHANNEL = "voice_channel",
-    CATEGORY_CHANNEL = "category_channel"
+    CATEGORY_CHANNEL = "category_channel",
+    ROLE = "role"
 }
 
 export enum EVENT_TYPES {
@@ -43,6 +44,20 @@ export declare namespace Discord {
     }
 
     export type CategoryChannel = GuildChannel
+
+    export type Role = {
+        id: string,
+        name: string,
+        permissions: number,
+        rawPosition: number,
+        createdTimestamp: number,
+        deleted: boolean,
+        guild: string,
+        hoist: boolean,
+        managed: boolean,
+        mentionable: boolean,
+        color: number
+    }
 }
 
 export declare namespace API {
@@ -66,6 +81,7 @@ export declare namespace API {
         owner: boolean,
         permissions: number,
         channels: ReduxAPIState<Record<string, Discord.GuildChannel>>,
+        roles: ReduxAPIState<Record<string, API.Role>>,
         config: ReduxAPIState<API.DescriptiveConfig>,
         memberCount: ReduxAPIState<API.MemberCount>
     }
@@ -108,6 +124,7 @@ export declare namespace API {
     }
 
     export type GuildChannel = Discord.GuildChannel
+    export type Role = Discord.Role
     
     export type MemberCount = number
 
