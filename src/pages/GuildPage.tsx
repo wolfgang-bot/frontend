@@ -1,12 +1,14 @@
 import React, { useEffect, useState, useRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Redirect, useParams } from "react-router-dom"
-import { Tabs, Tab, Box, Grid } from "@material-ui/core"
+import { Tabs, Tab, Box, Grid, IconButton } from "@material-ui/core"
+import SettingsIcon from "@material-ui/icons/Settings"
 
 import { RootState } from "../store"
 import { API } from "../config/types"
 import { RefHandle as StreamRefHandle, StreamProps } from "../features/streams/withStreamSubscription"
 import { fetchGuilds } from "../features/guilds/guildsSlice"
+import opener from "../components/ComponentOpener"
 
 import Layout from "../components/Layout/Layout"
 import Title from "../components/Styled/Title"
@@ -33,6 +35,10 @@ export type TabProps = {
 }
 
 function Header({ guild }: { guild: API.Guild }) {
+    const handleSettingsClick = () => {
+        opener.openDialog("GuildSettingsDialog", { guild })
+    }
+    
     return (
         <Title>
             <Box display="flex" justifyContent="space-between">
@@ -44,7 +50,15 @@ function Header({ guild }: { guild: API.Guild }) {
                 </Box>
 
 
-                <LocaleSelect guild={guild} />
+                <Box display="flex">
+                    <Box mr={2}>
+                        <LocaleSelect guild={guild} />
+                    </Box>
+
+                    <IconButton onClick={handleSettingsClick} size="small">
+                        <SettingsIcon/>
+                    </IconButton>
+                </Box>
             </Box>
         </Title>
     )
