@@ -84,20 +84,6 @@ class WebSocketAPI {
     }
 
     /**
-     * @fires get:guild/locale
-     */
-    getLocale(guildId: string) {
-        return this.fetch<API.Locale>("get:guild/locale", guildId)
-    }
-
-    /**
-     * @fires post:guild/locale
-     */
-    updateLocale(guildId: string, locale: API.Locale) {
-        return this.fetch<API.Locale>("post:guild/locale", guildId, locale)
-    }
-
-    /**
      * @fires get:guild/member-count
      */
     getMemberCount(guildId: string) {
@@ -152,13 +138,6 @@ class WebSocketAPI {
      */
     restartModuleInstance(guildId: string, moduleName: string) {
         return this.fetch("post:module-instances/restart", guildId, moduleName)
-    }
-
-    /**
-     * @fires get:locales
-     */
-    getLocales() {
-        return this.fetch<API.Locale[]>("get:locales")
     }
 
     /**

@@ -14,7 +14,6 @@ import Layout from "../components/Layout/Layout"
 import Title from "../components/Styled/Title"
 import GuildIcon from "../components/Discord/GuildIcon"
 import ModuleListForGuild from "../features/modules/ModuleListForGuild"
-import LocaleSelect from "../features/locales/LocaleSelect"
 import StatisticCard from "../components/Styled/StatisticCard"
 import ChartCard from "../components/Styled/ChartCard"
 
@@ -50,15 +49,9 @@ function Header({ guild }: { guild: API.Guild }) {
                 </Box>
 
 
-                <Box display="flex">
-                    <Box mr={2}>
-                        <LocaleSelect guild={guild} />
-                    </Box>
-
-                    <IconButton onClick={handleSettingsClick} size="small">
-                        <SettingsIcon/>
-                    </IconButton>
-                </Box>
+                <IconButton onClick={handleSettingsClick} size="small">
+                    <SettingsIcon />
+                </IconButton>
             </Box>
         </Title>
     )

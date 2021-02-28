@@ -67,7 +67,6 @@ export declare namespace API {
         permissions: number,
         channels: ReduxAPIState<Record<string, Discord.GuildChannel>>,
         config: ReduxAPIState<API.DescriptiveConfig>,
-        locale: ReduxAPIState<API.Locale>,
         memberCount: ReduxAPIState<API.MemberCount>
     }
 
@@ -109,8 +108,6 @@ export declare namespace API {
     }
 
     export type GuildChannel = Discord.GuildChannel
-
-    export type Locale = string
     
     export type MemberCount = number
 

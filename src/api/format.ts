@@ -35,7 +35,6 @@ function formatGuild(guild: API.Guild) {
     guild.config = makeReduxAPIState<API.DescriptiveConfig>({
         value: null
     })
-    guild.locale = makeReduxAPIState<API.Locale>("")
     guild.memberCount = makeReduxAPIState<API.MemberCount>(-1)
 
     if (guild.icon) {

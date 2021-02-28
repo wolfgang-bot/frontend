@@ -60,29 +60,6 @@ export const updateConfig = createAsyncThunk<
     }
 )
 
-export const fetchLocale = createAsyncThunk<
-    API.Locale | undefined,
-    string,
-    { extra: ThunkExtraArgument }
->(
-    "guilds/fetchLocale",
-    async (guildId, { extra: { api } }) => {
-        const res = await api.ws.getLocale(guildId)
-        return res.data
-    }
-)
-
-export const updateLocale = createAsyncThunk<
-    void,
-    { guildId: string, value: API.Locale },
-    { extra: ThunkExtraArgument }
->(
-    "guilds/updateLocale",
-    async ({ guildId, value }, { extra: { api } }) => {
-        await api.ws.updateLocale(guildId, value)
-    }
-)
-
 export const fetchMemberCount = createAsyncThunk<
     API.MemberCount | undefined,
     string,
@@ -174,40 +151,6 @@ const guildsSlice = createSlice({
             const guild = state.data[action.meta.arg.guildId]
             if (guild) {
                 guild.config.data = action.payload
-            }
-        },
-
-        /**
-         * Thunk: guilds/fetchLocale
-         */
-        [fetchLocale.pending.toString()]: (state, action) => {
-            const guild = state.data[action.meta.arg]
-            if (guild) {
-                guild.locale.status = "pending"
-            }
-        },
-        [fetchLocale.fulfilled.toString()]: (state, action) => {
-            const guild = state.data[action.meta.arg]
-            if (guild) {
-                guild.locale.data = action.payload
-                guild.locale.status = "success"
-            }
-        },
-        [fetchLocale.rejected.toString()]: (state, action) => {
-            const guild = state.data[action.meta.arg]
-            if (guild) {
-                guild.locale.error = action.payload
-                guild.locale.status = "error"
-            }
-        },
-
-        /**
-         * Thunk: guilds/updateLocale
-         */
-        [updateLocale.fulfilled.toString()]: (state, action) => {
-            const guild = state.data[action.meta.arg.guildId]
-            if (guild) {
-                guild.locale.data = action.meta.arg.value
             }
         },
 
