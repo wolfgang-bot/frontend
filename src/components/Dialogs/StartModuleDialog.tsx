@@ -42,15 +42,16 @@ function StartModuleDialog({ open, onClose, module, guild }: {
     }
 
     const handleSubmit = async () => {
-        const args = Object.values(form.getValues())
+        const formValues = form.getValues()
+        const args = module.translations.args.map(({ key }) => formValues[key])
         const config = configFormRef.current?.getValues()
-
+        
         if (!config) {
             throw new Error("Failed to receive config from config form")
         }
-
+        
         const success = await updateConfig(config)
-
+        
         if (!success) {
             return
         }

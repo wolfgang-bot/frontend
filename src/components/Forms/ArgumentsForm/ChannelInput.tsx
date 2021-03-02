@@ -2,26 +2,18 @@ import React, { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { useFormContext, Controller } from "react-hook-form"
 import { Select, MenuItem, FormControl, InputLabel, FormHelperText } from "@material-ui/core"
-import { makeStyles } from "@material-ui/core/styles"
 
 import { API } from "../../../config/types"
 import { RootState } from "../../../store"
 import { fetchChannels } from "../../../features/guilds/guildsSlice"
 import * as Skeletons from "../../Skeletons"
 
-const useStyles = makeStyles({
-    formControl: {
-        minWidth: 300
-    }
-})
-
-function ChannelInput({ arg, guild, channelType }: {
+function ChannelInput({ arg, guild, className, channelType }: {
     arg: API.Argument,
     guild: API.Guild,
+    className?: string,
     channelType: string
 }) {
-    const classes = useStyles()
-
     const { control } = useFormContext()
 
     const dispatch = useDispatch()
@@ -42,11 +34,11 @@ function ChannelInput({ arg, guild, channelType }: {
         const channels = Object.values(data).filter(channel => channel.type === channelType)
 
         return (
-            <FormControl className={classes.formControl} fullWidth>
+            <FormControl className={className} fullWidth>
                 <InputLabel id={arg.name}>{ arg.name }</InputLabel>
 
                 <Controller
-                    name={arg.name}
+                    name={arg.key}
                     control={control}
                     defaultValue={channels[0].id}
                     as={

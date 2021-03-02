@@ -6,6 +6,7 @@ export enum INSTANCE_STATES {
 }
 
 export enum ARGUMENT_TYPES {
+    NUMBER = "number",
     TEXT_CHANNEL = "text_channel",
     VOICE_CHANNEL = "voice_channel",
     CATEGORY_CHANNEL = "category_channel",
