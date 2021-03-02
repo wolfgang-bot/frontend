@@ -55,7 +55,7 @@ function StartModuleDialog({ open, onClose, module, guild }: {
         if (!success) {
             return
         }
-        
+
         api.ws.startModuleInstance(guild.id, module.key, args)
 
         onClose()

@@ -4,11 +4,13 @@ import { makeStyles } from "@material-ui/core/styles"
 import { API } from "../../../config/types"
 import makeChannelInput from "./ChannelInput"
 import RoleInput from "./RoleInput"
+import StringInput from "./StringInput"
 import NumberInput from "./NumberInput"
 
 const inputMap: Record<string, React.FunctionComponent<
     React.ComponentProps<typeof ArgumentInput>>
 > = {
+    "string": StringInput,
     "number": NumberInput,
     "text_channel": makeChannelInput("text"),
     "category_channel": makeChannelInput("category"),

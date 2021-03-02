@@ -15,6 +15,10 @@ export function createNestedElements(data: DescriptiveObject, components: {
     leaf: React.FunctionComponent<any>
 }): [React.ReactElement[], Record<string, string>] {
     const getValue = (data: any) => {
+        if (data.constructor.name !== "Object") {
+            return data
+        }
+        
         return "value" in data ? data.value : data
     }
 
