@@ -1,11 +1,10 @@
 import React, { useRef } from "react"
 import { useDispatch } from "react-redux"
-import { useForm, FormProvider } from "react-hook-form"
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from "@material-ui/core"
 
 import { API } from "../../config/types"
-import ArgumentsForm from "../Forms/ArgumentsForm/ArgumentsForm"
-import ConfigForm, { RefHandle } from "../Forms/ConfigForm/ConfigForm"
+import ArgumentsForm, { RefHandle as ArgumentsRefHandle } from "../Forms/ArgumentsForm/ArgumentsForm"
+import ConfigForm, { RefHandle as ConfigRefHandle } from "../Forms/ConfigForm/ConfigForm"
 import { updateConfig as updateConfigAction } from "../../features/guilds/guildsSlice"
 import Logger from "../../utils/Logger"
 import api from "../../api"
@@ -18,9 +17,8 @@ function StartModuleDialog({ open, onClose, module, guild }: {
 }) {
     const dispatch = useDispatch()
 
-    const configFormRef = useRef<RefHandle>(null)
-
-    const form = useForm()
+    const argsFormRef = useRef<ArgumentsRefHandle>(null)
+    const configFormRef = useRef<ConfigRefHandle>(null)
 
     const updateConfig = async (value: API.Config) => {
         const resultAction = await dispatch(updateConfigAction({
@@ -42,14 +40,15 @@ function StartModuleDialog({ open, onClose, module, guild }: {
     }
 
     const handleSubmit = async () => {
-        const formValues = form.getValues()
-        const args = module.translations.args.map(({ key }) => formValues[key])
+        const formValues = argsFormRef.current?.getValues()
         const config = configFormRef.current?.getValues()
         
-        if (!config) {
-            throw new Error("Failed to receive config from config form")
+        if (!formValues || !config) {
+            throw new Error("Failed to receive form")
         }
         
+        const args = module.translations.args.map(({ key }) => formValues[key])
+
         const success = await updateConfig(config)
         
         if (!success) {
@@ -66,18 +65,17 @@ function StartModuleDialog({ open, onClose, module, guild }: {
             <DialogTitle>{ module.translations.name }</DialogTitle>
 
             <DialogContent>
-                <FormProvider {...form}>
-                    <ArgumentsForm
-                        args={module.translations.args}
-                        guild={guild}
-                    />
+                <ArgumentsForm
+                    args={module.translations.args}
+                    guild={guild}
+                    ref={argsFormRef}
+                />
 
-                    <ConfigForm
-                        guild={guild}
-                        module={module}
-                        ref={configFormRef}
-                    />
-                </FormProvider>
+                <ConfigForm
+                    guild={guild}
+                    module={module}
+                    ref={configFormRef}
+                />
             </DialogContent>
 
             <DialogActions>

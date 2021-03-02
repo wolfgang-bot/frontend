@@ -122,7 +122,8 @@ export declare namespace API {
         type: ARGUMENT_TYPES,
         key: string,
         name: string,
-        desc: string
+        desc: string,
+        defaultValue?: any
     }
 
     export type GuildChannel = Discord.GuildChannel
