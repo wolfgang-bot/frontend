@@ -13,12 +13,21 @@ type Props = {
     guild: API.Guild
 }
 
+function getDefaultValuesFromArgs(args: API.Argument[]) {
+    return Object.fromEntries(
+        args.map(arg => arg.defaultValue && [arg.key, arg.defaultValue])
+            .filter(Boolean)
+    )
+}
+
 function ArgumentsForm({ args, guild }: Props, ref?: ForwardedRef<RefHandle>) {
-    const form = useForm()
+    const form = useForm({
+        defaultValues: getDefaultValuesFromArgs(args)
+    })
 
     useImperativeHandle(ref, () => ({
         getValues: form.getValues
-    }), [args, guild])
+    }), [args, guild, form.getValues])
     
     return (
         <FormProvider {...form}>
