@@ -1,4 +1,4 @@
-import React, { ForwardedRef, useImperativeHandle } from "react"
+import React, { ForwardedRef, useImperativeHandle, useMemo } from "react"
 import { useForm, FormProvider } from "react-hook-form"
 
 import { API } from "../../../config/types"
@@ -25,15 +25,19 @@ function ArgumentsForm({ args, guild }: Props, ref?: ForwardedRef<RefHandle>) {
         defaultValues: getDefaultValuesFromArgs(args)
     })
 
+    const inputs = useMemo(() => (
+        args.map(arg => (
+            <ArgumentInput arg={arg} guild={guild} key={arg.key} />
+        )) 
+    ), [args, guild])
+
     useImperativeHandle(ref, () => ({
         getValues: form.getValues
-    }), [args, guild, form.getValues])
-    
+    }), [form.getValues])
+
     return (
         <FormProvider {...form}>
-            { args.map(arg => (
-                <ArgumentInput arg={arg} guild={guild} key={arg.name}/>
-            )) }
+            {inputs}
         </FormProvider>
     )
 }

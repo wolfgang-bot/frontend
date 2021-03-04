@@ -2,7 +2,8 @@ import React from "react"
 import { makeStyles } from "@material-ui/core/styles"
 
 import { API } from "../../../config/types"
-import makeChannelInput from "./ChannelInput"
+import makeChannelInput from "./makeChannelInput"
+import makeArrayInput from "./makeArrayInput"
 import RoleInput from "./RoleInput"
 import StringInput from "./StringInput"
 import NumberInput from "./NumberInput"
@@ -31,7 +32,11 @@ function ArgumentInput(props: {
 }) {
     const classes = useStyles()
 
-    const Input = inputMap[props.arg.type]
+    let Input = inputMap[props.arg.type]
+
+    if (props.arg.isArray) {
+        Input = makeArrayInput(Input)
+    }
 
     if (!Input) {
         throw new Error(`Unknown argument type: ${props.arg.type}`)

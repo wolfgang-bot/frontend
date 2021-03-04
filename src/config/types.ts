@@ -120,6 +120,7 @@ export declare namespace API {
 
     export type Argument = {
         type: ARGUMENT_TYPES,
+        isArray?: boolean,
         key: string,
         name: string,
         desc: string,
