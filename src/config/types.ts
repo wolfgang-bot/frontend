@@ -84,7 +84,6 @@ export declare namespace API {
         permissions: number,
         channels: ReduxAPIState<Record<string, Discord.GuildChannel>>,
         roles: ReduxAPIState<Record<string, API.Role>>,
-        config: ReduxAPIState<API.DescriptiveConfig>,
         memberCount: ReduxAPIState<API.MemberCount>
     }
 
@@ -95,9 +94,6 @@ export declare namespace API {
         avatar?: string,
         avatar_animated?: string
     }
-
-    export type DescriptiveConfig = DescriptiveObject
-    export type Config = object
 
     export type Module = {
         key: string,
@@ -182,10 +178,4 @@ export type ReduxAPIState<T> = {
     data: T,
     status: LoadingState,
     error?: any
-}
-
-export type DescriptiveObject = {
-    value: any,
-    description?: string,
-    constraints?: string
 }

@@ -44,34 +44,6 @@ export const fetchRoles = createAsyncThunk<
     }
 )
 
-export const fetchConfig = createAsyncThunk<
-    object | undefined,
-    string,
-    { extra: ThunkExtraArgument }
->(
-    "guilds/fetchConfig",
-    async (guildId, { extra: { api } }) => {
-        const res = await api.ws.getConfigDescriptive(guildId)
-        return res.data
-    }
-)
-
-export const updateConfig = createAsyncThunk<
-    API.DescriptiveConfig | undefined,
-    { guildId: string, value: API.Config },
-    { extra: ThunkExtraArgument }
->(
-    "guilds/updateConfig",
-    async ({ guildId, value }, { extra: { api } }) => {
-        const res = await api.ws.updateConfig(guildId, value)
-        return res.data
-    },
-    {
-        // Accept nested error object (nested objects are removed by default)
-        serializeError: (value: any) => (value as API.Response<void>)?.message
-    }
-)
-
 export const fetchMemberCount = createAsyncThunk<
     API.MemberCount | undefined,
     string,
@@ -90,7 +62,7 @@ const guildsSlice = createSlice({
     reducers: {},
     extraReducers: {
         /**
-         * Thunk: guilds/fetchConfig
+         * Thunk: guilds/fetchGuilds
          */
         [fetchGuilds.pending.toString()]: (state) => {
             state.status = "pending"
@@ -155,40 +127,6 @@ const guildsSlice = createSlice({
             if (guild) {
                 guild.roles.error = action.payload
                 guild.roles.status = "error"
-            }
-        },
-
-        /**
-         * Thunk: guilds/fetchConfig
-         */
-        [fetchConfig.pending.toString()]: (state, action) => {
-            const guild = state.data[action.meta.arg]
-            if (guild) {
-                guild.config.status = "pending"
-            }
-        },
-        [fetchConfig.fulfilled.toString()]: (state, action) => {
-            const guild = state.data[action.meta.arg]
-            if (guild) {
-                guild.config.data = action.payload
-                guild.config.status = "success"
-            }
-        },
-        [fetchConfig.rejected.toString()]: (state, action) => {
-            const guild = state.data[action.meta.arg]
-            if (guild) {
-                guild.config.error = action.payload
-                guild.config.status = "error"
-            }
-        },
-
-        /**
-         * Thunk: guilds/updateConfig
-         */
-        [updateConfig.fulfilled.toString()]: (state, action) => {
-            const guild = state.data[action.meta.arg.guildId]
-            if (guild) {
-                guild.config.data = action.payload
             }
         },
 

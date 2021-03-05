@@ -98,20 +98,6 @@ class WebSocketAPI {
     }
 
     /**
-     * @fires get:config-descriptive
-     */
-    getConfigDescriptive(guildId: string) {
-        return this.fetch<API.DescriptiveConfig>("get:config-descriptive", guildId)
-    }
-
-    /**
-     * @fires post:config
-     */
-    updateConfig(guildId: string, newValue: object) {
-        return this.fetch<API.DescriptiveConfig>("post:config", guildId, newValue)
-    }
-
-    /**
      * @fires get:modules
      */
     async getModules() {
