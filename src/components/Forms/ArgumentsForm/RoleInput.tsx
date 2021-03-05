@@ -2,25 +2,17 @@ import React, { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { useFormContext, Controller } from "react-hook-form"
 import { Select, MenuItem, FormControl, InputLabel, FormHelperText } from "@material-ui/core"
-import { makeStyles } from "@material-ui/core/styles"
 
 import { API } from "../../../config/types"
 import { RootState } from "../../../store"
 import { fetchRoles } from "../../../features/guilds/guildsSlice"
 import * as Skeletons from "../../Skeletons"
 
-const useStyles = makeStyles({
-    formControl: {
-        minWidth: 300
-    }
-})
-
-function RoleInput({ arg, guild }: {
+function RoleInput({ arg, guild, className }: {
     arg: API.Argument,
-    guild: API.Guild
+    guild: API.Guild,
+    className?: string
 }) {
-    const classes = useStyles()
-
     const { control } = useFormContext()
 
     const dispatch = useDispatch()
@@ -41,15 +33,15 @@ function RoleInput({ arg, guild }: {
         const roles = Object.values(data)
 
         return (
-            <FormControl className={classes.formControl} fullWidth>
-                <InputLabel id={arg.name}>{arg.name}</InputLabel>
+            <FormControl className={className} fullWidth>
+                <InputLabel id={arg.key}>{arg.name}</InputLabel>
 
                 <Controller
-                    name={arg.name}
+                    name={arg.key}
                     control={control}
                     defaultValue={roles[0].id}
                     as={
-                        <Select labelId={arg.name}>
+                        <Select labelId={arg.key}>
                             {roles.map(role => (
                                 <MenuItem value={role.id} key={role.id}>
                                     {role.name}

@@ -117,10 +117,12 @@ export declare namespace API {
     export type Argument = {
         type: ARGUMENT_TYPES,
         isArray?: boolean,
+        isSelect?: boolean,
         key: string,
         name: string,
         desc: string,
-        defaultValue?: any
+        defaultValue?: any,
+        selectOptions?: any[]
     }
 
     export type GuildChannel = Discord.GuildChannel

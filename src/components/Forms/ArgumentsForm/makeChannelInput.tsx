@@ -35,14 +35,14 @@ function ChannelInput({ arg, guild, className, channelType }: {
 
         return (
             <FormControl className={className} fullWidth>
-                <InputLabel id={arg.name}>{ arg.name }</InputLabel>
+                <InputLabel id={arg.key}>{arg.name}</InputLabel>
 
                 <Controller
                     name={arg.key}
                     control={control}
                     defaultValue={channels[0].id}
                     as={
-                        <Select labelId={arg.name}>
+                        <Select labelId={arg.key}>
                             {channels.map(channel => (
                                 <MenuItem value={channel.id} key={channel.id}>
                                     {channel.name}

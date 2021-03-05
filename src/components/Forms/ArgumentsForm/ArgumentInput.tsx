@@ -7,6 +7,7 @@ import makeArrayInput from "./makeArrayInput"
 import RoleInput from "./RoleInput"
 import StringInput from "./StringInput"
 import NumberInput from "./NumberInput"
+import SelectInput from "./SelectInput"
 
 const inputMap: Record<string, React.FunctionComponent<
     React.ComponentProps<typeof ArgumentInput>>
@@ -33,6 +34,10 @@ function ArgumentInput(props: {
     const classes = useStyles()
 
     let Input = inputMap[props.arg.type]
+
+    if (props.arg.isSelect) {
+        Input = SelectInput
+    }
 
     if (props.arg.isArray) {
         Input = makeArrayInput(Input)
