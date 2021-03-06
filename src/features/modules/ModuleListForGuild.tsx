@@ -12,7 +12,9 @@ import withStreamSubscription from "../streams/withStreamSubscription"
 function ModuleListForGuild({ guild }: { guild: API.Guild }) {
     const dispatch = useDispatch()
 
-    const modules = useSelector((state: RootState) => state.modules.data)
+    const modules = useSelector((state: RootState) => (
+        Object.values(state.modules.data).filter(module => !module.isStatic)
+    ))
     const modulesStatus = useSelector((state: RootState) => state.modules.status)
     const modulesError = useSelector((state: RootState) => state.modules.error)
 
@@ -26,8 +28,8 @@ function ModuleListForGuild({ guild }: { guild: API.Guild }) {
     }, [modulesStatus, dispatch])
 
     if (modulesStatus === "success" && moduleInstancesStatus === "success") {
-        const activeModules = Object.values(modules).filter(module => module.key in moduleInstances)
-        const inactiveModules = Object.values(modules).filter(module => !(module.key in moduleInstances))
+        const activeModules = modules.filter(module => module.key in moduleInstances)
+        const inactiveModules = modules.filter(module => !(module.key in moduleInstances))
 
         return (
             <Grid container justify="space-between">

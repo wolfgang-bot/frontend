@@ -11,7 +11,9 @@ function ModuleList() {
     const dispatch = useDispatch()
 
     const status = useSelector((store: RootState) => store.modules.status)
-    const data = useSelector((store: RootState) => store.modules.data)
+    const data = useSelector((store: RootState) => (
+        Object.values(store.modules.data).filter(module => !module.isStatic)
+    ))
     const error = useSelector((store: RootState) => store.modules.error)
 
     useEffect(() => {
@@ -23,7 +25,7 @@ function ModuleList() {
     if (status === "success") {
         return (
             <Grid container spacing={2}>
-                {Object.values(data).map(module => (
+                {data.map(module => (
                     <Grid item key={module.key}>
                         <ModuleCard module={module}/>
                     </Grid>                    
