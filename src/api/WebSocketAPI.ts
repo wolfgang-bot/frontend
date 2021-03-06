@@ -115,8 +115,8 @@ class WebSocketAPI {
     /**
      * @fires post:module-instances/start
      */
-    startModuleInstance(guildId: string, moduleKey: string, args: string[]) {
-        return this.fetch("post:module-instances/start", guildId, moduleKey, args)
+    startModuleInstance(guildId: string, moduleKey: string, config: Record<string, any>) {
+        return this.fetch("post:module-instances/start", guildId, moduleKey, config)
     }
 
     /**
