@@ -57,7 +57,7 @@ class WebSocketAPI {
                 )
 
                 if (res.status === "error") {
-                    opener.openSnackbar("Error", "error")
+                    opener.openSnackbar(`Error: ${res.message}`, "error")
                     reject(res)
                 } else if (res.status === "ok") {
                     resolve(res)
