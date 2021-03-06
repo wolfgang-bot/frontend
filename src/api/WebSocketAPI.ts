@@ -115,22 +115,29 @@ class WebSocketAPI {
     /**
      * @fires post:module-instances/start
      */
-    startModuleInstance(guildId: string, moduleName: string, args: string[]) {
-        return this.fetch("post:module-instances/start", guildId, moduleName, args)
+    startModuleInstance(guildId: string, moduleKey: string, args: string[]) {
+        return this.fetch("post:module-instances/start", guildId, moduleKey, args)
     }
 
     /**
      * @fires post:module-instances/stop
      */
-    stopModuleInstance(guildId: string, moduleName: string) {
-        return this.fetch("post:module-instances/stop", guildId, moduleName)
+    stopModuleInstance(guildId: string, moduleKey: string) {
+        return this.fetch("post:module-instances/stop", guildId, moduleKey)
     }
     
     /**
      * @fires post:module-instances/restart
      */
-    restartModuleInstance(guildId: string, moduleName: string) {
-        return this.fetch("post:module-instances/restart", guildId, moduleName)
+    restartModuleInstance(guildId: string, moduleKey: string) {
+        return this.fetch("post:module-instances/restart", guildId, moduleKey)
+    }
+
+    /**
+     * @fires post:module-instance/config
+     */
+    updateModuleInstanceConfig(guildId: string, moduleKey: string, newConfig: object) {
+        return this.fetch("post:module-instances/config", guildId, moduleKey, newConfig)
     }
 
     /**

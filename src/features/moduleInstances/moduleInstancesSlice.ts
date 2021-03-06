@@ -1,6 +1,7 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 import { API, INSTANCE_STATES, ReduxAPIState } from "../../config/types"
+import { ThunkExtraArgument } from "../../store"
 import { fetchGuilds } from "../guilds/guildsSlice"
 
 type GuildState = ReduxAPIState<Record<string, API.ModuleInstance>>
@@ -19,6 +20,18 @@ function makeInitialGuildState(): GuildState {
 const initialState: ModuleInstancesState = {
     guilds: {}
 }
+
+export const updateConfig = createAsyncThunk<
+    object | undefined,
+    { guildId: string, moduleKey: string, value: object },
+    { extra: ThunkExtraArgument }
+>(
+    "moduleInstances/updateConfig",
+    async ({ guildId, moduleKey, value }, { extra: { api }}) => {
+        const res = await api.ws.updateModuleInstanceConfig(guildId, moduleKey, value)
+        return res.data
+    }
+)
 
 const moduleInstancesSlice = createSlice({
     name: "moduleInstances",
@@ -45,12 +58,24 @@ const moduleInstancesSlice = createSlice({
         }
     },
     extraReducers: {
+        /**
+         * Thunk: moduleInstances/fetchGuilds 
+         */
         [fetchGuilds.fulfilled.toString()]: (state, action: PayloadAction<API.Guild[]>) => {
             action.payload.forEach(guild => {
                 if (!state.guilds[guild.id]) {
                     state.guilds[guild.id] = makeInitialGuildState()
                 }
             })
+        },
+
+        /**
+         * Thunk: moduleInstances/updateConfig
+         */
+        [updateConfig.fulfilled.toString()]: (state, action: any) => {
+            const guild = state.guilds[action.meta.arg.guildId]
+            const instance = guild.data[action.meta.arg.moduleKey]
+            instance.config = action.payload
         }
     }
 })

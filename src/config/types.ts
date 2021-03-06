@@ -99,6 +99,7 @@ export declare namespace API {
         key: string,
         isGlobal: boolean,
         isPrivate: boolean,
+        isStatic: boolean,
         icon?: string,
         translations: {
             name: string,
@@ -111,7 +112,8 @@ export declare namespace API {
     export type ModuleInstance = {
         moduleKey: string,
         guildId: string,
-        state: INSTANCE_STATES
+        state: INSTANCE_STATES,
+        config: object
     }
 
     export type Argument = {

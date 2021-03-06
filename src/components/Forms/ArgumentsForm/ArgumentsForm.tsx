@@ -10,19 +10,26 @@ export type RefHandle = {
 
 type Props = {
     args: API.Argument[],
-    guild: API.Guild
+    guild: API.Guild,
+    currentConfig?: Record<string, any>
 }
 
-function getDefaultValuesFromArgs(args: API.Argument[]) {
+function getDefaultValues(args: API.Argument[], config?: Record<string, any>) {
     return Object.fromEntries(
-        args.map(arg => arg.defaultValue && [arg.key, arg.defaultValue])
+        args.map(arg => {
+            const value =
+                config?.[arg.key] ? config[arg.key] :
+                arg.defaultValue ? arg.defaultValue :
+                undefined
+            return [arg.key, value]
+        })
             .filter(Boolean)
     )
 }
 
-function ArgumentsForm({ args, guild }: Props, ref?: ForwardedRef<RefHandle>) {
+function ArgumentsForm({ args, guild, currentConfig }: Props, ref?: ForwardedRef<RefHandle>) {
     const form = useForm({
-        defaultValues: getDefaultValuesFromArgs(args)
+        defaultValues: getDefaultValues(args, currentConfig)
     })
 
     const inputs = useMemo(() => (
