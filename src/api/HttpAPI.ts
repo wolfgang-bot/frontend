@@ -48,10 +48,6 @@ class HttpAPI {
         return await this.get<API.Module[]>("/modules")
             .then(format<API.Module[]>(FORMATS.MODULES))
     }
-
-    async getCommands() {
-        return await this.get<API.Command[]>("/commands")
-    }
 }
 
 export default HttpAPI
