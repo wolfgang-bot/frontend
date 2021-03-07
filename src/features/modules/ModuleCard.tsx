@@ -53,7 +53,7 @@ function ModuleCard({ module, instance, guild }: Props) {
                     }
                     title={
                         <Typography variant="body1">
-                            {module.translations.name}
+                            {module.name}
                         </Typography>
                     }
                 />

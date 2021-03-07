@@ -97,16 +97,15 @@ export declare namespace API {
 
     export type Module = {
         key: string,
+        name: string,
+        desc: string,
+        features: string[],
+        args: Argument[],
+        commands: Command[],
         isGlobal: boolean,
         isPrivate: boolean,
         isStatic: boolean,
-        icon?: string,
-        translations: {
-            name: string,
-            desc: string,
-            features: string[],
-            args: Argument[]
-        }
+        icon?: string
     }
 
     export type ModuleInstance = {

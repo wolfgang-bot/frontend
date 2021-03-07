@@ -70,7 +70,7 @@ function ModulePage() {
                         </Grid>
                         <Grid item>
                             <Typography variant="h5">
-                                {module.translations.name}
+                                {module.name}
                             </Typography>
                         </Grid>
                     </Grid>
@@ -79,7 +79,7 @@ function ModulePage() {
                 <Grid container spacing={2}>
                     <Grid item xs>
                         <Title>Features</Title>
-                        {module.translations.features.map((feature, index) => (
+                        {module.features.map((feature, index) => (
                             <Typography
                                 key={index}
                                 variant="body1"

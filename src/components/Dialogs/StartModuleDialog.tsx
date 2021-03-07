@@ -27,11 +27,11 @@ function StartModuleDialog({ open, onClose, module, guild }: {
 
     return (
         <Dialog open={open} onClose={onClose}>
-            <DialogTitle>{ module.translations.name }</DialogTitle>
+            <DialogTitle>{ module.name }</DialogTitle>
 
             <DialogContent>
                 <ArgumentsForm
-                    args={module.translations.args}
+                    args={module.args}
                     guild={guild}
                     ref={argsFormRef}
                 />

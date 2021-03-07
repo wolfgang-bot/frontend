@@ -58,7 +58,7 @@ function GuildSettingsDialog({ open, onClose, guild }: {
 
             <DialogContent>
                 <ArgumentsForm
-                    args={module.translations.args}
+                    args={module.args}
                     guild={guild}
                     currentConfig={instance.config}
                     ref={argsFormRef}
