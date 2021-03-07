@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-function CommandListForModule({ groups }: {
+function CommandGroups({ groups }: {
     groups: Record<string, Record<string, API.Command>>
 }){
     const classes = useStyles()
@@ -33,4 +33,4 @@ function CommandListForModule({ groups }: {
     )
 }
 
-export default CommandListForModule
+export default CommandGroups

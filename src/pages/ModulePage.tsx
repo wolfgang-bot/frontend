@@ -8,7 +8,7 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight"
 import { RootState } from "../store"
 import Layout from "../components/Layout/Layout"
 import { fetchModules } from "../features/modules/modulesSlice"
-import CommandListForModule from "../features/commands/CommandListForModule"
+import CommandListForModule from "../components/Commands/CommandListForModule"
 import Title from "../components/Styled/Title"
 
 const useStyles = makeStyles(theme => ({
@@ -92,8 +92,12 @@ function ModulePage() {
                     </Grid>
                 </Grid>
 
-                <Title>Commands</Title>
-                <CommandListForModule moduleKey={module.key}/>
+                {module.commands.length > 0 && (
+                    <>
+                        <Title>Commands</Title>
+                        <CommandListForModule module={module} />
+                    </>
+                )}
             </>
         )
     }

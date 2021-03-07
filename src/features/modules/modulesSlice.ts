@@ -41,6 +41,18 @@ const modulesSlice = createSlice({
             state.status = "success"
             action.payload.forEach(module => {
                 state.data[module.key] = module
+
+                module.commands.forEach(command => {
+                    if (!module.commandGroups) {
+                        module.commandGroups = {}
+                    }
+
+                    if (!module.commandGroups[command.group]) {
+                        module.commandGroups[command.group] = {}
+                    }
+
+                    module.commandGroups[command.group][command.name] = command
+                })
             })
         },
         [fetchModules.rejected.toString()]: (state, action) => {

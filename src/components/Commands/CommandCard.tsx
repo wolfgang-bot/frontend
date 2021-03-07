@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/core/styles"
 
 import { API } from "../../config/types"
 import { copyToClipboard } from "../../utils"
-import opener from "../../components/ComponentOpener"
+import opener from "../ComponentOpener"
 
 const useStyles = makeStyles(theme => ({
     command: {

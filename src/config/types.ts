@@ -102,6 +102,7 @@ export declare namespace API {
         features: string[],
         args: Argument[],
         commands: Command[],
+        commandGroups: Record<string, Record<string, Command>>,
         isGlobal: boolean,
         isPrivate: boolean,
         isStatic: boolean,
