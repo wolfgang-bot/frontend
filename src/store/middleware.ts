@@ -4,7 +4,7 @@ import { PayloadAction } from "@reduxjs/toolkit"
 import store from "./index"
 import { API } from "../config/types"
 import { API_TOKEN_STORAGE_KEY, LOCAL_STORAGE_REDUX_SETTINGS_KEY } from "../config/constants"
-import { fetchUser, initAPI } from "../features/auth/authSlice"
+import { fetchUser, initAPI, logout } from "../features/auth/authSlice"
 import { updateInstances } from "../features/moduleInstances/moduleInstancesSlice"
 import api from "../api"
 
@@ -30,6 +30,7 @@ export const authMiddleware: Middleware = () => next => (action: PayloadAction<{
 
             api.login(action.payload.token)
                 .then(() => store.dispatch(fetchUser()))
+                .catch(() => store.dispatch(logout()))
 
             break
     }
