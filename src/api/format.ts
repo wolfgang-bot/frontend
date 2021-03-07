@@ -36,8 +36,9 @@ function formatGuild(guild: API.Guild) {
     guild.memberCount = makeReduxAPIState<API.MemberCount>(-1)
 
     if (guild.icon) {
-        guild.icon = `${DISCORD_CDN_BASE_URL}/icons/${guild.id}/${guild.icon}.png`
-        guild.icon_animated = `${DISCORD_CDN_BASE_URL}/icons/${guild.id}/${guild.icon}`
+        const iconId = guild.icon
+        guild.icon = `${DISCORD_CDN_BASE_URL}/icons/${guild.id}/${iconId}.png`
+        guild.icon_animated = `${DISCORD_CDN_BASE_URL}/icons/${guild.id}/${iconId}`
     }
 }
 
