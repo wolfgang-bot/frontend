@@ -31,7 +31,9 @@ function ChannelInput({ arg, guild, className, channelType }: {
     if (status === "error") {
         return <div>{ error }</div>
     } else if (status === "success") {
-        const channels = Object.values(data).filter(channel => channel.type === channelType)
+        const channels = Object.values(data)
+            .filter(channel => channel.type === channelType)
+            .sort((a, b) => a.rawPosition - b.rawPosition)
 
         return (
             <FormControl className={className} fullWidth>

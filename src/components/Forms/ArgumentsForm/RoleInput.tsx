@@ -31,6 +31,7 @@ function RoleInput({ arg, guild, className }: {
         return <div>{error}</div>
     } else if (status === "success") {
         const roles = Object.values(data)
+            .sort((a, b) => a.rawPosition - b.rawPosition)
 
         return (
             <FormControl className={className} fullWidth>
