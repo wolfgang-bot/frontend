@@ -37,7 +37,8 @@ function ModuleCard({ module, instance, guild }: Props) {
 
     const commonButtonProps = { module, instance, guild: guild! }
 
-    const isActive = instance?.state === INSTANCE_STATES.ACTIVE
+    const canStartInstance = !instance
+    const canStopInstance = instance?.state === INSTANCE_STATES.ACTIVE
 
     return (
         <Card variant="outlined">
@@ -63,19 +64,19 @@ function ModuleCard({ module, instance, guild }: Props) {
                 <CardActions>
                     <StartButton
                         {...commonButtonProps}
-                        disabled={isActive}
+                        disabled={!canStartInstance}
                         size="small"
                         color="primary"
                     />
                     <StopButton
                         {...commonButtonProps}
-                        disabled={!isActive}
+                        disabled={!canStopInstance}
                         size="small"
                         color="secondary"
                     />
                     <RestartButton
                         {...commonButtonProps}
-                        disabled={!isActive}
+                        disabled={!canStopInstance}
                         size="small"
                         color="secondary"
                     />
