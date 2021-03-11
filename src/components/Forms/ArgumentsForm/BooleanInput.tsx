@@ -25,18 +25,15 @@ function BooleanInput({ arg, guild, className }: {
                 <Controller
                     control={control}
                     name={arg.key}
-                    render={({ onChange, onBlur, value, name, ref }) => {
-                        console.log({ value })
-                        return (
-                            <Checkbox
-                                onChange={makeChangeListener(onChange)}
-                                onBlur={onBlur}
-                                checked={value}
-                                name={name}
-                                ref={ref}
-                            />
-                        )
-                    }}
+                    render={({ onChange, onBlur, value, name, ref }) => (
+                        <Checkbox
+                            onChange={makeChangeListener(onChange)}
+                            onBlur={onBlur}
+                            checked={value}
+                            name={name}
+                            ref={ref}
+                        />
+                    )}
                 />
             }
             label={arg.desc}
