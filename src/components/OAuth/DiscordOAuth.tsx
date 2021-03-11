@@ -1,6 +1,5 @@
-import React, { useEffect, useRef, PropsWithChildren } from "react"
+import { useEffect, useRef } from "react"
 import { useDispatch } from "react-redux"
-import { Button } from "@material-ui/core"
 
 import { createListeners } from "../../utils"
 import { API } from "../../config/types"
@@ -8,12 +7,12 @@ import { DISCORD_OAUTH_URL } from "../../config/constants"
 import format, { FORMATS } from "../../api/format"
 import { login } from "../../features/auth/authSlice"
 
-function OAuthDiscord({ children }: PropsWithChildren<{}>) {
+function OAuthDiscord() {
     const dispatch = useDispatch()
 
     const popup = useRef<Window | null>()
 
-    const handleClick = () => {
+    useEffect(() => {
         const width = 1000
         const height = 800
 
@@ -21,7 +20,7 @@ function OAuthDiscord({ children }: PropsWithChildren<{}>) {
         const y = window.innerHeight / 2 - height / 2
 
         popup.current = window.open(DISCORD_OAUTH_URL, "Login with Discord", `width=${width},height=${height},left=${x},top=${y}`)
-    }
+    }, [])
 
     useEffect(() => {
         const handleMessage = (event: any) => {
@@ -54,13 +53,7 @@ function OAuthDiscord({ children }: PropsWithChildren<{}>) {
         ])
     })
 
-    return (
-        <Button
-            variant="contained"
-            onClick={handleClick}
-            color="secondary"
-        >{ children }</Button>
-    )
+    return null
 }
 
 export default OAuthDiscord
