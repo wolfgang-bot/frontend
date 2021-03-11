@@ -28,7 +28,11 @@ export const updateConfig = createAsyncThunk<
 >(
     "moduleInstances/updateConfig",
     async ({ guildId, moduleKey, value }, { extra: { api }}) => {
-        const res = await api.ws.updateModuleInstanceConfig(guildId, moduleKey, value)
+        const res = await api.ws.updateModuleInstanceConfig({
+            guildId: guildId,
+            moduleKey: moduleKey,
+            newConfig: value
+        })
         return res.data
     }
 )

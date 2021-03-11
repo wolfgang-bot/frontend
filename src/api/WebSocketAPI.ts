@@ -42,15 +42,15 @@ class WebSocketAPI {
     /**
      * Emit socket.io event and await server response
      */
-    fetch<T = void>(event: string, ...args: any[]): Promise<API.Response<T>> {
+    fetch<T = void>(event: string, arg: object = {}): Promise<API.Response<T>> {
         if (!this.socket) {
             throw new Error("The api needs to be initialized before making requests")
         }
 
         return new Promise((resolve, reject) => {
-            Logger.info(`%c[${event}]`, "color:blue", args)
+            Logger.info(`%c[${event}]`, "color:blue", arg)
 
-            this.socket!.emit(event, ...args, (res: API.Response<T>) => {
+            this.socket!.emit(event, arg, (res: API.Response<T>) => {
                 Logger.info(
                     `%c[${event}]`, `color:${res.status === "error" ? "red" : "green"}`,
                     res
@@ -79,22 +79,22 @@ class WebSocketAPI {
     /**
      * @fires get:guild/member-count
      */
-    getMemberCount(guildId: string) {
-        return this.fetch<API.MemberCount>("get:guild/member-count", guildId)
+    getMemberCount(args: { guildId: string }) {
+        return this.fetch<API.MemberCount>("get:guild/member-count", args)
     }
 
     /**
      * @fires get:guild/channels
      */
-    getGuildChannels(guildId: string) {
-        return this.fetch<API.GuildChannel[]>("get:guild/channels", guildId)
+    getGuildChannels(args: { guildId: string }) {
+        return this.fetch<API.GuildChannel[]>("get:guild/channels", args)
     }
 
     /**
      * @fires get:guild/roles
      */
-    getGuildRoles(guildId: string) {
-        return this.fetch<API.Role[]>("get:guild/roles", guildId)
+    getGuildRoles(args: { guildId: string }) {
+        return this.fetch<API.Role[]>("get:guild/roles", args)
     }
 
     /**
@@ -108,64 +108,64 @@ class WebSocketAPI {
     /**
      * @fires get:module-instances
      */
-    getModuleInstances(guildId: string) {
-        return this.fetch<API.ModuleInstance[]>("get:module-instances", guildId)
+    getModuleInstances(args: { guildId: string }) {
+        return this.fetch<API.ModuleInstance[]>("get:module-instances", args)
     }
 
     /**
      * @fires post:module-instances/start
      */
-    startModuleInstance(guildId: string, moduleKey: string, config: Record<string, any>) {
-        return this.fetch("post:module-instances/start", guildId, moduleKey, config)
+    startModuleInstance(args: { guildId: string, moduleKey: string, args: Record<string, any> }) {
+        return this.fetch("post:module-instances/start", args)
     }
 
     /**
      * @fires post:module-instances/stop
      */
-    stopModuleInstance(guildId: string, moduleKey: string) {
-        return this.fetch("post:module-instances/stop", guildId, moduleKey)
+    stopModuleInstance(args: { guildId: string, moduleKey: string }) {
+        return this.fetch("post:module-instances/stop", args)
     }
     
     /**
      * @fires post:module-instances/restart
      */
-    restartModuleInstance(guildId: string, moduleKey: string) {
-        return this.fetch("post:module-instances/restart", guildId, moduleKey)
+    restartModuleInstance(args: { guildId: string, moduleKey: string }) {
+        return this.fetch("post:module-instances/restart", args)
     }
 
     /**
      * @fires post:module-instance/config
      */
-    updateModuleInstanceConfig(guildId: string, moduleKey: string, newConfig: object) {
-        return this.fetch("post:module-instances/config", guildId, moduleKey, newConfig)
+    updateModuleInstanceConfig(args: { guildId: string, moduleKey: string, newConfig: object }) {
+        return this.fetch("post:module-instances/config", args)
     }
 
     /**
      * @fires post:stream/subscribe
      */
-    subscribeToStream(eventStream: API.EVENT_STREAM, guildId: string) {
-        return this.fetch("post:stream/subscribe", eventStream, { guildId })
+    subscribeToStream(args: { eventStream: API.EVENT_STREAM, guildId: string }) {
+        return this.fetch("post:stream/subscribe", args)
     }
 
     /**
      * @fires post:stream/unsubscribe
      */
-    unsubscribeFromStream(eventStream: API.EVENT_STREAM, guildId: string) {
-        return this.fetch("post:stream/unsubscribe", eventStream, { guildId })
+    unsubscribeFromStream(args: { eventStream: API.EVENT_STREAM, guildId: string }) {
+        return this.fetch("post:stream/unsubscribe", args)
     }
 
     /**
      * @fires post:stream/pause
      */
-    pauseStream(eventStream: API.EVENT_STREAM, guildId: string) {
-        return this.fetch("post:stream/pause", eventStream, { guildId })
+    pauseStream(args: { eventStream: API.EVENT_STREAM, guildId: string }) {
+        return this.fetch("post:stream/pause", args)
     }
 
     /**
      * @fires post:stream/resume
      */
-    resumeStream(eventStream: API.EVENT_STREAM, guildId: string) {
-        return this.fetch("post:stream/resume", eventStream, { guildId })
+    resumeStream(args: { eventStream: API.EVENT_STREAM, guildId: string }) {
+        return this.fetch("post:stream/resume", args)
     }
 }
 

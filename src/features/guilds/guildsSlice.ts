@@ -27,7 +27,7 @@ export const fetchChannels = createAsyncThunk<
 >(
     "guilds/fetchChannels",
     async (guildId, { extra: { api } }) => {
-        const res = await api.ws.getGuildChannels(guildId)
+        const res = await api.ws.getGuildChannels({ guildId })
         return res.data
     }
 )
@@ -39,7 +39,7 @@ export const fetchRoles = createAsyncThunk<
 >(
     "guilds/fetchRoles",
     async (guildId, { extra: { api } }) => {
-        const res = await api.ws.getGuildRoles(guildId)
+        const res = await api.ws.getGuildRoles({ guildId })
         return res.data
     }
 )
@@ -51,7 +51,7 @@ export const fetchMemberCount = createAsyncThunk<
 >(
     "guilds/fetchMemberCount",
     async (guildId, { extra: { api } }) => {
-        const res = await api.ws.getMemberCount(guildId)
+        const res = await api.ws.getMemberCount({ guildId })
         return res.data
     }
 )

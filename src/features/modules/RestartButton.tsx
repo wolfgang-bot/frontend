@@ -13,7 +13,10 @@ type Props = {
 
 function RestartButton({ module, instance, guild, ...props }: Props) {
     const handleClick = async () => {
-        api.ws.restartModuleInstance(guild.id, module.key)
+        api.ws.restartModuleInstance({
+            guildId: guild.id,
+            moduleKey: module.key
+        })
     }
 
     return (

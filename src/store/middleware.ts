@@ -46,25 +46,25 @@ export const streamControlMiddleware: Middleware = () => next => (action: Payloa
     switch (action.type) {
         case "streams/subscribe":
             if (getStreamStatus(action.payload) !== "flowing") {
-                api.ws.subscribeToStream(action.payload.eventStream, action.payload.guildId)
+                api.ws.subscribeToStream(action.payload)
             }
             break
 
         case "streams/unsubscribe":
             if (getStreamStatus(action.payload)) {
-                api.ws.unsubscribeFromStream(action.payload.eventStream, action.payload.guildId)
+                api.ws.unsubscribeFromStream(action.payload)
             }
             break
 
         case "streams/pause":
             if (getStreamStatus(action.payload) === "flowing") {
-                api.ws.pauseStream(action.payload.eventStream, action.payload.guildId)
+                api.ws.pauseStream(action.payload)
             }
             break
         
         case "streams/resume":
             if (getStreamStatus(action.payload) === "paused") {
-                api.ws.resumeStream(action.payload.eventStream, action.payload.guildId)
+                api.ws.resumeStream(action.payload)
             }
             break
     }

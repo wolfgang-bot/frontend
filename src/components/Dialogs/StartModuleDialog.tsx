@@ -14,13 +14,17 @@ function StartModuleDialog({ open, onClose, module, guild }: {
     const argsFormRef = useRef<ArgumentsRefHandle>(null)
 
     const handleSubmit = async () => {
-        const config = argsFormRef.current?.getValues()
+        const args = argsFormRef.current?.getValues()
 
-        if (!config) {
+        if (!args) {
             throw new Error("Failed to receive arguments")
         }
 
-        api.ws.startModuleInstance(guild.id, module.key, config)
+        api.ws.startModuleInstance({
+            guildId: guild.id,
+            moduleKey: module.key,
+            args
+        })
 
         onClose()
     }
