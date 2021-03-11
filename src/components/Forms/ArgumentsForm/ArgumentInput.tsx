@@ -7,6 +7,7 @@ import makeArrayInput from "./makeArrayInput"
 import RoleInput from "./RoleInput"
 import StringInput from "./StringInput"
 import NumberInput from "./NumberInput"
+import BooleanInput from "./BooleanInput"
 import SelectInput from "./SelectInput"
 
 const inputMap: Record<string, React.FunctionComponent<
@@ -14,6 +15,7 @@ const inputMap: Record<string, React.FunctionComponent<
 > = {
     "string": StringInput,
     "number": NumberInput,
+    "boolean": BooleanInput,
     "text_channel": makeChannelInput("text"),
     "category_channel": makeChannelInput("category"),
     "role": RoleInput

@@ -44,7 +44,7 @@ function LoginPage() {
 
     if (status === "idle") {
         child = (
-            <DiscordOAuth>Log in with discord</DiscordOAuth>
+            <DiscordOAuth/>
         )
     }
 
