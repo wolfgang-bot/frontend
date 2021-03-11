@@ -33,7 +33,7 @@ class WebSocketAPI {
             }
         })
 
-        await new Promise((resolve, reject) => {
+        await new Promise<void>((resolve, reject) => {
             this.socket!.on("connect", resolve)
             this.socket!.on("connect_error", reject)
         })
