@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import { useHistory } from "react-router-dom"
 import { Card, CardActionArea, CardHeader, Typography } from "@material-ui/core"
+import Skeleton from "@material-ui/lab/Skeleton"
 
 import { API } from "../../config/types"
 import GuildIcon from "../../components/Discord/GuildIcon"
@@ -50,6 +51,18 @@ function GuildCard({ guild, className }: {
                 />
             </CardActionArea>
         </Card>
+    )
+}
+
+export function GuildCardSkeleton(
+    props: React.ComponentProps<typeof Skeleton>
+) {
+    return (
+        <Skeleton
+            variant="rect"
+            height={64}
+            {...props}
+        />
     )
 }
 

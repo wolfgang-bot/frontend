@@ -1,11 +1,11 @@
 import React, { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { makeStyles } from "@material-ui/core/styles"
+import { Box } from "@material-ui/core"
 
 import { RootState } from "../../store"
 import { fetchGuilds } from "../guilds/guildsSlice"
-import GuildCard from "../guilds/GuildCard"
-import * as Skeletons from "../../components/Skeletons"
+import GuildCard, { GuildCardSkeleton } from "../guilds/GuildCard"
 
 const useStyles = makeStyles(theme => ({
     guildCard: {
@@ -49,7 +49,16 @@ function GuildList() {
     }
 
     return (
-        <Skeletons.GuildList/>
+        <>
+            {Array(3).fill(3).map((_, i) => (
+                <Box mt={2} key={i}>
+                    <GuildCardSkeleton
+                        className={classes.guildCard}
+                    />
+                </Box>
+            ))}
+        </>
     )
 }
+
 export default GuildList

@@ -25,7 +25,7 @@ import MemberChart from "../features/streams/MemberChart"
 import MessageChart from "../features/streams/MessageChart"
 import VoiceDurationChart from "../features/streams/VoiceDurationChart"
 
-import * as Skeletons from "../components/Skeletons"
+import GuildPageSkeleton from "./GuildPageSkeleton"
 
 export type TabProps = {
     guild: API.Guild,
@@ -220,7 +220,7 @@ function GuildPage() {
         }
     }, [])
 
-    let child = <Skeletons.GuildPage/>
+    let child = <GuildPageSkeleton/>
 
     if (status === "success") {
         if (!guild.isActive) {

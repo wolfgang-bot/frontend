@@ -2,8 +2,8 @@ import React from "react"
 import { Box } from "@material-ui/core"
 import Skeleton from "@material-ui/lab/Skeleton"
 
-import Title from "../Styled/Title"
-import ModuleList from "./ModuleList"
+import Title from "../components/Styled/Title"
+import { ModuleListSkeleton } from "../features/modules/ModuleList"
 
 function Header() {
     return (
@@ -76,7 +76,7 @@ function GuildPage() {
                 <ChartCard/>
             </Box>
 
-            <ModuleList/>
+            <ModuleListSkeleton/>
         </>
     )
 }

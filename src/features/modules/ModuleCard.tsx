@@ -1,6 +1,7 @@
 import React from "react"
 import { useHistory } from "react-router-dom"
-import { Card, CardHeader, CardActionArea, CardActions, Typography } from "@material-ui/core"
+import { Card, CardHeader, CardActionArea, CardActions, Typography, Box } from "@material-ui/core"
+import Skeleton from "@material-ui/lab/Skeleton"
 import { makeStyles } from "@material-ui/core/styles"
 
 import { API, INSTANCE_STATES } from "../../config/types"
@@ -80,6 +81,36 @@ function ModuleCard({ module, instance, guild }: Props) {
                         size="small"
                         color="secondary"
                     />
+                </CardActions>
+            )}
+        </Card>
+    )
+}
+
+export function ModuleCardSkeleton({ seed, guild }: { seed: number, guild?: boolean }) {
+    return (
+        <Card>
+            <CardActionArea>
+                <CardHeader
+                    disableTypography
+                    avatar={<Skeleton variant="circle" width={40} height={40} />}
+                    title={
+                        <Typography variant="body1">
+                            <Skeleton
+                                width={130 + seed * 50}
+                            />
+                        </Typography>
+                    }
+                />
+            </CardActionArea>
+
+            {guild && (
+                <CardActions>
+                    {Array(3).fill(0).map((_, i) => (
+                        <Box m={0.5} key={i}>
+                            <Skeleton variant="circle" width={24} height={24} />
+                        </Box>
+                    ))}
                 </CardActions>
             )}
         </Card>

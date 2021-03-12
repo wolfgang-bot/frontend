@@ -6,7 +6,7 @@ import { Select, MenuItem, FormControl, InputLabel, FormHelperText } from "@mate
 import { API } from "../../../config/types"
 import { RootState } from "../../../store"
 import { fetchRoles } from "../../../features/guilds/guildsSlice"
-import * as Skeletons from "../../Skeletons"
+import { ChannelInputSkeleton } from "./ChannelInput"
 
 function RoleInput({ arg, guild, className }: {
     arg: API.Argument,
@@ -57,7 +57,7 @@ function RoleInput({ arg, guild, className }: {
         )
     }
 
-    return <Skeletons.ChannelInput />
+    return <ChannelInputSkeleton className={className}/>
 }
 
 export default RoleInput

@@ -1,12 +1,12 @@
 import React, { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { useFormContext, Controller } from "react-hook-form"
-import { Select, MenuItem, FormControl, InputLabel, FormHelperText } from "@material-ui/core"
+import { Select, MenuItem, FormControl, InputLabel, FormHelperText, Box } from "@material-ui/core"
+import Skeleton from "@material-ui/lab/Skeleton"
 
 import { API } from "../../../config/types"
 import { RootState } from "../../../store"
 import { fetchChannels } from "../../../features/guilds/guildsSlice"
-import * as Skeletons from "../../Skeletons"
 
 function ChannelInput({ arg, guild, className, channelType }: {
     arg: API.Argument,
@@ -59,7 +59,19 @@ function ChannelInput({ arg, guild, className, channelType }: {
         )
     }
 
-    return <Skeletons.ChannelInput/>
+    return <ChannelInputSkeleton className={className}/>
+}
+
+export function ChannelInputSkeleton(props: React.ComponentProps<typeof Box>) {
+    return (
+        <Box {...props} mb={1}>
+            <Skeleton height={12} width="20%" />
+            <Box my={0.5}>
+                <Skeleton variant="rect" height={32} />
+            </Box>
+            <Skeleton height={19} width="70%" />
+        </Box>
+    )
 }
 
 export default ChannelInput

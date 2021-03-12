@@ -6,8 +6,16 @@ import { RootState } from "../../store"
 import { API } from "../../config/types"
 import ModuleCard from "./ModuleCard"
 import { fetchModules } from "./modulesSlice"
-import * as Skeletons from "../../components/Skeletons"
 import withStreamSubscription from "../streams/withStreamSubscription"
+import { ModuleCardSkeleton } from "./ModuleCard"
+
+const AMOUNT_OF_CARDS = 4
+
+const seeds: number[] = []
+
+for (let i = 0; i < AMOUNT_OF_CARDS; i++) {
+    seeds[i] = Math.random()
+}
 
 function ModuleListForGuild({ guild }: { guild: API.Guild }) {
     const dispatch = useDispatch()
@@ -50,7 +58,19 @@ function ModuleListForGuild({ guild }: { guild: API.Guild }) {
         return <div>{modulesError}</div>
     }
 
-    return <Skeletons.ModuleListForGuild/>
+    return <ModuleListForGuildSkeleton/>
+}
+
+export function ModuleListForGuildSkeleton() {
+    return (
+        <Grid container spacing={2} justify="space-between">
+            {seeds.map((seed, index) => (
+                <Grid item key={index}>
+                    <ModuleCardSkeleton seed={seed} guild />
+                </Grid>
+            ))}
+        </Grid>
+    )
 }
 
 export default withStreamSubscription(ModuleListForGuild, "module-instances", {

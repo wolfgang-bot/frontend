@@ -4,8 +4,15 @@ import { Grid } from "@material-ui/core"
 
 import { RootState } from "../../store"
 import { fetchModules } from "./modulesSlice"
-import ModuleCard from "./ModuleCard"
-import * as Skeletons from "../../components/Skeletons"
+import ModuleCard, { ModuleCardSkeleton } from "./ModuleCard"
+
+const AMOUNT_OF_CARDS = 4
+
+const seeds: number[] = []
+
+for (let i = 0; i < AMOUNT_OF_CARDS; i++) {
+    seeds[i] = Math.random()
+}
 
 function ModuleList() {
     const dispatch = useDispatch()
@@ -40,7 +47,19 @@ function ModuleList() {
         )
     }
 
-    return <Skeletons.ModuleList/>
+    return <ModuleListSkeleton/>
+}
+
+export function ModuleListSkeleton() {
+    return (
+        <Grid container spacing={2}>
+            {seeds.map((seed, index) => (
+                <Grid item key={index}>
+                    <ModuleCardSkeleton seed={seed} />
+                </Grid>
+            ))}
+        </Grid>
+    )
 }
 
 export default ModuleList
