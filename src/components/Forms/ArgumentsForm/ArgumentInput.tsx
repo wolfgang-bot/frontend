@@ -2,13 +2,28 @@ import React from "react"
 import { makeStyles } from "@material-ui/core/styles"
 
 import { API } from "../../../config/types"
-import makeChannelInput from "./makeChannelInput"
-import makeArrayInput from "./makeArrayInput"
+import ChannelInput from "./ChannelInput"
+import ArrayInput from "./ArrayInput"
 import RoleInput from "./RoleInput"
 import StringInput from "./StringInput"
 import NumberInput from "./NumberInput"
 import BooleanInput from "./BooleanInput"
 import SelectInput from "./SelectInput"
+
+export type ArgumentInputProps = React.ComponentProps<typeof ArgumentInput>
+export type ArgumentInputComponent = React.FunctionComponent<ArgumentInputProps>
+
+function makeChannelInput(type: string) {
+    return (props: any) => (
+        <ChannelInput channelType={type} {...props} />
+    )
+}
+
+function makeArrayInput(inputComponent: ArgumentInputComponent) {
+    return (props: ArgumentInputProps) => (
+        <ArrayInput inputComponent={inputComponent} {...props} />
+    )
+}
 
 const inputMap: Record<string, React.FunctionComponent<
     React.ComponentProps<typeof ArgumentInput>>

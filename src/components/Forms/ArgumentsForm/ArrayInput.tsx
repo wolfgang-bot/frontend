@@ -4,16 +4,13 @@ import { Button, IconButton, Box, InputLabel, FormHelperText } from "@material-u
 import DeleteIcon from "@material-ui/icons/Close"
 import AddIcon from "@material-ui/icons/Add"
 
-import type ArgumentInput from "./ArgumentInput"
 import { API } from "../../../config/types"
-
-type InputProps = React.ComponentProps<typeof ArgumentInput>
-type InputComponent = React.FunctionComponent<InputProps>
+import { ArgumentInputComponent } from "./ArgumentInput"
 
 function ArrayInput({ arg, guild, inputComponent, className }: {
     arg: API.Argument,
     guild: API.Guild,
-    inputComponent: InputComponent,
+    inputComponent: ArgumentInputComponent,
     className?: string
 }) {
     const defaultValues = useMemo(() => {
@@ -104,9 +101,4 @@ function ArrayInput({ arg, guild, inputComponent, className }: {
     )
 }
 
-function makeArrayInput(inputComponent: InputComponent) {
-    return (props: InputProps) => (
-        <ArrayInput inputComponent={inputComponent} {...props}/>
-    )
-}
-export default makeArrayInput
+export default ArrayInput

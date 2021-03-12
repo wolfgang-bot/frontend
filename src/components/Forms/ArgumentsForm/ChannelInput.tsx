@@ -62,10 +62,4 @@ function ChannelInput({ arg, guild, className, channelType }: {
     return <Skeletons.ChannelInput/>
 }
 
-function makeChannelInput(type: string) {
-    return (props: any) => (
-        <ChannelInput channelType={type} {...props} />
-    )
-}
-
-export default makeChannelInput
+export default ChannelInput
