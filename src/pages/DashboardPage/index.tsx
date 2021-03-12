@@ -7,11 +7,8 @@ import { RootState } from "../../store"
 import { API } from "../../config/types"
 import { RefHandle as StreamRefHandle } from "../../features/streams/withStreamSubscription"
 import { fetchGuilds } from "../../features/guilds/guildsSlice"
-
 import Layout from "../../components/Layout/Layout"
-
-import GuildPageSkeleton from "./GuildPageSkeleton"
-
+import DashboardPageSkeleton from "./DashboardPageSkeleton"
 import OverviewTab from "./OverviewTab"
 import StatisticsTab from "./StatisticsTab"
 
@@ -55,7 +52,7 @@ function GuildPage() {
         }
     }, [])
 
-    let child = <GuildPageSkeleton/>
+    let child = <DashboardPageSkeleton/>
 
     if (status === "success") {
         if (!guild.isActive) {

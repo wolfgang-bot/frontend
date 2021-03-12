@@ -4,7 +4,6 @@ import SettingsIcon from "@material-ui/icons/Settings"
 
 import { API } from "../../config/types"
 import opener from "../../components/ComponentOpener"
-
 import Title from "../../components/Styled/Title"
 import GuildIcon from "../../components/Discord/GuildIcon"
 

@@ -4,7 +4,7 @@ import Layout from "../components/Layout/Layout"
 import Title from "../components/Styled/Title"
 import GuildList from "../features/guilds/GuildList"
 
-function DashboardPage() {
+function GuildSelectionPage() {
     return (
         <Layout>
             <Title>Guild Selection</Title>
@@ -12,4 +12,4 @@ function DashboardPage() {
         </Layout>
     )
 }
-export default DashboardPage
+export default GuildSelectionPage

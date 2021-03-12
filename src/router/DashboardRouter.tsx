@@ -2,8 +2,8 @@ import React from "react"
 import { Switch, Route, useRouteMatch } from "react-router-dom"
 
 import { LayoutContext } from "../components/Layout/Layout"
+import GuildSelectionPage from "../pages/GuildSelectionPage"
 import DashboardPage from "../pages/DashboardPage"
-import GuildPage from "../pages/GuildPage"
 import ModulePage from "../pages/ModulePage"
 
 function DashboardRouter() {
@@ -15,7 +15,7 @@ function DashboardRouter() {
         }}>
             <Switch>
                 <Route exact path={path}>
-                    <DashboardPage />
+                    <GuildSelectionPage />
                 </Route>
 
                 <Route path={`${path}/:guildId/module/:key`}>
@@ -23,7 +23,7 @@ function DashboardRouter() {
                 </Route>
 
                 <Route path={`${path}/:guildId`}>
-                    <GuildPage />
+                    <DashboardPage />
                 </Route>
             </Switch>
         </LayoutContext.Provider>
