@@ -2,7 +2,7 @@ import React from "react"
 import { Box, Grid } from "@material-ui/core"
 
 import Header from "./Header"
-import { TabProps } from "./index"
+import { TabProps } from "./TabsRouter"
 
 import { StreamProps } from "../../features/streams/withStreamSubscription"
 import ChartCard from "../../components/Styled/ChartCard"
