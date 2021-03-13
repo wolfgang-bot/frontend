@@ -21,7 +21,7 @@ function ArrayInput({ arg, guild, inputComponent, className }: {
         return Object.fromEntries(
             (arg.defaultValue as any[]).map((value, i) => [i, value])
         )
-    }, [])
+    }, [arg.defaultValue])
 
     const { register, setValue } = useFormContext()
 
@@ -50,11 +50,13 @@ function ArrayInput({ arg, guild, inputComponent, className }: {
     useEffect(() => {
         const newValuesArray = Object.values(form.watch())
         setValue(arg.key, newValuesArray)
+
+        // eslint-disable-next-line
     }, [form.watch()])
     
     useEffect(() => {
         register(arg.key)
-    }, [])
+    }, [arg.key, register])
 
     return (
         <FormProvider {...form}>
