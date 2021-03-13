@@ -3,9 +3,8 @@ import { useSelector, useDispatch } from "react-redux"
 import { CircularProgress, Typography } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 
-import { RootState } from "../../store"
 import { API } from "../../config/types"
-import { subscribe, pause, resume } from "./streamsSlice"
+import { subscribe, pause, resume, makeStreamStatusSelector, makeStreamDataSelector } from "./streamsSlice"
 
 export type SubscriptionOptions = {
     showOverlayIfEmpty: boolean
@@ -66,19 +65,15 @@ function withStreamSubscription(
     type Props = React.ComponentProps<typeof Child> & StreamProps
 
     function StreamWrapper(props: Props, ref: ForwardedRef<RefHandle>) {
-        if (!props.guild) {
-            throw new Error(`Missing prop: 'guild'`)
-        }
-
         const streamArgs = useMemo<API.StreamArgs>(() => ({
             eventStream: stream,
-            guildId: props.guild.id
-        }), [props.guild.id])
+            guildId: props.guild?.id
+        }), [props.guild?.id])
 
         const dispatch = useDispatch()
 
-        const status = useSelector((store: RootState) => store.streams[props.guild.id]?.[stream].status)
-        const data = useSelector((store: RootState) => store.streams[props.guild.id]?.[stream].data)
+        const status = useSelector(makeStreamStatusSelector(streamArgs))
+        const data = useSelector(makeStreamDataSelector(streamArgs))
 
         useEffect(() => {
             if (status === "idle") {
@@ -105,7 +100,7 @@ function withStreamSubscription(
         }), [dispatch, streamArgs])
 
         if (status === "flowing") {
-            if (data.length === 0 && options?.showOverlayIfEmpty !== false) {
+            if (!data || (data.length === 0 && options?.showOverlayIfEmpty !== false)) {
                 return (
                     <Overlay
                         overlay={(

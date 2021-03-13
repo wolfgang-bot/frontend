@@ -15,6 +15,8 @@ export enum ARGUMENT_TYPES {
 }
 
 export enum EVENT_TYPES {
+    GUILD_ADD,
+    GUILD_REMOVE,
     GUILD_MEMBER_ADD,
     GUILD_MEMBER_REMOVE,
     MESSAGE_SEND,
@@ -134,7 +136,12 @@ export declare namespace API {
     
     export type MemberCount = number
 
-    export type EVENT_STREAM = "module-instances" | "members" | "messages" | "voice"
+    export type EVENT_STREAM =
+        "guilds" |
+        "module-instances" |
+        "members" |
+        "messages" |
+        "voice"
 
     export type Event<TMeta = undefined> = {
         type: EVENT_TYPES,
@@ -159,7 +166,7 @@ export declare namespace API {
 
     export type StreamArgs = {
         eventStream: EVENT_STREAM,
-        guildId: string
+        guildId?: string
     }
 
     export type ExecutableCommand = {

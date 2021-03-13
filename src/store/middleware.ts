@@ -6,6 +6,7 @@ import { API } from "../config/types"
 import { API_TOKEN_STORAGE_KEY, LOCAL_STORAGE_REDUX_SETTINGS_KEY } from "../config/constants"
 import { fetchUser, initAPI, logout } from "../features/auth/authSlice"
 import { updateInstances } from "../features/moduleInstances/moduleInstancesSlice"
+import { makeStreamStatusSelector } from "../features/streams/streamsSlice"
 import api from "../api"
 
 export const authMiddleware: Middleware = () => next => (action: PayloadAction<{
@@ -39,7 +40,7 @@ export const authMiddleware: Middleware = () => next => (action: PayloadAction<{
 }
 
 function getStreamStatus(args: API.StreamArgs) {
-    return store.getState().streams[args.guildId]?.[args.eventStream]?.status
+    return makeStreamStatusSelector(args)(store.getState())
 }
 
 export const streamControlMiddleware: Middleware = () => next => (action: PayloadAction<API.StreamArgs>) => {
@@ -80,7 +81,7 @@ export const streamDataMiddleware: Middleware = () => next => (action: PayloadAc
         switch (action.payload.args.eventStream) {
             case "module-instances":
                 store.dispatch(updateInstances({
-                    guildId: action.payload.args.guildId,
+                    guildId: action.payload.args.guildId!,
                     data: action.payload.data
                 }))
                 return

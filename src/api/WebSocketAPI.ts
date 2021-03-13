@@ -143,28 +143,28 @@ class WebSocketAPI {
     /**
      * @fires post:stream/subscribe
      */
-    subscribeToStream(args: { eventStream: API.EVENT_STREAM, guildId: string }) {
+    subscribeToStream(args: API.StreamArgs) {
         return this.fetch("post:stream/subscribe", args)
     }
 
     /**
      * @fires post:stream/unsubscribe
      */
-    unsubscribeFromStream(args: { eventStream: API.EVENT_STREAM, guildId: string }) {
+    unsubscribeFromStream(args: API.StreamArgs) {
         return this.fetch("post:stream/unsubscribe", args)
     }
 
     /**
      * @fires post:stream/pause
      */
-    pauseStream(args: { eventStream: API.EVENT_STREAM, guildId: string }) {
+    pauseStream(args: API.StreamArgs) {
         return this.fetch("post:stream/pause", args)
     }
 
     /**
      * @fires post:stream/resume
      */
-    resumeStream(args: { eventStream: API.EVENT_STREAM, guildId: string }) {
+    resumeStream(args: API.StreamArgs) {
         return this.fetch("post:stream/resume", args)
     }
 }

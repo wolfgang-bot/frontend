@@ -1,10 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 import { API } from "../../config/types"
+import { RootState } from "../../store"
 import { fetchGuilds } from "../guilds/guildsSlice"
 
-type GuildState = Record<API.EVENT_STREAM, API.Stream<any>>
-type SliceState = Record<string, GuildState>
+type StreamsMap = Partial<Record<API.EVENT_STREAM, API.Stream<any>>>
+type SliceState = {
+    guilds: Record<string, StreamsMap>,
+    admin: StreamsMap
+}
 
 function createStreamState<T>(type: API.EVENT_STREAM): API.Stream<T> {
     return {
@@ -14,7 +18,7 @@ function createStreamState<T>(type: API.EVENT_STREAM): API.Stream<T> {
     }
 }
 
-function createInitialGuildState(): GuildState {
+function createInitialGuildState(): StreamsMap {
     return {
         "module-instances": createStreamState<API.ModuleInstance>("module-instances"),
         "members": createStreamState<API.Event<API.MemberEventMeta>>("members"),
@@ -23,37 +27,63 @@ function createInitialGuildState(): GuildState {
     }
 }
 
-const initialState: SliceState = {}
+function createInitialAdminState(): StreamsMap {
+    return {
+        "guilds": createStreamState<Event>("guilds")
+    }
+}
+
+const initialState: SliceState = {
+    admin: createInitialAdminState(),
+    guilds: {}
+}
+
+function getStreamStore(state: SliceState, args: API.StreamArgs) {
+    if (!args.guildId) {
+        return state.admin
+    }
+
+    return state.guilds[args.guildId]
+}
+
+function getStream(state: SliceState, args: API.StreamArgs) {
+    return getStreamStore(state, args)[args.eventStream]
+}
 
 const streamsSlice = createSlice({
     name: "streams",
     initialState,
     reducers: {
         subscribe: (state, action: PayloadAction<API.StreamArgs>) => {
-            if (!state[action.payload.guildId]) {
-                state[action.payload.guildId] = createInitialGuildState()
-            }
-
-            state[action.payload.guildId][action.payload.eventStream] = {
+            const newStreamState: API.Stream<any> = {
                 type: action.payload.eventStream,
                 status: "flowing",
                 data: []
             }
+
+            if (
+                action.payload.guildId &&
+                !state.guilds[action.payload.guildId]
+            ) {
+                state.guilds[action.payload.guildId] = createInitialGuildState()
+            }
+
+            getStreamStore(state, action.payload)[action.payload.eventStream] = newStreamState
         },
 
         unsubscribe: (state, action: PayloadAction<API.StreamArgs>) => {
-            delete state[action.payload.guildId][action.payload.eventStream]
+            delete getStreamStore(state, action.payload)[action.payload.eventStream]
         },
 
         pause: (state, action: PayloadAction<API.StreamArgs>) => {
-            const stream = state[action.payload.guildId][action.payload.eventStream]
+            const stream = getStream(state, action.payload)
             if (stream) {
                 stream.status = "paused"
             }
         },
 
         resume: (state, action: PayloadAction<API.StreamArgs>) => {
-            const stream = state[action.payload.guildId][action.payload.eventStream]
+            const stream = getStream(state, action.payload)
             if (stream) {
                 stream.status = "flowing"
             }
@@ -63,7 +93,7 @@ const streamsSlice = createSlice({
             args: API.StreamArgs,
             data: any
         }>) => {
-            const stream = state[action.payload.args.guildId][action.payload.args.eventStream]
+            const stream = getStream(state, action.payload.args)
             if (stream) {
                 stream.data.push(...action.payload.data)
             }
@@ -72,13 +102,21 @@ const streamsSlice = createSlice({
     extraReducers: {
         [fetchGuilds.fulfilled.toString()]: (state, action: PayloadAction<API.Guild[]>) => {
             action.payload.forEach(guild => {
-                if (!state[guild.id]) {
-                    state[guild.id] = createInitialGuildState()
+                if (!state.guilds[guild.id]) {
+                    state.guilds[guild.id] = createInitialGuildState()
                 }
             })
         }
     }
 })
+
+export function makeStreamStatusSelector(args: API.StreamArgs) {
+    return (store: RootState) => getStream(store.streams, args)?.status
+}
+
+export function makeStreamDataSelector(args: API.StreamArgs) {
+    return (store: RootState) => getStream(store.streams, args)?.data
+}
 
 export const { subscribe, unsubscribe, pause, resume, data } = streamsSlice.actions
 
