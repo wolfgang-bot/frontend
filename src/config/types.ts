@@ -92,7 +92,9 @@ export declare namespace API {
         username?: string,
         discriminator?: number,
         avatar?: string,
-        avatar_animated?: string
+        avatar_animated?: string,
+        locale: string,
+        isBotAdmin: boolean
     }
 
     export type Module = {

@@ -1,14 +1,17 @@
 import React from "react"
 import { useHistory } from "react-router-dom"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { Menu as MuiMenu, MenuItem } from "@material-ui/core"
 
 import { logout } from "../../features/auth/authSlice"
+import { RootState } from "../../store"
 
 function Menu(props: React.ComponentProps<typeof MuiMenu>) {
     const history = useHistory()
 
     const dispatch = useDispatch()
+
+    const isBotAdmin = useSelector((store: RootState) => store.auth.data?.user?.isBotAdmin)
 
     const redirect = (to: string) => () => {
         history.push(to)
@@ -23,6 +26,9 @@ function Menu(props: React.ComponentProps<typeof MuiMenu>) {
     return (
         <MuiMenu {...props}>
             <MenuItem onClick={redirect("/dashboard")}>Guilds</MenuItem>
+            {isBotAdmin && (
+                <MenuItem>Admin</MenuItem>
+            )}
             <MenuItem onClick={handleLogout}>Logout</MenuItem>
         </MuiMenu>
     )
