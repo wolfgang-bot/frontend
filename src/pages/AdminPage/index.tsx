@@ -3,12 +3,13 @@ import { Grid } from "@material-ui/core"
 
 import Layout from "../../components/Layout/Layout"
 import Title from "../../components/Styled/Title"
+import StatisticCard from "../../components/Styled/StatisticCard"
 import ChartCard from "../../components/Styled/ChartCard"
 
+import GuildCount, { GuildTrend } from "../../features/streams/GuildCount"
+import UserCount, { UserTrend } from "../../features/streams/UserCount"
 import GuildChart from "../../features/streams/GuildChart"
 import UserChart from "../../features/streams/UserChart"
-import StatisticCard from "../../components/Styled/StatisticCard"
-import GuildCount, { GuildTrend } from "../../features/streams/GuildCount"
 
 function AdminPage() {
     return (
@@ -21,6 +22,14 @@ function AdminPage() {
                         main={<GuildCount />}
                         trend={<GuildTrend />}
                         label="Guild Count"
+                    />
+                </Grid>
+
+                <Grid item>
+                    <StatisticCard
+                        main={<UserCount />}
+                        trend={<UserTrend />}
+                        label="Unique Users Count"
                     />
                 </Grid>
             </Grid>
