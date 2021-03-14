@@ -17,6 +17,7 @@ export enum ARGUMENT_TYPES {
 export enum EVENT_TYPES {
     GUILD_ADD,
     GUILD_REMOVE,
+    USER_ADD,
     GUILD_MEMBER_ADD,
     GUILD_MEMBER_REMOVE,
     MESSAGE_SEND,
@@ -136,6 +137,7 @@ export declare namespace API {
 
     export type EVENT_STREAM =
         "guilds" |
+        "users" |
         "module-instances" |
         "members" |
         "messages" |
@@ -148,16 +150,20 @@ export declare namespace API {
         meta: TMeta
     }
 
+    export type GuildEventMeta = {
+        guildCount: number
+    }
+
+    export type UserEventMeta = {
+        userCount: number
+    }
+
     export type MemberEventMeta = {
         memberCount: number
     }
 
     export type VoiceEventMeta = {
         duration: number
-    }
-
-    export type GuildEventMeta = {
-        guildCount: number
     }
 
     export type Stream<T> = {

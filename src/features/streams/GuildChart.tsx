@@ -19,7 +19,7 @@ function GuildChart({ data, width, height = 300 }: {
     const histogramSeriesRef = useRef<ISeriesApi<"Histogram">>()
     const chartRef = useRef<IChartApi>()
 
-    const [guildCountsHOC, guildVolumes] = useMemo(() => {
+    const [guildCountsOHLC, guildVolumes] = useMemo(() => {
         const dayMap = chunkTimestampsIntoDays(data)
 
         const ohlcDataset = createOHLCDataSet(
@@ -53,9 +53,9 @@ function GuildChart({ data, width, height = 300 }: {
     }, [data, theme.palette.error.main, theme.palette.success.main])
 
     useEffect(() => {
-        if (candleStickSeriesRef.current && guildCountsHOC.length > 0) {
+        if (candleStickSeriesRef.current && guildCountsOHLC.length > 0) {
             candleStickSeriesRef.current.update(
-                guildCountsHOC[guildCountsHOC.length - 1]
+                guildCountsOHLC[guildCountsOHLC.length - 1]
             )
         }
 
@@ -64,7 +64,7 @@ function GuildChart({ data, width, height = 300 }: {
                 guildVolumes[guildVolumes.length - 1]
             )
         }
-    }, [guildCountsHOC, guildVolumes])
+    }, [guildCountsOHLC, guildVolumes])
 
     useEffect(() => {
         if (!containerRef.current) {
@@ -80,7 +80,7 @@ function GuildChart({ data, width, height = 300 }: {
         })
 
         candleStickSeriesRef.current = chartRef.current.addCandlestickSeries()
-        candleStickSeriesRef.current.setData(guildCountsHOC)
+        candleStickSeriesRef.current.setData(guildCountsOHLC)
 
         histogramSeriesRef.current = chartRef.current.addHistogramSeries()
         histogramSeriesRef.current.setData(guildVolumes)

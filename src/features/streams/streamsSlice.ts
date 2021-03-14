@@ -29,7 +29,8 @@ function createInitialGuildState(): StreamsMap {
 
 function createInitialAdminState(): StreamsMap {
     return {
-        "guilds": createStreamState<Event>("guilds")
+        "guilds": createStreamState<API.Event<API.GuildEventMeta>>("guilds"),
+        "users": createStreamState<API.Event<API.UserEventMeta>>("users")
     }
 }
 
