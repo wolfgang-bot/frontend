@@ -3,6 +3,7 @@ import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom"
 
 import { LayoutContext } from "../components/Layout/Layout"
 import DashboardRouter from "./DashboardRouter"
+import AdminRouter from "./AdminRouter"
 import ProtectedRoute from "./ProtectedRoute"
 import IndexPage from "../pages/IndexPage"
 import LoginPage from "../pages/LoginPage"
@@ -18,6 +19,10 @@ function Router() {
                 <Switch>
                     <ProtectedRoute path="/dashboard">
                         <DashboardRouter />
+                    </ProtectedRoute>
+
+                    <ProtectedRoute path="/admin">
+                        <AdminRouter />
                     </ProtectedRoute>
 
                     <Route path="/login">

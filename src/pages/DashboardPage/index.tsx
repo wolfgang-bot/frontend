@@ -9,7 +9,7 @@ import DashboardPageSkeleton from "./DashboardPageSkeleton"
 import TabsRouter from "./TabsRouter"
 import Layout from "../../components/Layout/Layout"
 
-function GuildPage() {
+function DashboardPage() {
     const { guildId } = useParams<{ guildId: string }>()
     
     const dispatch = useDispatch()
@@ -47,4 +47,4 @@ function GuildPage() {
     )
 }
 
-export default GuildPage
+export default DashboardPage

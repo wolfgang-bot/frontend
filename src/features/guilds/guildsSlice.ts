@@ -45,7 +45,7 @@ export const fetchRoles = createAsyncThunk<
 )
 
 export const fetchMemberCount = createAsyncThunk<
-    API.MemberCount | undefined,
+    number | undefined,
     string,
     { extra: ThunkExtraArgument }
 >(

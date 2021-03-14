@@ -80,7 +80,7 @@ class WebSocketAPI {
      * @fires get:guild/member-count
      */
     getMemberCount(args: { guildId: string }) {
-        return this.fetch<API.MemberCount>("get:guild/member-count", args)
+        return this.fetch<number>("get:guild/member-count", args)
     }
 
     /**

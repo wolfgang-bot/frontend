@@ -33,7 +33,7 @@ function formatUser(user: API.User) {
 function formatGuild(guild: API.Guild) {
     guild.channels = makeReduxAPIState<Record<string, API.GuildChannel>>({})
     guild.roles = makeReduxAPIState<Record<string, API.Role>>({})
-    guild.memberCount = makeReduxAPIState<API.MemberCount>(-1)
+    guild.memberCount = makeReduxAPIState<number>(-1)
 
     if (guild.icon) {
         const iconId = guild.icon

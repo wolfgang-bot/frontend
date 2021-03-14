@@ -27,7 +27,7 @@ function Menu(props: React.ComponentProps<typeof MuiMenu>) {
         <MuiMenu {...props}>
             <MenuItem onClick={redirect("/dashboard")}>Guilds</MenuItem>
             {isBotAdmin && (
-                <MenuItem>Admin</MenuItem>
+                <MenuItem onClick={redirect("/admin")}>Admin</MenuItem>
             )}
             <MenuItem onClick={handleLogout}>Logout</MenuItem>
         </MuiMenu>

@@ -86,7 +86,7 @@ export declare namespace API {
         permissions: number,
         channels: ReduxAPIState<Record<string, Discord.GuildChannel>>,
         roles: ReduxAPIState<Record<string, API.Role>>,
-        memberCount: ReduxAPIState<API.MemberCount>
+        memberCount: ReduxAPIState<number>
     }
 
     export type User = {
@@ -133,8 +133,6 @@ export declare namespace API {
 
     export type GuildChannel = Discord.GuildChannel
     export type Role = Discord.Role
-    
-    export type MemberCount = number
 
     export type EVENT_STREAM =
         "guilds" |
@@ -151,11 +149,15 @@ export declare namespace API {
     }
 
     export type MemberEventMeta = {
-        memberCount: API.MemberCount
+        memberCount: number
     }
 
     export type VoiceEventMeta = {
         duration: number
+    }
+
+    export type GuildEventMeta = {
+        guildCount: number
     }
 
     export type Stream<T> = {
