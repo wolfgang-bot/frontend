@@ -7,11 +7,23 @@ import ChartCard from "../../components/Styled/ChartCard"
 
 import GuildChart from "../../features/streams/GuildChart"
 import UserChart from "../../features/streams/UserChart"
+import StatisticCard from "../../components/Styled/StatisticCard"
+import GuildCount, { GuildTrend } from "../../features/streams/GuildCount"
 
 function AdminPage() {
     return (
         <Layout>
             <Title>Admin</Title>
+
+            <Grid container justify="space-between" spacing={4}>
+                <Grid item>
+                    <StatisticCard
+                        main={<GuildCount />}
+                        trend={<GuildTrend />}
+                        label="Guild Count"
+                    />
+                </Grid>
+            </Grid>
 
             <Grid container justify="space-between" spacing={4}>
                 <Grid item xs>
