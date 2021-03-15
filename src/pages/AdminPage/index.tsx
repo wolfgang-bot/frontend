@@ -10,6 +10,7 @@ import GuildCount, { GuildTrend } from "../../features/streams/GuildCount"
 import UserCount, { UserTrend } from "../../features/streams/UserCount"
 import GuildChart from "../../features/streams/GuildChart"
 import UserChart from "../../features/streams/UserChart"
+import ModuleInstanceChart from "../../features/streams/ModuleInstanceChart"
 
 function AdminPage() {
     return (
@@ -47,6 +48,13 @@ function AdminPage() {
                         <ChartCard
                             chart={<UserChart />}
                             label="Users"
+                        />
+                    </Grid>
+
+                    <Grid item xs>
+                        <ChartCard
+                            chart={<ModuleInstanceChart />}
+                            label="Module Instances"
                         />
                     </Grid>
                 </Grid>

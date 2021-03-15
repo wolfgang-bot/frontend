@@ -18,10 +18,11 @@ export enum EVENT_TYPES {
     GUILD_ADD,
     GUILD_REMOVE,
     USER_ADD,
+    MODULE_INSTANCE_START,
+    MODULE_INSTANCE_STOP,
     GUILD_MEMBER_ADD,
     GUILD_MEMBER_REMOVE,
     MESSAGE_SEND,
-    VOICECHANNEL_JOIN,
     VOICECHANNEL_LEAVE
 }
 
@@ -139,6 +140,7 @@ export declare namespace API {
         "guilds" |
         "users" |
         "module-instances" |
+        "guild-module-instances" |
         "members" |
         "messages" |
         "voice"
@@ -156,6 +158,10 @@ export declare namespace API {
 
     export type UserEventMeta = {
         userCount: number
+    }
+
+    export type ModuleInstanceEventMeta = {
+        instanceCount: number
     }
 
     export type MemberEventMeta = {

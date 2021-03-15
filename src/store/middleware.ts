@@ -79,7 +79,7 @@ export const streamDataMiddleware: Middleware = () => next => (action: PayloadAc
 }>) => {
     if (action.type === "streams/data") {
         switch (action.payload.args.eventStream) {
-            case "module-instances":
+            case "guild-module-instances":
                 store.dispatch(updateInstances({
                     guildId: action.payload.args.guildId!,
                     data: action.payload.data

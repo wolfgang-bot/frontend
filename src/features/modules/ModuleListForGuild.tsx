@@ -73,6 +73,6 @@ export function ModuleListForGuildSkeleton() {
     )
 }
 
-export default withStreamSubscription(ModuleListForGuild, "module-instances", {
+export default withStreamSubscription(ModuleListForGuild, "guild-module-instances", {
     showOverlayIfEmpty: false
 })

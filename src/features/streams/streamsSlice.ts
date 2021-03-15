@@ -20,7 +20,7 @@ function createStreamState<T>(type: API.EVENT_STREAM): API.Stream<T> {
 
 function createInitialGuildState(): StreamsMap {
     return {
-        "module-instances": createStreamState<API.ModuleInstance>("module-instances"),
+        "guild-module-instances": createStreamState<API.ModuleInstance>("guild-module-instances"),
         "members": createStreamState<API.Event<API.MemberEventMeta>>("members"),
         "messages": createStreamState<API.Event>("messages"),
         "voice": createStreamState<API.Event<API.VoiceEventMeta>>("voice"),
@@ -30,7 +30,8 @@ function createInitialGuildState(): StreamsMap {
 function createInitialAdminState(): StreamsMap {
     return {
         "guilds": createStreamState<API.Event<API.GuildEventMeta>>("guilds"),
-        "users": createStreamState<API.Event<API.UserEventMeta>>("users")
+        "users": createStreamState<API.Event<API.UserEventMeta>>("users"),
+        "module-instances": createStreamState<API.Event<API.ModuleInstanceEventMeta>>("module-instances")
     }
 }
 
