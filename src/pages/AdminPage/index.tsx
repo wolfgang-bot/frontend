@@ -8,6 +8,7 @@ import ChartCard from "../../components/Styled/ChartCard"
 
 import GuildCount, { GuildTrend } from "../../features/streams/GuildCount"
 import UserCount, { UserTrend } from "../../features/streams/UserCount"
+import ModuleInstanceCount, { ModuleInstanceTrend } from "../../features/streams/ModuleInstanceCount"
 import GuildChart from "../../features/streams/GuildChart"
 import UserChart from "../../features/streams/UserChart"
 import ModuleInstanceChart from "../../features/streams/ModuleInstanceChart"
@@ -32,6 +33,14 @@ function AdminPage() {
                             main={<UserCount />}
                             trend={<UserTrend />}
                             label="Unique Users Count"
+                        />
+                    </Grid>
+
+                    <Grid item xs>
+                        <StatisticCard
+                            main={<ModuleInstanceCount />}
+                            trend={<ModuleInstanceTrend />}
+                            label="Active Module-Instances"
                         />
                     </Grid>
                 </Grid>
