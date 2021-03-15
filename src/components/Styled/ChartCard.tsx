@@ -1,7 +1,7 @@
 import React from "react"
 import { Paper, Box, Typography, Divider } from "@material-ui/core"
 
-function ChartCard({ chart, label, className, width = 370 }: {
+function ChartCard({ chart, label, className, width = "100%" }: {
     chart: React.ReactNode,
     label: React.ReactNode,
     width?: number | string | null,

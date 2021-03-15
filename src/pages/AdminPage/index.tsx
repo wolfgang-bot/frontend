@@ -16,39 +16,39 @@ function AdminPage() {
         <Layout>
             <Title>Admin</Title>
 
-            <Grid container justify="space-between" spacing={4}>
-                <Grid item>
-                    <StatisticCard
-                        main={<GuildCount />}
-                        trend={<GuildTrend />}
-                        label="Guild Count"
-                    />
+            <Grid container direction="column" spacing={4}>
+                <Grid item container justify="space-between" spacing={4}>
+                    <Grid item xs>
+                        <StatisticCard
+                            main={<GuildCount />}
+                            trend={<GuildTrend />}
+                            label="Guild Count"
+                        />
+                    </Grid>
+
+                    <Grid item xs>
+                        <StatisticCard
+                            main={<UserCount />}
+                            trend={<UserTrend />}
+                            label="Unique Users Count"
+                        />
+                    </Grid>
                 </Grid>
 
-                <Grid item>
-                    <StatisticCard
-                        main={<UserCount />}
-                        trend={<UserTrend />}
-                        label="Unique Users Count"
-                    />
-                </Grid>
-            </Grid>
+                <Grid item container justify="space-between" spacing={4}>
+                    <Grid item xs>
+                        <ChartCard
+                            chart={<GuildChart />}
+                            label="Guilds"
+                        />
+                    </Grid>
 
-            <Grid container justify="space-between" spacing={4}>
-                <Grid item xs>
-                    <ChartCard
-                        chart={<GuildChart />}
-                        label="Guilds"
-                        width="100%"
-                    />
-                </Grid>
-
-                <Grid item xs>
-                    <ChartCard
-                        chart={<UserChart />}
-                        label="Users"
-                        width="100%"
-                    />
+                    <Grid item xs>
+                        <ChartCard
+                            chart={<UserChart />}
+                            label="Users"
+                        />
+                    </Grid>
                 </Grid>
             </Grid>
         </Layout>

@@ -33,7 +33,6 @@ function StatisticsTab({ guild, getStreamRef, onClearStreamRefs }: TabProps) {
                             height={400}
                         />
                     }
-                    width="100%"
                     label="Members"
                 />
             </Box>
@@ -48,7 +47,6 @@ function StatisticsTab({ guild, getStreamRef, onClearStreamRefs }: TabProps) {
                                 height={400}
                             />
                         }
-                        width="100%"
                         label="Messages"
                     />
                 </Grid>
@@ -62,7 +60,6 @@ function StatisticsTab({ guild, getStreamRef, onClearStreamRefs }: TabProps) {
                                 height={400}
                             />
                         }
-                        width="100%"
                         label="Voicechat"
                     />
                 </Grid>

@@ -39,24 +39,28 @@ function OverviewTab({ guild, getStreamRef, onClearStreamRefs }: TabProps) {
                     main={<MemberCount {...streamProps} />}
                     trend={<MemberTrend {...streamProps} />}
                     label="Member Count"
+                    width={256}
                 />
 
                 <StatisticCard
                     main={<MemberTrendAtDay {...streamProps} />}
                     trend={<MemberTrendAtDayTrend {...streamProps} />}
                     label="Member Trend Today"
+                    width={256}
                 />
 
                 <StatisticCard
                     main={<MessagesAtDay {...streamProps} />}
                     trend={<MessagesAtDayTrend {...streamProps} />}
                     label="Messages Today"
+                    width={256}
                 />
 
                 <StatisticCard
                     main={<VoiceDurationAtDay {...streamProps} />}
                     trend={<VoiceDurationAtDayTrend {...streamProps} />}
                     label="Voicechat Today"
+                    width={256}
                 />
             </Box>
 
@@ -68,16 +72,19 @@ function OverviewTab({ guild, getStreamRef, onClearStreamRefs }: TabProps) {
                 <ChartCard
                     chart={<MemberChart {...streamProps} />}
                     label="Members"
+                    width={370}
                 />
 
                 <ChartCard
                     chart={<MessageChart {...streamProps} />}
                     label="Messages"
+                    width={370}
                 />
 
                 <ChartCard
                     chart={<VoiceDurationChart {...streamProps} />}
                     label="Voicechat"
+                    width={370}
                 />
             </Box>
 

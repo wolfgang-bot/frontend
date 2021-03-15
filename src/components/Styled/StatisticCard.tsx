@@ -10,11 +10,12 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-function StatisticCard({ main, trend, label, className }: {
+function StatisticCard({ main, trend, label, className, width = "100%" }: {
     main: React.ReactNode,
     trend?: React.ReactNode,
     label: React.ReactNode,
-    className?: string
+    className?: string,
+    width?: number | string | null
 }) {
     const classes = useStyles()
 
@@ -27,7 +28,7 @@ function StatisticCard({ main, trend, label, className }: {
                 alignItems="center"
                 position="relative"
                 padding={4}
-                width={256}
+                width={width}
             >
                 <Typography
                     variant="subtitle1"
