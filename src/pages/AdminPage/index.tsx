@@ -32,7 +32,7 @@ function AdminPage() {
                         <StatisticCard
                             main={<UserCount />}
                             trend={<UserTrend />}
-                            label="Unique Users Count"
+                            label="Users Count"
                         />
                     </Grid>
 
