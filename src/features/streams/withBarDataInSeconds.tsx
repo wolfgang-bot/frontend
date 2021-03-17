@@ -1,19 +1,19 @@
-import { BarData, WhitespaceData } from "lightweight-charts"
+import { API } from "../../config/types"
 
 function msToUNIX(ms: number) {
     return Math.floor(ms / 1000)
 }
 
-function barDataWithUNIX(data: (BarData | WhitespaceData)[]) {
+function barDataWithUNIX(data: API.Dataset) {
     return data.map(datapoint => ({
         ...datapoint,
         time: msToUNIX(datapoint.time as number)
-    })) as (BarData | WhitespaceData)[]
+    })) as API.Dataset
 }
 
 export default function withBarDataInSeconds(Child: React.FunctionComponent<any>) {
     type Props = React.ComponentProps<typeof Child> & {
-        data: (BarData | WhitespaceData)[]
+        data: API.Dataset
     }
 
     return (props: Props) => {

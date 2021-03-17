@@ -1,3 +1,5 @@
+import { UTCTimestamp } from "lightweight-charts"
+
 export enum INSTANCE_STATES {
     ACTIVE,
     INACTIVE,
@@ -197,6 +199,22 @@ export declare namespace API {
     }
 
     export type Command = ExecutableCommand | CommandRegistry
+
+    export type EmptyDataObject = {
+        time: UTCTimestamp
+    }
+
+    export type OHLCDataObject = EmptyDataObject | {
+        time: UTCTimestamp,
+        open: number,
+        high: number,
+        low: number,
+        close: number,
+    }
+
+    export type OHLCDataset = OHLCDataObject[]
+    
+    export type Dataset = OHLCDataset
 }
 
 export type LoadingState = "idle" | "pending" | "success" | "error"

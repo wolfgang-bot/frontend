@@ -1,12 +1,13 @@
 import React, { useEffect, useRef } from "react"
 import { useTheme } from "@material-ui/core"
-import { createChart, ISeriesApi, IChartApi, BarData, WhitespaceData } from "lightweight-charts"
+import { createChart, ISeriesApi, IChartApi } from "lightweight-charts"
 
 import withStreamSubscription from "./withStreamSubscription"
 import withBarDataInSeconds from "./withBarDataInSeconds"
+import { API } from "../../config/types"
 
 function UserChart({ data, width, height = 300 }: {
-    data: (BarData | WhitespaceData)[],
+    data: API.OHLCDataset,
     width?: number,
     height?: number
 }) {
