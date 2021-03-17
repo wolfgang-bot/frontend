@@ -204,7 +204,7 @@ export declare namespace API {
         time: UTCTimestamp
     }
 
-    export type OHLCDataObject = EmptyDataObject | {
+    export type OHLCDataObject = {
         time: UTCTimestamp,
         open: number,
         high: number,
@@ -212,7 +212,7 @@ export declare namespace API {
         close: number,
     }
 
-    export type OHLCDataset = OHLCDataObject[]
+    export type OHLCDataset = (OHLCDataObject | EmptyDataObject)[]
     
     export type Dataset = OHLCDataset
 }
