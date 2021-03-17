@@ -1,13 +1,12 @@
-import { useEffect, useMemo, useRef } from "react"
+import React, { useEffect, useRef } from "react"
 import { useTheme } from "@material-ui/core"
-import { createChart, ISeriesApi, IChartApi } from "lightweight-charts"
+import { createChart, ISeriesApi, IChartApi, BarData, WhitespaceData } from "lightweight-charts"
 
-import { API } from "../../config/types"
-import { createOHLCDataSet, chunkTimestampsIntoDays } from "./utils"
 import withStreamSubscription from "./withStreamSubscription"
+import withBarDataInSeconds from "./withBarDataInSeconds"
 
 function UserChart({ data, width, height = 300 }: {
-    data: API.Event<API.UserEventMeta>[],
+    data: (BarData | WhitespaceData)[],
     width?: number,
     height?: number
 }) {
@@ -17,23 +16,13 @@ function UserChart({ data, width, height = 300 }: {
     const candleStickSeriesRef = useRef<ISeriesApi<"Candlestick">>()
     const chartRef = useRef<IChartApi>()
 
-    const userCountsOHLC = useMemo(() => {
-        const dayMap = chunkTimestampsIntoDays(data)
-        return createOHLCDataSet(
-            dayMap,
-            (events) => {
-                return events.map(event => event.meta.userCount)
-            }
-        )
-    }, [data])
-
     useEffect(() => {
-        if (candleStickSeriesRef.current && userCountsOHLC.length > 0) {
+        if (candleStickSeriesRef.current && data.length > 0) {
             candleStickSeriesRef.current.update(
-                userCountsOHLC[userCountsOHLC.length - 1]
+                data[data.length - 1]
             )
         }
-    }, [userCountsOHLC])
+    }, [data])
 
     useEffect(() => {
         if (!containerRef.current) {
@@ -49,7 +38,7 @@ function UserChart({ data, width, height = 300 }: {
         })
 
         candleStickSeriesRef.current = chartRef.current.addCandlestickSeries()
-        candleStickSeriesRef.current.setData(userCountsOHLC)
+        candleStickSeriesRef.current.setData(data)
 
         // eslint-disable-next-line
     }, [])
@@ -72,4 +61,6 @@ function UserChart({ data, width, height = 300 }: {
     )
 }
 
-export default withStreamSubscription(UserChart, "users")
+export default withStreamSubscription(
+    withBarDataInSeconds(UserChart), "users"
+)
