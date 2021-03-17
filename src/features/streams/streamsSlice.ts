@@ -97,7 +97,7 @@ const streamsSlice = createSlice({
         }>) => {
             const stream = getStream(state, action.payload.args)
             if (stream) {
-                stream.data.push(...action.payload.data)
+                stream.data = action.payload.data
             }
         }
     },
