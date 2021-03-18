@@ -209,12 +209,19 @@ export declare namespace API {
         open: number,
         high: number,
         low: number,
-        close: number,
+        close: number
+    }
+
+    export type SVDataObject = {
+        time: UTCTimestamp,
+        value: number,
+        trend: -1 | 1 | 0
     }
 
     export type OHLCDataset = (OHLCDataObject | EmptyDataObject)[]
+    export type SVDataset = (SVDataObject | EmptyDataObject)[]
     
-    export type Dataset = OHLCDataset
+    export type Dataset = OHLCDataset | SVDataset
 }
 
 export type LoadingState = "idle" | "pending" | "success" | "error"

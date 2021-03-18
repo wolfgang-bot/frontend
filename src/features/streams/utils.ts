@@ -1,4 +1,6 @@
+import { Theme } from "@material-ui/core"
 import { BarData, WhitespaceData } from "lightweight-charts"
+import { API } from "../../config/types"
 
 export type TimestampObject = {
     timestamp: number
@@ -387,4 +389,60 @@ export function millisecondsToHours(milliseconds: number) {
 export function roundToPlaces(number: number, places: number) {
     const factor = Math.pow(10, places)
     return Math.floor(number * factor) / factor
+}
+
+export function isSVDataObject(
+    object: API.SVDataObject | API.EmptyDataObject
+): object is API.SVDataObject {
+    return "value" in object && "trend" in object
+}
+
+export function isOHLCDataObject(
+    dataObject: API.OHLCDataObject | API.EmptyDataObject | undefined
+): dataObject is API.OHLCDataObject {
+    return !dataObject ? false : "close" in dataObject
+}
+
+export function insertThemeIntoSVDataset(dataset: API.SVDataset, theme: Theme) {
+    return dataset.map(dataObject => {
+        if (!isSVDataObject(dataObject)) {
+            return dataObject
+        }
+
+        return {
+            ...dataObject,
+            color: dataObject.trend === -1 ?
+                theme.palette.error.main :
+                theme.palette.success.main
+        }
+    })
+}
+
+export function findOHLCDataObject(data: API.OHLCDataset) {
+    let i = data.length - 1
+    let dataObject = data[i]
+
+    while (!isOHLCDataObject(dataObject)) {
+        dataObject = data[i--]
+
+        if (i <= 0) {
+            return
+        }
+    }
+
+    return dataObject as API.OHLCDataObject
+}
+
+export function getTrendFromOHLCDataset(dataset: API.OHLCDataset) {
+    const currentDataObject = dataset[dataset.length - 1]
+    const yesterdayDataOject = dataset[dataset.length - 2]
+
+    if (
+        !isOHLCDataObject(currentDataObject) ||
+        !isOHLCDataObject(yesterdayDataOject)
+    ) {
+        return 0
+    }
+
+    return (currentDataObject.close - yesterdayDataOject.close) / yesterdayDataOject.close
 }
