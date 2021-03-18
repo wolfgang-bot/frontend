@@ -34,7 +34,7 @@ function GuildChart({ data, width, height = 300 }: {
                 SVDataset[SVDataset.length - 1]
             )
         }
-    }, [data])
+    }, [OHLCDataset, SVDataset])
 
     useEffect(() => {
         if (!containerRef.current) {

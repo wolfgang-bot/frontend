@@ -1,70 +1,40 @@
-import { useEffect, useMemo, useRef } from "react"
+import { useEffect, useRef } from "react"
 import { useTheme } from "@material-ui/core"
 import { createChart, ISeriesApi, IChartApi } from "lightweight-charts"
 
-import { API, EVENT_TYPES } from "../../config/types"
-import { createOHLCDataSet, chunkTimestampsIntoDays } from "./utils"
+import { API } from "../../config/types"
 import withStreamSubscription from "./withStreamSubscription"
-import { createHistogramDataset } from "./utils"
+import withBarDataInSeconds from "./withBarDataInSeconds"
+import { insertThemeIntoSVDataset } from "./utils"
 
 function MemberChart({ data, width, height = 300 }: {
-    data: API.Event<API.MemberEventMeta>[],
+    data: [API.OHLCDataset, API.SVDataset],
     width?: number,
     height?: number
 }) {
     const theme = useTheme()
 
+    let [OHLCDataset = [], SVDataset = []] = data
+    SVDataset = insertThemeIntoSVDataset(SVDataset, theme)
+
     const containerRef = useRef<HTMLDivElement>(null)
     const candleStickSeriesRef = useRef<ISeriesApi<"Candlestick">>()
     const histogramSeriesRef = useRef<ISeriesApi<"Histogram">>()
     const chartRef = useRef<IChartApi>()
-    
-    const [memberCountsOHLC, memberVolumes] = useMemo(() => {
-        const dayMap = chunkTimestampsIntoDays(data)
-
-        const ohlcDataset = createOHLCDataSet(
-            dayMap,
-            (events) => {
-                return events.map(event => event.meta.memberCount)
-            }
-        )
-
-        const histogramDataset = createHistogramDataset(
-            dayMap,
-            (events) => {
-                let delta = 0
-
-                events.forEach(event => {
-                    if (event.type === EVENT_TYPES.GUILD_MEMBER_ADD) {
-                        delta++
-                    } else if (event.type === EVENT_TYPES.GUILD_MEMBER_REMOVE) {
-                        delta--
-                    }
-                })
-
-                return {
-                    value: events.length,
-                    color: delta < 0 ? theme.palette.error.main : theme.palette.success.main
-                }
-            }
-        )
-
-        return [ohlcDataset, histogramDataset]
-    }, [data, theme.palette.error.main, theme.palette.success.main])
 
     useEffect(() => {
-        if (candleStickSeriesRef.current && memberCountsOHLC.length > 0) {
+        if (candleStickSeriesRef.current && OHLCDataset.length > 0) {
             candleStickSeriesRef.current.update(
-                memberCountsOHLC[memberCountsOHLC.length - 1]
+                OHLCDataset[OHLCDataset.length - 1]
             )
         }
 
-        if (histogramSeriesRef.current && memberVolumes.length > 0) {
+        if (histogramSeriesRef.current && SVDataset.length > 0) {
             histogramSeriesRef.current.update(
-                memberVolumes[memberVolumes.length - 1]
+                SVDataset[SVDataset.length - 1]
             )
         }
-    }, [memberCountsOHLC, memberVolumes])
+    }, [OHLCDataset, SVDataset])
 
     useEffect(() => {
         if (!containerRef.current) {
@@ -80,10 +50,10 @@ function MemberChart({ data, width, height = 300 }: {
         })
 
         candleStickSeriesRef.current = chartRef.current.addCandlestickSeries()
-        candleStickSeriesRef.current.setData(memberCountsOHLC)
+        candleStickSeriesRef.current.setData(OHLCDataset)
 
         histogramSeriesRef.current = chartRef.current.addHistogramSeries()
-        histogramSeriesRef.current.setData(memberVolumes)
+        histogramSeriesRef.current.setData(SVDataset)
 
         // eslint-disable-next-line
     }, [])
@@ -106,4 +76,6 @@ function MemberChart({ data, width, height = 300 }: {
     )
 }
 
-export default withStreamSubscription(MemberChart, "members")
+export default withStreamSubscription(
+    withBarDataInSeconds(MemberChart, { multiDataset: true })
+, "members")

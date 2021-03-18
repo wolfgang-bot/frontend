@@ -215,7 +215,8 @@ export declare namespace API {
     export type SVDataObject = {
         time: UTCTimestamp,
         value: number,
-        trend: -1 | 1 | 0
+        up: number,
+        down: number
     }
 
     export type OHLCDataset = (OHLCDataObject | EmptyDataObject)[]

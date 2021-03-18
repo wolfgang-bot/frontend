@@ -392,15 +392,15 @@ export function roundToPlaces(number: number, places: number) {
 }
 
 export function isSVDataObject(
-    object: API.SVDataObject | API.EmptyDataObject
-): object is API.SVDataObject {
-    return "value" in object && "trend" in object
+    dataObject: API.SVDataObject | API.EmptyDataObject
+): dataObject is API.SVDataObject {
+    return typeof dataObject === "object" && "value" in dataObject
 }
 
 export function isOHLCDataObject(
     dataObject: API.OHLCDataObject | API.EmptyDataObject | undefined
 ): dataObject is API.OHLCDataObject {
-    return !dataObject ? false : "close" in dataObject
+    return typeof dataObject === "object" && "close" in dataObject
 }
 
 export function insertThemeIntoSVDataset(dataset: API.SVDataset, theme: Theme) {
@@ -409,9 +409,11 @@ export function insertThemeIntoSVDataset(dataset: API.SVDataset, theme: Theme) {
             return dataObject
         }
 
+        const trend = Math.sign(dataObject.up - dataObject.down)
+
         return {
             ...dataObject,
-            color: dataObject.trend === -1 ?
+            color: trend === -1 ?
                 theme.palette.error.main :
                 theme.palette.success.main
         }

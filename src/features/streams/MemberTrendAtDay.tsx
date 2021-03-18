@@ -4,29 +4,10 @@ import ChevronUpIcon from "@material-ui/icons/KeyboardArrowUp"
 import ChevronDownIcon from "@material-ui/icons/KeyboardArrowDown"
 import { makeStyles } from "@material-ui/core/styles"
 
-import { API, EVENT_TYPES } from "../../config/types"
+import { API } from "../../config/types"
 import withStreamSubscription from "./withStreamSubscription"
-import { roundToLastFullDay, getTimestampsBetween, MILLISECONDS_PER_DAY } from "./utils"
+import { isSVDataObject } from "./utils"
 import Trend from "../../components/Styled/Trend"
-
-function getUpDownTrendFromEvents(events: API.Event<API.MemberEventMeta>[]) {
-    let amountUp = 0, amountDown = 0
-
-    for (let event of events) {
-        if (event.type === EVENT_TYPES.GUILD_MEMBER_ADD) {
-            amountUp++
-        } else if (event.type === EVENT_TYPES.GUILD_MEMBER_REMOVE) {
-            amountDown++
-        }
-    }
-
-    return [amountUp, amountDown]
-}
-
-function getTrendFromEvents(events: API.Event<API.MemberEventMeta>[]) {
-    const [up, down] = getUpDownTrendFromEvents(events)
-    return up + down
-}
 
 const useStyles = makeStyles(theme => ({
     success: {
@@ -38,18 +19,22 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-function MemberTrendAtDay({ data, timestamp = Date.now() }: {
-    data: API.Event<API.MemberEventMeta>[],
-    timestamp?: number
-}) {
+function MemberUpDown({ data }: {
+    data: [API.OHLCDataset, API.SVDataset]
+}) {    
     const classes = useStyles()
     
-    const [amountUp, amountDown] = useMemo(() => {
-        const to = timestamp
-        const from = roundToLastFullDay(to)
-        const eventsAtDay = getTimestampsBetween(data, from, to)
-        return getUpDownTrendFromEvents(eventsAtDay)
-    }, [data, timestamp])
+    const SVDataset = data[1] || []
+
+    const [up, down] = useMemo(() => {
+        const lastDataObject = SVDataset[SVDataset.length - 1]
+
+        if (!isSVDataObject(lastDataObject)) {
+            return [0, 0]
+        }
+
+        return [lastDataObject.up, lastDataObject.down]
+    }, [SVDataset])
 
     return (
         <Grid container spacing={2}>
@@ -60,7 +45,7 @@ function MemberTrendAtDay({ data, timestamp = Date.now() }: {
                     className={classes.success}
                 >
                     <ChevronUpIcon/>
-                    <Box>{amountUp}</Box>
+                    <Box>{up}</Box>
                 </Box>
             </Grid>
             
@@ -70,7 +55,7 @@ function MemberTrendAtDay({ data, timestamp = Date.now() }: {
                     alignItems="center"
                     className={classes.error}
                 >
-                    <Box>{amountDown}</Box>
+                    <Box>{down}</Box>
                     <ChevronDownIcon/>
                 </Box>
             </Grid>
@@ -78,33 +63,35 @@ function MemberTrendAtDay({ data, timestamp = Date.now() }: {
     )
 }
 
-function _MemberTrendAtDayTrend({ data, timestamp = Date.now() }: {
-    data: API.Event<API.MemberEventMeta>[],
-    timestamp: number
+function _MemberUpDownTrend({ data }: {
+    data: [API.OHLCDataset, API.SVDataset]
 }) {
+    const SVDataset = data[1] || []
 
     const trend = useMemo(() => {
-        if (data.length === 0) {
+        const currentDataObject = SVDataset[SVDataset.length - 1]
+        const yesterdayDataObject = SVDataset[SVDataset.length - 2]
+
+        if (
+            !isSVDataObject(currentDataObject) ||
+            !isSVDataObject(yesterdayDataObject)
+        ) {
             return 0
         }
 
-        const to = roundToLastFullDay(timestamp)
-        const from = to - MILLISECONDS_PER_DAY
-
-        const eventsAtDay = getTimestampsBetween(data, to, timestamp)
-        const eventsAtOneDayAgo = getTimestampsBetween(data, from, to)
-
-        const volumeAtDay = getTrendFromEvents(eventsAtDay)
-        const volumeAtOneDayAgo = getTrendFromEvents(eventsAtOneDayAgo)
-
-        return (volumeAtDay - volumeAtOneDayAgo) / volumeAtOneDayAgo
-    }, [data, timestamp])
+        const currentUpDown = currentDataObject.up + currentDataObject.down
+        const yesterdayUpDown = yesterdayDataObject.up + yesterdayDataObject.down
+        
+        return (currentUpDown - yesterdayUpDown) / yesterdayUpDown
+    }, [SVDataset])
 
     return <Trend value={trend}/>
 }
 
-export default withStreamSubscription(MemberTrendAtDay, "members")
+export default withStreamSubscription(MemberUpDown, "members")
 
-export const MemberTrendAtDayTrend = withStreamSubscription(_MemberTrendAtDayTrend, "members", {
-    showOverlayIfEmpty: false
-})
+export const MemberTrendAtDayTrend = withStreamSubscription(
+    _MemberUpDownTrend,
+    "members", 
+    { showOverlayIfEmpty: false }
+)
