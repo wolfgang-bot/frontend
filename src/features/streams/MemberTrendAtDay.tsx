@@ -24,9 +24,9 @@ function MemberUpDown({ data }: {
 }) {    
     const classes = useStyles()
     
-    const SVDataset = data[1] || []
-
     const [up, down] = useMemo(() => {
+        const SVDataset = data[1] || []
+
         const lastDataObject = SVDataset[SVDataset.length - 1]
 
         if (!isSVDataObject(lastDataObject)) {
@@ -34,7 +34,7 @@ function MemberUpDown({ data }: {
         }
 
         return [lastDataObject.up, lastDataObject.down]
-    }, [SVDataset])
+    }, [data])
 
     return (
         <Grid container spacing={2}>
@@ -66,9 +66,9 @@ function MemberUpDown({ data }: {
 function _MemberUpDownTrend({ data }: {
     data: [API.OHLCDataset, API.SVDataset]
 }) {
-    const SVDataset = data[1] || []
-
     const trend = useMemo(() => {
+        const SVDataset = data[1] || []
+
         const currentDataObject = SVDataset[SVDataset.length - 1]
         const yesterdayDataObject = SVDataset[SVDataset.length - 2]
 
@@ -83,7 +83,7 @@ function _MemberUpDownTrend({ data }: {
         const yesterdayUpDown = yesterdayDataObject.up + yesterdayDataObject.down
         
         return (currentUpDown - yesterdayUpDown) / yesterdayUpDown
-    }, [SVDataset])
+    }, [data])
 
     return <Trend value={trend}/>
 }

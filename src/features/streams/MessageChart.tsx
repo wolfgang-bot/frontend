@@ -5,7 +5,6 @@ import { createChart, ISeriesApi, IChartApi } from "lightweight-charts"
 import withStreamSubscription from "./withStreamSubscription"
 import withBarDataInSeconds from "./withBarDataInSeconds"
 import { API } from "../../config/types"
-import { insertThemeIntoSVDataset } from "./utils"
 
 function MessageChart({ data, width, height = 300 }: {
     data: API.SVDataset,
@@ -13,20 +12,18 @@ function MessageChart({ data, width, height = 300 }: {
     height?: number
 }) {
     const theme = useTheme()
-    
-    const SVDataset = insertThemeIntoSVDataset(data, theme)
 
     const containerRef = useRef<HTMLDivElement>(null)
     const histogramSeriesRef = useRef<ISeriesApi<"Histogram">>()
     const chartRef = useRef<IChartApi>()
 
     useEffect(() => {
-        if (histogramSeriesRef.current && SVDataset.length > 0) {
+        if (histogramSeriesRef.current && data.length > 0) {
             histogramSeriesRef.current.update(
-                SVDataset[SVDataset.length - 1]
+                data[data.length - 1]
             )
         }
-    }, [SVDataset])
+    }, [data])
 
     useEffect(() => {
         if (!containerRef.current) {
@@ -42,7 +39,7 @@ function MessageChart({ data, width, height = 300 }: {
         })
 
         histogramSeriesRef.current = chartRef.current.addHistogramSeries()
-        histogramSeriesRef.current.setData(SVDataset)
+        histogramSeriesRef.current.setData(data)
 
         // eslint-disable-next-line
     }, [])

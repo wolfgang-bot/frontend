@@ -1,67 +1,87 @@
-import { useMemo } from "react"
-import { Bar } from "react-chartjs-2"
+import React, { useEffect, useRef } from "react"
 import { useTheme } from "@material-ui/core"
+import { createChart, ISeriesApi, IChartApi } from "lightweight-charts"
 
-import { API } from "../../config/types"
 import withStreamSubscription from "./withStreamSubscription"
-import { forEachDayInTimestamps, roundToPlaces, millisecondsToHours } from "./utils"
+import withBarDataInSeconds from "./withBarDataInSeconds"
+import { API } from "../../config/types"
+import { isSVDataObject, millisecondsToHours, roundToPlaces } from "./utils"
+
+function hoursFormatter(value: number) {
+    return roundToPlaces(value, 1) + "h"
+}
+
+function formatValuesToHours(dataset: API.SVDataset) {
+    return dataset.map(dataObject => {
+        if (!isSVDataObject(dataObject)) {
+            return dataObject
+        }
+
+        return {
+            ...dataObject,
+            value: millisecondsToHours(dataObject.value)
+        }
+    }) as API.SVDataset
+}
 
 function VoiceDurationChart({ data, width, height = 300 }: {
-    data: API.Event<API.VoiceEventMeta>[],
+    data: API.SVDataset,
     width?: number,
     height?: number
 }) {
+    const dataInHours = formatValuesToHours(data || [])
+    
     const theme = useTheme()
 
-    const voiceDurationPerDayMap = useMemo(() => {
-        return forEachDayInTimestamps(
-            data,
-            (entry, dayMap, currentDay) => {
-                const currentValue = dayMap.get(currentDay) || 0
-                dayMap.set(currentDay, currentValue + entry.meta.duration)
+    const containerRef = useRef<HTMLDivElement>(null)
+    const histogramSeriesRef = useRef<ISeriesApi<"Histogram">>()
+    const chartRef = useRef<IChartApi>()
+
+    useEffect(() => {
+        if (histogramSeriesRef.current && dataInHours.length > 0) {
+            histogramSeriesRef.current.update(
+                dataInHours[dataInHours.length - 1]
+            )
+        }
+    }, [dataInHours])
+
+    useEffect(() => {
+        if (!containerRef.current) {
+            return
+        }
+
+        chartRef.current = createChart(containerRef.current, {
+            width,
+            height,
+            localization: {
+                priceFormatter: hoursFormatter
             }
-        )
-    }, [data])
+        })
 
-    const labels = Array.from(voiceDurationPerDayMap.keys())
-        .map((timestamp: number) => new Date(timestamp).toLocaleDateString())
+        histogramSeriesRef.current = chartRef.current.addHistogramSeries()
+        histogramSeriesRef.current.setData(dataInHours)
 
-    const values = Array.from(voiceDurationPerDayMap.values())
-        .map((duration: number | null) => (
-            duration === null ? null : roundToPlaces(millisecondsToHours(duration), 2)
-        ))
+        // eslint-disable-next-line
+    }, [])
+
+    useEffect(() => {
+        if (!chartRef.current) {
+            return
+        }
+
+        chartRef.current.applyOptions({
+            layout: {
+                backgroundColor: theme.palette.background.paper,
+                textColor: theme.palette.text.primary
+            }
+        })
+    }, [theme])
 
     return (
-        <Bar
-            width={width}
-            height={height}
-            data={{
-                labels,
-                datasets: [
-                    {
-                        label: "Voice Duration",
-                        data: values,
-                        backgroundColor: theme.palette.primary.main
-                    }
-                ]
-            }}
-            options={{
-                maintainAspectRatio: false,
-                scales: {
-                    yAxes: [
-                        {
-                            ticks: {
-                                beginAtZero: true
-                            }
-                        }
-                    ]
-                },
-                legend: {
-                    display: false
-                }
-            }}
-        />
+        <div ref={containerRef} />
     )
 }
 
-export default withStreamSubscription(VoiceDurationChart, "voice")
+export default withStreamSubscription(
+    withBarDataInSeconds(VoiceDurationChart), "voice"
+)
