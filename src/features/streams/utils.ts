@@ -448,3 +448,17 @@ export function getTrendFromOHLCDataset(dataset: API.OHLCDataset) {
 
     return (currentDataObject.close - yesterdayDataOject.close) / yesterdayDataOject.close
 }
+
+export function getTrendFromSVDataset(dataset: API.SVDataset) {
+    const currentDataObject = dataset[dataset.length - 1]
+    const yesterdayDataOject = dataset[dataset.length - 2]
+
+    if (
+        !isSVDataObject(currentDataObject) ||
+        !isSVDataObject(yesterdayDataOject)
+    ) {
+        return 0
+    }
+
+    return (currentDataObject.value - yesterdayDataOject.value) / yesterdayDataOject.value
+}

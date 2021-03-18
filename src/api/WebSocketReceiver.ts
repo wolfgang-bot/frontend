@@ -26,10 +26,6 @@ class WebSocketReceiver {
     }
 
     receiveStreamData(args: API.StreamArgs, data: any) {
-        if (args.eventStream === "messages") {
-            data = Array.from(new Float64Array(data))
-        }
-
         store.dispatch(dataAction({ args, data }))
     }
 }
