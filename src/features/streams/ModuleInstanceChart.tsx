@@ -1,70 +1,40 @@
-import { useEffect, useMemo, useRef } from "react"
+import { useEffect, useRef } from "react"
 import { useTheme } from "@material-ui/core"
 import { createChart, ISeriesApi, IChartApi } from "lightweight-charts"
 
-import { API, EVENT_TYPES } from "../../config/types"
-import { createOHLCDataSet, chunkTimestampsIntoDays } from "./utils"
+import { API } from "../../config/types"
+import { insertThemeIntoSVDataset } from "./utils"
 import withStreamSubscription from "./withStreamSubscription"
-import { createHistogramDataset } from "./utils"
+import withBarDataInSeconds from "./withBarDataInSeconds"
 
 function ModuleInstanceChart({ data, width, height = 300 }: {
-    data: API.Event<API.ModuleInstanceEventMeta>[],
+    data: [API.OHLCDataset, API.SVDataset],
     width?: number,
     height?: number
 }) {
     const theme = useTheme()
+
+    let [OHLCDataset = [], SVDataset = []] = data
+    SVDataset = insertThemeIntoSVDataset(SVDataset, theme)
 
     const containerRef = useRef<HTMLDivElement>(null)
     const candleStickSeriesRef = useRef<ISeriesApi<"Candlestick">>()
     const histogramSeriesRef = useRef<ISeriesApi<"Histogram">>()
     const chartRef = useRef<IChartApi>()
 
-    const [instanceCountsOHLC, instanceVolume] = useMemo(() => {
-        const dayMap = chunkTimestampsIntoDays(data)
-
-        const ohlcDataset = createOHLCDataSet(
-            dayMap,
-            (events) => {
-                return events.map(event => event.meta.instanceCount)
-            }
-        )
-
-        const histogramDataset = createHistogramDataset(
-            dayMap,
-            (events) => {
-                let delta = 0
-
-                events.forEach(event => {
-                    if (event.type === EVENT_TYPES.MODULE_INSTANCE_START) {
-                        delta++
-                    } else if (event.type === EVENT_TYPES.MODULE_INSTANCE_STOP) {
-                        delta--
-                    }
-                })
-
-                return {
-                    value: events.length,
-                    color: delta < 0 ? theme.palette.error.main : theme.palette.success.main
-                }
-            }
-        )
-
-        return [ohlcDataset, histogramDataset]
-    }, [data, theme.palette.error.main, theme.palette.success.main])
-
     useEffect(() => {
-        if (candleStickSeriesRef.current && instanceCountsOHLC.length > 0) {
+        if (candleStickSeriesRef.current && OHLCDataset.length > 0) {
             candleStickSeriesRef.current.update(
-                instanceCountsOHLC[instanceCountsOHLC.length - 1]
+                OHLCDataset[OHLCDataset.length - 1]
             )
         }
 
-        if (histogramSeriesRef.current && instanceVolume.length > 0) {
+        if (histogramSeriesRef.current && SVDataset.length > 0) {
             histogramSeriesRef.current.update(
-                instanceVolume[instanceVolume.length - 1]
+                SVDataset[SVDataset.length - 1]
             )
         }
-    }, [instanceCountsOHLC, instanceVolume])
+    }, [data])
 
     useEffect(() => {
         if (!containerRef.current) {
@@ -80,10 +50,10 @@ function ModuleInstanceChart({ data, width, height = 300 }: {
         })
 
         candleStickSeriesRef.current = chartRef.current.addCandlestickSeries()
-        candleStickSeriesRef.current.setData(instanceCountsOHLC)
+        candleStickSeriesRef.current.setData(OHLCDataset)
 
         histogramSeriesRef.current = chartRef.current.addHistogramSeries()
-        histogramSeriesRef.current.setData(instanceVolume)
+        histogramSeriesRef.current.setData(SVDataset)
 
         // eslint-disable-next-line
     }, [])
@@ -106,4 +76,6 @@ function ModuleInstanceChart({ data, width, height = 300 }: {
     )
 }
 
-export default withStreamSubscription(ModuleInstanceChart, "module-instances")
+export default withStreamSubscription(
+    withBarDataInSeconds(ModuleInstanceChart, { multiDataset: true })
+, "module-instances")
