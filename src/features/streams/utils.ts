@@ -423,11 +423,11 @@ export function findOHLCDataObject(data: API.OHLCDataset) {
     let dataObject = data[i]
 
     while (!isOHLCDataObject(dataObject)) {
-        dataObject = data[i--]
-
-        if (i <= 0) {
+        if (i < 0) {
             return
         }
+
+        dataObject = data[i--]
     }
 
     return dataObject as API.OHLCDataObject
