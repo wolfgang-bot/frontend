@@ -4,7 +4,7 @@ import { Box } from "@material-ui/core"
 import Header from "./Header"
 import { TabProps } from "./TabsRouter"
 
-import { StreamProps } from "../../features/streams/withStreamSubscription"
+import { SubscriptionOptions } from "../../features/streams/withStreamSubscription"
 import ModuleListForGuild from "../../features/modules/ModuleListForGuild"
 import StatisticCard from "../../components/Styled/StatisticCard"
 import ChartCard from "../../components/Styled/ChartCard"
@@ -18,7 +18,7 @@ import MessageChart from "../../features/streams/MessageChart"
 import VoiceDurationChart from "../../features/streams/VoiceDurationChart"
 
 function OverviewTab({ guild, getStreamRef, onClearStreamRefs }: TabProps) {
-    const streamProps: Record<string, any> & StreamProps = {
+    const streamProps: Record<string, any> & SubscriptionOptions = {
         guild,
         ref: getStreamRef,
         useAutomatedStreamPausing: false

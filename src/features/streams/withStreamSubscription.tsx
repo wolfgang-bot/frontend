@@ -8,15 +8,12 @@ import { subscribe, pause, resume, makeStreamStatusSelector, makeStreamDataSelec
 
 export type SubscriptionOptions = {
     showOverlayIfEmpty?: boolean,
-    renderProgressWhileLoading?: boolean
+    renderProgressWhileLoading?: boolean,
+    useAutomatedStreamPausing?: boolean
 }
 
 export type RefHandle = {
     pauseStream: () => void
-}
-
-export type StreamProps = {
-    useAutomatedStreamPausing?: boolean
 }
 
 const useStyles = makeStyles(theme => ({
@@ -61,11 +58,16 @@ function Overlay({ overlay, children }: React.PropsWithChildren<{
 function withStreamSubscription(
     Child: React.FunctionComponent<any>,
     stream: API.EVENT_STREAM,
-    options?: SubscriptionOptions
+    hocOptions?: SubscriptionOptions
 ) {
-    type Props = React.ComponentProps<typeof Child> & StreamProps
+    type Props = React.ComponentProps<typeof Child> & SubscriptionOptions
 
     function StreamWrapper(props: Props, ref: ForwardedRef<RefHandle>) {
+        const options = {
+            ...hocOptions,
+            ...props
+        }
+
         const streamArgs = useMemo<API.StreamArgs>(() => ({
             eventStream: stream,
             guildId: props.guild?.id
@@ -85,14 +87,14 @@ function withStreamSubscription(
         }, [streamArgs, status, dispatch])
 
         useEffect(() => {
-            if (props.useAutomatedStreamPausing === false) {
+            if (options.useAutomatedStreamPausing === false) {
                 return
             }
 
             return () => {
                 dispatch(pause(streamArgs))
             }
-        }, [props.useAutomatedStreamPausing, streamArgs, dispatch])
+        }, [options.useAutomatedStreamPausing, streamArgs, dispatch])
 
         useImperativeHandle(ref, () => ({
             pauseStream: () => {

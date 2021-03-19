@@ -33,5 +33,6 @@ function DashboardPage({ data, isLoading }: {
 
 export default withStreamSubscription(DashboardPage, "user-guilds", {
     showOverlayIfEmpty: false,
-    renderProgressWhileLoading: false
+    renderProgressWhileLoading: false,
+    useAutomatedStreamPausing: false
 })

@@ -47,5 +47,6 @@ function GuildList({ data, isLoading }: {
 
 export default withStreamSubscription(GuildList, "user-guilds", {
     showOverlayIfEmpty: false,
-    renderProgressWhileLoading: false
+    renderProgressWhileLoading: false,
+    useAutomatedStreamPausing: false
 })
