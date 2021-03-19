@@ -1,5 +1,5 @@
 import React from "react"
-import { Box } from "@material-ui/core"
+import { Grid } from "@material-ui/core"
 
 import Header from "./Header"
 import { TabProps } from "./TabsRouter"
@@ -30,65 +30,68 @@ function OverviewTab({ guild, getStreamRef, onClearStreamRefs }: TabProps) {
         <>
             <Header guild={guild} />
 
-            <Box
-                display="flex"
-                justifyContent="space-between"
-                mb={3}
-            >
-                <StatisticCard
-                    main={<MemberCount {...streamProps} />}
-                    trend={<MemberTrend {...streamProps} />}
-                    label="Member Count"
-                    width={256}
-                />
+            <Grid container direction="column" spacing={4}>
+                <Grid item container justify="space-between" spacing={4}>
+                    <Grid item xs>
+                        <StatisticCard
+                            main={<MemberCount {...streamProps} />}
+                            trend={<MemberTrend {...streamProps} />}
+                            label="Member Count"
+                        />
+                    </Grid>
 
-                <StatisticCard
-                    main={<MemberTrendAtDay {...streamProps} />}
-                    trend={<MemberTrendAtDayTrend {...streamProps} />}
-                    label="Member Trend Today"
-                    width={256}
-                />
+                    <Grid item xs>
+                        <StatisticCard
+                            main={<MemberTrendAtDay {...streamProps} />}
+                            trend={<MemberTrendAtDayTrend {...streamProps} />}
+                            label="Member Trend Today"
+                        />
+                    </Grid>
 
-                <StatisticCard
-                    main={<MessagesAtDay {...streamProps} />}
-                    trend={<MessagesAtDayTrend {...streamProps} />}
-                    label="Messages Today"
-                    width={256}
-                />
+                    <Grid item xs>
+                        <StatisticCard
+                            main={<MessagesAtDay {...streamProps} />}
+                            trend={<MessagesAtDayTrend {...streamProps} />}
+                            label="Messages Today"
+                        />
+                    </Grid>
 
-                <StatisticCard
-                    main={<VoiceDurationAtDay {...streamProps} />}
-                    trend={<VoiceDurationAtDayTrend {...streamProps} />}
-                    label="Voicechat Today"
-                    width={256}
-                />
-            </Box>
+                    <Grid item xs>
+                        <StatisticCard
+                            main={<VoiceDurationAtDay {...streamProps} />}
+                            trend={<VoiceDurationAtDayTrend {...streamProps} />}
+                            label="Voicechat Today"
+                        />
+                    </Grid>
+                </Grid>
 
-            <Box
-                display="flex"
-                justifyContent="space-between"
-                mb={3}
-            >
-                <ChartCard
-                    chart={<MemberChart {...streamProps} />}
-                    label="Members"
-                    width={370}
-                />
+                <Grid item container justify="space-between" spacing={4}>
+                    <Grid item xs>
+                        <ChartCard
+                            chart={<MemberChart {...streamProps} />}
+                            label="Members"
+                        />
+                    </Grid>
 
-                <ChartCard
-                    chart={<MessageChart {...streamProps} />}
-                    label="Messages"
-                    width={370}
-                />
+                    <Grid item xs>
+                        <ChartCard
+                            chart={<MessageChart {...streamProps} />}
+                            label="Messages"
+                        />
+                    </Grid>
 
-                <ChartCard
-                    chart={<VoiceDurationChart {...streamProps} />}
-                    label="Voicechat"
-                    width={370}
-                />
-            </Box>
+                    <Grid item xs>
+                        <ChartCard
+                            chart={<VoiceDurationChart {...streamProps} />}
+                            label="Voicechat"
+                        />
+                    </Grid>
+                </Grid>
 
-            <ModuleListForGuild {...streamProps} />
+                <Grid item>
+                    <ModuleListForGuild {...streamProps} />
+                </Grid>
+            </Grid>
         </>
     )
 }

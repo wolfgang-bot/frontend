@@ -24,44 +24,46 @@ function StatisticsTab({ guild, getStreamRef, onClearStreamRefs }: TabProps) {
         <>
             <Header guild={guild} />
 
-            <Box mb={3}>
-                <ChartCard
-                    chart={
-                        <MemberChart
-                            {...streamProps}
-                            width={null}
-                            height={400}
-                        />
-                    }
-                    label="Members"
-                />
-            </Box>
-
-            <Grid container justify="space-between" spacing={3}>
-                <Grid item xs>
+            <Grid container direction="column" spacing={4}>
+                <Grid item>
                     <ChartCard
                         chart={
-                            <MessageChart
+                            <MemberChart
                                 {...streamProps}
                                 width={null}
                                 height={400}
                             />
                         }
-                        label="Messages"
+                        label="Members"
                     />
                 </Grid>
 
-                <Grid item xs>
-                    <ChartCard
-                        chart={
-                            <VoiceDurationChart
-                                {...streamProps}
-                                width={null}
-                                height={400}
-                            />
-                        }
-                        label="Voicechat"
-                    />
+                <Grid item container justify="space-between" spacing={4}>
+                    <Grid item xs>
+                        <ChartCard
+                            chart={
+                                <MessageChart
+                                    {...streamProps}
+                                    width={null}
+                                    height={400}
+                                />
+                            }
+                            label="Messages"
+                        />
+                    </Grid>
+
+                    <Grid item xs>
+                        <ChartCard
+                            chart={
+                                <VoiceDurationChart
+                                    {...streamProps}
+                                    width={null}
+                                    height={400}
+                                />
+                            }
+                            label="Voicechat"
+                        />
+                    </Grid>
                 </Grid>
             </Grid>
         </>
