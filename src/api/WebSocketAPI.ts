@@ -69,14 +69,6 @@ class WebSocketAPI {
     }
 
     /**
-     * @fires get:guilds
-     */
-    async getGuilds() {
-        const data = await this.fetch<API.Guild[]>("get:guilds")
-        return format<API.Guild[]>(FORMATS.GUILDS)(data)
-    }
-
-    /**
      * @fires get:guild/member-count
      */
     getMemberCount(args: { guildId: string }) {

@@ -8,18 +8,6 @@ const initialState: ReduxAPIState<Record<string, API.Guild>> = {
     status: "idle"
 }
 
-export const fetchGuilds = createAsyncThunk<
-    API.Guild[] | undefined,
-    void,
-    { extra: ThunkExtraArgument }
->(
-    "guilds/fetchGuilds",
-    async (_, { extra: { api } }) => {
-        const res = await api.ws.getGuilds()
-        return res.data
-    }
-)
-
 export const fetchChannels = createAsyncThunk<
     API.GuildChannel[] | undefined,
     string,
@@ -59,25 +47,16 @@ export const fetchMemberCount = createAsyncThunk<
 const guildsSlice = createSlice({
     name: "guild",
     initialState,
-    reducers: {},
-    extraReducers: {
-        /**
-         * Thunk: guilds/fetchGuilds
-         */
-        [fetchGuilds.pending.toString()]: (state) => {
-            state.status = "pending"
-        },
-        [fetchGuilds.fulfilled.toString()]: (state, action: PayloadAction<API.Guild[]>) => {
+    reducers: {
+        updateGuilds: (state, action: PayloadAction<API.Guild[]>) => {
             state.status = "success"
+
             action.payload.forEach(guild => {
                 state.data[guild.id] = guild
             })
-        },
-        [fetchGuilds.rejected.toString()]: (state, action) => {
-            state.status = "error"
-            state.error = action.payload
-        },
-
+        }
+    },
+    extraReducers: {
         /**
          * Thunk: guilds/fetchChannels
          */
@@ -156,4 +135,5 @@ const guildsSlice = createSlice({
     }
 })
 
+export const { updateGuilds } = guildsSlice.actions
 export default guildsSlice.reducer

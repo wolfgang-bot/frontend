@@ -4,6 +4,7 @@ import { API } from "../config/types"
 import store from "../store"
 import { data as dataAction } from "../features/streams/streamsSlice"
 import Logger from "../utils/Logger"
+import StreamFormatter from "./StreamFormatter"
 
 class WebSocketReceiver {
     socket: Socket
@@ -26,6 +27,7 @@ class WebSocketReceiver {
     }
 
     receiveStreamData(args: API.StreamArgs, data: any) {
+        new StreamFormatter(args).format(data)
         store.dispatch(dataAction({ args, data }))
     }
 }

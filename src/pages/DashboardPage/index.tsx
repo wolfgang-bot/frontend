@@ -1,43 +1,27 @@
-import React, { useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import React from "react"
 import { Redirect, useParams } from "react-router-dom"
 import { Tabs } from "@material-ui/core"
 
-import { RootState } from "../../store"
-import { fetchGuilds } from "../../features/guilds/guildsSlice"
 import DashboardPageSkeleton from "./DashboardPageSkeleton"
 import TabsRouter from "./TabsRouter"
 import Layout from "../../components/Layout/Layout"
+import { API } from "../../config/types"
+import withStreamSubscription from "../../features/streams/withStreamSubscription"
 
-function DashboardPage() {
+function DashboardPage({ data, isLoading }: {
+    data: API.Guild[],
+    isLoading: boolean
+}) {
     const { guildId } = useParams<{ guildId: string }>()
-    
-    const dispatch = useDispatch()
 
-    const guild = useSelector((store: RootState) => store.guilds.data[guildId])
-    const status = useSelector((store: RootState) => store.guilds.status)
-    const error = useSelector((store: RootState) => store.guilds.error)
+    const guild = data && data.find(guild => guild.id === guildId)
 
-    useEffect(() => {
-        if (status === "idle") {
-            dispatch(fetchGuilds())
-        }
-    }, [status, dispatch])
-
-    if (status === "success") {
-        if (!guild.isActive) {
+    if (!isLoading) {
+        if (!guild?.isActive) {
             return <Redirect to="/not-found" />
         }
 
         return <TabsRouter guild={guild}/>
-    }
-    
-    if (status === "error") {
-        return (
-            <Layout navbar={<Tabs/>}>
-                <div>{error}</div>
-            </Layout>
-        )
     }
 
     return (
@@ -47,4 +31,7 @@ function DashboardPage() {
     )
 }
 
-export default DashboardPage
+export default withStreamSubscription(DashboardPage, "user-guilds", {
+    showOverlayIfEmpty: false,
+    renderProgressWhileLoading: false
+})

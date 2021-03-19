@@ -142,6 +142,7 @@ export declare namespace API {
         "guilds" |
         "users" |
         "module-instances" |
+        "user-guilds" |
         "guild-module-instances" |
         "members" |
         "messages" |
@@ -176,7 +177,7 @@ export declare namespace API {
 
     export type Stream<T> = {
         type: EVENT_STREAM,
-        status: "idle" | "flowing" | "paused",
+        status: "idle" | "pending" | "flowing" | "paused",
         data: T[]
     }
 

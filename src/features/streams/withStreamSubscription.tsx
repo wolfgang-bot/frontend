@@ -7,7 +7,8 @@ import { API } from "../../config/types"
 import { subscribe, pause, resume, makeStreamStatusSelector, makeStreamDataSelector } from "./streamsSlice"
 
 export type SubscriptionOptions = {
-    showOverlayIfEmpty: boolean
+    showOverlayIfEmpty?: boolean,
+    renderProgressWhileLoading?: boolean
 }
 
 export type RefHandle = {
@@ -15,7 +16,7 @@ export type RefHandle = {
 }
 
 export type StreamProps = {
-    useAutomatedStreamPausing: boolean
+    useAutomatedStreamPausing?: boolean
 }
 
 const useStyles = makeStyles(theme => ({
@@ -99,25 +100,27 @@ function withStreamSubscription(
             }
         }), [dispatch, streamArgs])
 
-        if (status === "flowing") {
-            if (!data || (data.length === 0 && options?.showOverlayIfEmpty !== false)) {
-                return (
-                    <Overlay
-                        overlay={(
-                            <Typography variant="h6">No data available</Typography>
-                        )}
-                    >
-                        <Child data={[]} {...props} />
-                    </Overlay>
-                )
-            }
+        const isLoading = status === "idle" || status === "pending"
 
+        if (options?.renderProgressWhileLoading !== false && isLoading) {
+            return <CircularProgress />
+        }
+
+        if (!data || (data.length === 0 && options?.showOverlayIfEmpty !== false)) {
             return (
-                <Child data={data} {...props} />
+                <Overlay
+                    overlay={(
+                        <Typography variant="h6">No data available</Typography>
+                    )}
+                >
+                    <Child data={[]} isLoading={false} {...props} />
+                </Overlay>
             )
         }
 
-        return <CircularProgress />
+        return (
+            <Child data={data} isLoading={isLoading} {...props} />
+        )
     }
 
     return React.forwardRef<RefHandle, Props>(StreamWrapper)

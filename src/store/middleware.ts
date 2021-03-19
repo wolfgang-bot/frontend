@@ -8,6 +8,7 @@ import { fetchUser, initAPI, logout } from "../features/auth/authSlice"
 import { updateInstances } from "../features/moduleInstances/moduleInstancesSlice"
 import { makeStreamStatusSelector } from "../features/streams/streamsSlice"
 import api from "../api"
+import { updateGuilds } from "../features/guilds/guildsSlice"
 
 export const authMiddleware: Middleware = () => next => (action: PayloadAction<{
     token?: string
@@ -46,7 +47,7 @@ function getStreamStatus(args: API.StreamArgs) {
 export const streamControlMiddleware: Middleware = () => next => (action: PayloadAction<API.StreamArgs>) => {
     switch (action.type) {
         case "streams/subscribe":
-            if (getStreamStatus(action.payload) !== "flowing") {
+            if (getStreamStatus(action.payload) === "idle") {
                 api.ws.subscribeToStream(action.payload)
             }
             break
@@ -84,7 +85,11 @@ export const streamDataMiddleware: Middleware = () => next => (action: PayloadAc
                     guildId: action.payload.args.guildId!,
                     data: action.payload.data
                 }))
-                return
+                break
+
+            case "user-guilds":
+                store.dispatch(updateGuilds(action.payload.data))
+                break
         }
     }
 

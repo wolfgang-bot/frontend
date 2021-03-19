@@ -2,12 +2,19 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 import { API } from "../../config/types"
 import { RootState } from "../../store"
-import { fetchGuilds } from "../guilds/guildsSlice"
+import { updateGuilds } from "../guilds/guildsSlice"
 
 type StreamsMap = Partial<Record<API.EVENT_STREAM, API.Stream<any>>>
 type SliceState = {
-    guilds: Record<string, StreamsMap>,
+    guild: Record<string, StreamsMap>,
+    user: StreamsMap,
     admin: StreamsMap
+}
+
+const STREAM_GROUPS: Record<keyof SliceState, API.EVENT_STREAM[]> = {
+    user: ["user-guilds"],
+    guild: ["guild-module-instances", "members", "messages", "voice"],
+    admin: ["guilds", "users", "module-instances"]
 }
 
 function createStreamState<T>(type: API.EVENT_STREAM): API.Stream<T> {
@@ -15,6 +22,12 @@ function createStreamState<T>(type: API.EVENT_STREAM): API.Stream<T> {
         type,
         status: "idle",
         data: []
+    }
+}
+
+function createInitialUserState(): StreamsMap {
+    return {
+        "user-guilds": createStreamState<API.Guild>("user-guilds")
     }
 }
 
@@ -37,19 +50,34 @@ function createInitialAdminState(): StreamsMap {
 
 const initialState: SliceState = {
     admin: createInitialAdminState(),
-    guilds: {}
+    user: createInitialUserState(),
+    guild: {}
 }
 
 function getStreamStore(state: SliceState, args: API.StreamArgs) {
-    if (!args.guildId) {
-        return state.admin
+    const groups = Object.keys(STREAM_GROUPS) as (keyof SliceState)[]
+
+    const group = groups.find(group =>
+        STREAM_GROUPS[group].includes(args.eventStream)
+    )
+
+    if (group) {
+        if (group === "guild") {
+            if (!args.guildId) {
+                throw new Error(`Missing guild-id for stream: ${args.eventStream}`)
+            }
+
+            return state[group][args.guildId]
+        }
+
+        return state[group]
     }
 
-    return state.guilds[args.guildId]
+    throw new Error(`Uncategorized stream: ${args.eventStream}`)
 }
 
 function getStream(state: SliceState, args: API.StreamArgs) {
-    return getStreamStore(state, args)[args.eventStream]
+    return getStreamStore(state, args)?.[args.eventStream]
 }
 
 const streamsSlice = createSlice({
@@ -59,15 +87,15 @@ const streamsSlice = createSlice({
         subscribe: (state, action: PayloadAction<API.StreamArgs>) => {
             const newStreamState: API.Stream<any> = {
                 type: action.payload.eventStream,
-                status: "flowing",
+                status: "pending",
                 data: []
             }
 
             if (
                 action.payload.guildId &&
-                !state.guilds[action.payload.guildId]
+                !state.guild[action.payload.guildId]
             ) {
-                state.guilds[action.payload.guildId] = createInitialGuildState()
+                state.guild[action.payload.guildId] = createInitialGuildState()
             }
 
             getStreamStore(state, action.payload)[action.payload.eventStream] = newStreamState
@@ -97,15 +125,19 @@ const streamsSlice = createSlice({
         }>) => {
             const stream = getStream(state, action.payload.args)
             if (stream) {
+                if (stream.status === "pending") {
+                    stream.status = "flowing"
+                }
+                
                 stream.data = action.payload.data
             }
         }
     },
     extraReducers: {
-        [fetchGuilds.fulfilled.toString()]: (state, action: PayloadAction<API.Guild[]>) => {
+        [updateGuilds.toString()]: (state, action: PayloadAction<API.Guild[]>) => {
             action.payload.forEach(guild => {
-                if (!state.guilds[guild.id]) {
-                    state.guilds[guild.id] = createInitialGuildState()
+                if (!state.guild[guild.id]) {
+                    state.guild[guild.id] = createInitialGuildState()
                 }
             })
         }

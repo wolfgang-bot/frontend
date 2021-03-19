@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 import { API, INSTANCE_STATES, ReduxAPIState } from "../../config/types"
 import { ThunkExtraArgument } from "../../store"
-import { fetchGuilds } from "../guilds/guildsSlice"
+import { updateGuilds } from "../guilds/guildsSlice"
 
 type GuildState = ReduxAPIState<Record<string, API.ModuleInstance>>
 
@@ -62,10 +62,7 @@ const moduleInstancesSlice = createSlice({
         }
     },
     extraReducers: {
-        /**
-         * Thunk: moduleInstances/fetchGuilds 
-         */
-        [fetchGuilds.fulfilled.toString()]: (state, action: PayloadAction<API.Guild[]>) => {
+        [updateGuilds.toString()]: (state, action: PayloadAction<API.Guild[]>) => {
             action.payload.forEach(guild => {
                 if (!state.guilds[guild.id]) {
                     state.guilds[guild.id] = makeInitialGuildState()
@@ -73,9 +70,6 @@ const moduleInstancesSlice = createSlice({
             })
         },
 
-        /**
-         * Thunk: moduleInstances/updateConfig
-         */
         [updateConfig.fulfilled.toString()]: (state, action: any) => {
             const guild = state.guilds[action.meta.arg.guildId]
             const instance = guild.data[action.meta.arg.moduleKey]
