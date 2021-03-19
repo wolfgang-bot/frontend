@@ -3,7 +3,7 @@ import { PayloadAction } from "@reduxjs/toolkit"
 
 import store from "./index"
 import { API } from "../config/types"
-import { API_TOKEN_STORAGE_KEY, LOCAL_STORAGE_REDUX_SETTINGS_KEY } from "../config/constants"
+import { LOCAL_STORAGE_TOKEN_KEY, LOCAL_STORAGE_REDUX_SETTINGS_KEY } from "../config/constants"
 import { fetchUser, initAPI, logout } from "../features/auth/authSlice"
 import { updateInstances } from "../features/moduleInstances/moduleInstancesSlice"
 import { makeStreamStatusSelector } from "../features/streams/streamsSlice"
@@ -16,13 +16,13 @@ export const authMiddleware: Middleware = () => next => (action: PayloadAction<{
     switch (action.type) {
         case "auth/login":
             if (action.payload.token) {
-                localStorage.setItem(API_TOKEN_STORAGE_KEY, action.payload.token)
+                localStorage.setItem(LOCAL_STORAGE_TOKEN_KEY, action.payload.token)
                 store.dispatch(initAPI({ token: action.payload.token }))
             }
             break
 
         case "auth/logout":
-            localStorage.removeItem(API_TOKEN_STORAGE_KEY)
+            localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY)
             break
 
         case "auth/initAPI":

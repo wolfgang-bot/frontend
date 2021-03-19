@@ -4,7 +4,8 @@ import { API, ReduxAPIState } from "../../config/types"
 import { ThunkExtraArgument } from "../../store"
 
 const initialState: ReduxAPIState<{
-    user?: API.User
+    user?: API.User,
+    token?: string
 }> = {
     data: {},
     status: "idle"
@@ -28,15 +29,17 @@ const authSlice = createSlice({
             token: string
         }>) => {
             state.data.user = action.payload.user
+            state.data.token = action.payload.token
         },
         logout: (state) => {
-            state.data.user = undefined
+            state.data = {}
             state.status = "idle"
         },
         initAPI: (state, action: PayloadAction<{
-            token?: string | null
+            token: string
         }>) => {
             state.status = "pending"
+            state.data.token = action.payload.token
         }
     },
     extraReducers: {
