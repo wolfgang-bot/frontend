@@ -1,14 +1,15 @@
 import { useEffect, useRef } from "react"
 import { useTheme } from "@material-ui/core"
-import { createChart, ISeriesApi, IChartApi } from "lightweight-charts"
+import { createChart, ISeriesApi, IChartApi, CrosshairMode } from "lightweight-charts"
 
 import { API } from "../../config/types"
 import { insertThemeIntoSVDataset } from "./utils"
 import withStreamSubscription from "./withStreamSubscription"
 import withBarDataInSeconds from "./withBarDataInSeconds"
 
-function ModuleInstanceChart({ data, width, height = 300 }: {
+function ModuleInstanceChart({ data, hasMagnetCursor, width, height = 300 }: {
     data: [API.OHLCDataset, API.SVDataset],
+    hasMagnetCursor?: boolean,
     width?: number,
     height?: number
 }) {
@@ -70,6 +71,20 @@ function ModuleInstanceChart({ data, width, height = 300 }: {
             }
         })
     }, [theme])
+
+    useEffect(() => {
+        if (!chartRef.current) {
+            return
+        }
+
+        chartRef.current.applyOptions({
+            crosshair: {
+                mode: hasMagnetCursor ?
+                    CrosshairMode.Magnet :
+                    CrosshairMode.Normal
+            }
+        })
+    }, [hasMagnetCursor])
 
     return (
         <div ref={containerRef} />

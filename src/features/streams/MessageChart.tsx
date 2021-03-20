@@ -1,13 +1,14 @@
 import React, { useEffect, useRef } from "react"
 import { useTheme } from "@material-ui/core"
-import { createChart, ISeriesApi, IChartApi } from "lightweight-charts"
+import { createChart, ISeriesApi, IChartApi, CrosshairMode } from "lightweight-charts"
 
 import withStreamSubscription from "./withStreamSubscription"
 import withBarDataInSeconds from "./withBarDataInSeconds"
 import { API } from "../../config/types"
 
-function MessageChart({ data, width, height = 300 }: {
+function MessageChart({ data, hasMagnetCursor, width, height = 300 }: {
     data: API.SVDataset,
+    hasMagnetCursor?: boolean,
     width?: number,
     height?: number
 }) {
@@ -56,6 +57,20 @@ function MessageChart({ data, width, height = 300 }: {
             }
         })
     }, [theme])
+
+    useEffect(() => {
+        if (!chartRef.current) {
+            return
+        }
+
+        chartRef.current.applyOptions({
+            crosshair: {
+                mode: hasMagnetCursor ?
+                    CrosshairMode.Magnet :
+                    CrosshairMode.Normal
+            }
+        })
+    }, [hasMagnetCursor])
 
     return (
         <div ref={containerRef} />
