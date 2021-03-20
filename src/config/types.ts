@@ -28,6 +28,12 @@ export enum EVENT_TYPES {
     VOICECHANNEL_LEAVE
 }
 
+export enum GUILD_STATUS {
+    INACTIVE,
+    PENDING,
+    ACTIVE
+}
+
 export declare namespace Discord {
     export type Channel = {
         id: string,
@@ -85,7 +91,7 @@ export declare namespace API {
         name: string,
         icon?: string,
         icon_animated: string,
-        isActive?: boolean,
+        status?: GUILD_STATUS,
         owner: boolean,
         permissions: number,
         channels: ReduxAPIState<Record<string, Discord.GuildChannel>>,

@@ -2,12 +2,11 @@ import React, { useState } from "react"
 import { useHistory } from "react-router-dom"
 import { Box, Card, CardActionArea, CardHeader, Typography } from "@material-ui/core"
 import Skeleton from "@material-ui/lab/Skeleton"
-import InactiveIcon from "@material-ui/icons/Close"
-import ActiveIcon from "@material-ui/icons/Check"
 
-import { API } from "../../config/types"
+import { API, GUILD_STATUS } from "../../config/types"
 import GuildIcon from "../../components/Discord/GuildIcon"
 import { DISCORD_BOT_INVITE_URL } from "../../config/constants"
+import GuildStatus from "./GuildStatus"
 
 function GuildCard({ guild, className }: {
     guild: API.Guild,
@@ -18,13 +17,13 @@ function GuildCard({ guild, className }: {
     const [isMouseOver, setIsMouseOver] = useState(false)
 
     const handleClick = () => {
-        if (!guild.isActive) {
+        if (guild.status === GUILD_STATUS.INACTIVE) {
             window.open(
                 `${DISCORD_BOT_INVITE_URL}&guild_id=${guild.id}`,
                 "_blank",
                 "noopener,noreferrer"
             )
-        } else {
+        } else if (guild.status === GUILD_STATUS.ACTIVE) {
             history.push("/dashboard/" + guild.id)
         }
     }
@@ -36,7 +35,10 @@ function GuildCard({ guild, className }: {
             onMouseEnter={() => setIsMouseOver(true)}
             onMouseLeave={() => setIsMouseOver(false)}
         >
-            <CardActionArea onClick={handleClick}>
+            <CardActionArea
+                onClick={handleClick}
+                disabled={guild.status === GUILD_STATUS.PENDING}
+            >
                 <Box
                     display="flex"
                     justifyContent="space-between"
@@ -58,11 +60,7 @@ function GuildCard({ guild, className }: {
                     />
 
                     <Box mr={2}>
-                        {
-                            !guild.isActive ?
-                            <InactiveIcon/> :
-                            <ActiveIcon/>
-                        }
+                        <GuildStatus guild={guild}/>
                     </Box>
                 </Box>
             </CardActionArea>

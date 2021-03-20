@@ -5,7 +5,7 @@ import { Tabs } from "@material-ui/core"
 import DashboardPageSkeleton from "./DashboardPageSkeleton"
 import TabsRouter from "./TabsRouter"
 import Layout from "../../components/Layout/Layout"
-import { API } from "../../config/types"
+import { API, GUILD_STATUS } from "../../config/types"
 import withStreamSubscription from "../../features/streams/withStreamSubscription"
 
 function DashboardPage({ data, isLoading }: {
@@ -17,7 +17,7 @@ function DashboardPage({ data, isLoading }: {
     const guild = data && data.find(guild => guild.id === guildId)
 
     if (!isLoading) {
-        if (!guild?.isActive) {
+        if (!guild || guild.status !== GUILD_STATUS.ACTIVE) {
             return <Redirect to="/not-found" />
         }
 
