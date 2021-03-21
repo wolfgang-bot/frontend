@@ -9,9 +9,7 @@ import ChartCard from "../../components/Styled/ChartCard"
 import GuildCount, { GuildTrend } from "../../features/streams/GuildCount"
 import UserCount, { UserTrend } from "../../features/streams/UserCount"
 import ModuleInstanceCount, { ModuleInstanceTrend } from "../../features/streams/ModuleInstanceCount"
-import GuildChart from "../../features/streams/GuildChart"
-import UserChart from "../../features/streams/UserChart"
-import ModuleInstanceChart from "../../features/streams/ModuleInstanceChart"
+import { GuildChart, UserChart, ModuleInstanceChart } from "../../features/streams/charts"
 
 function AdminPage() {
     return (

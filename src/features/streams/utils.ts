@@ -35,6 +35,28 @@ export function isOHLCDataObject(
     return typeof dataObject === "object" && "close" in dataObject
 }
 
+export function isOHLCDataset(dataset: API.Dataset): dataset is API.OHLCDataset {
+    return isOHLCDataObject(dataset[0])
+}
+
+export function isSVDataset(dataset: API.Dataset): dataset is API.SVDataset {
+    return isSVDataObject(dataset[0])
+}
+
+export function isSVDatasetWithUpDown(dataset: API.Dataset) {
+    return isSVDataset(dataset) && dataset.some(dataObject => (
+        isSVDataObject(dataObject) ?
+            (dataObject.up || dataObject.down) :
+            false
+    ))
+}
+
+export function isMultiDataset(
+    dataset: API.Dataset | API.Dataset[]
+): dataset is API.Dataset[] {
+    return Array.isArray(dataset[0])
+}
+
 export type SVDataObjectWithColor = API.SVDataObject & { color: string }
 
 export function insertThemeIntoSVDataset(
@@ -98,4 +120,21 @@ export function getTrendFromSVDataset(dataset: API.SVDataset) {
     }
 
     return (currentDataObject.value - yesterdayDataOject.value) / yesterdayDataOject.value
+}
+
+export function msToUNIX(ms: number) {
+    return Math.floor(ms / 1000)
+}
+
+export function datasetWithTheme(dataset: API.Dataset, theme: Theme) {
+    return isSVDatasetWithUpDown(dataset) ?
+        insertThemeIntoSVDataset(dataset, theme) :
+        dataset
+}
+
+export function datasetWithUNIX(data: API.Dataset) {
+    return data.map((dataObject: API.EmptyDataObject) => ({
+        ...dataObject,
+        time: msToUNIX(dataObject.time as number)
+    })) as API.Dataset
 }

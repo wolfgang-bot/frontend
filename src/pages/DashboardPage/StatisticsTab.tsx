@@ -6,10 +6,7 @@ import { TabProps } from "./TabsRouter"
 
 import { SubscriptionOptions } from "../../features/streams/withStreamSubscription"
 import ChartCard from "../../components/Styled/ChartCard"
-
-import MemberChart from "../../features/streams/MemberChart"
-import MessageChart from "../../features/streams/MessageChart"
-import VoiceDurationChart from "../../features/streams/VoiceDurationChart"
+import { MemberChart, MessageChart, VoiceDurationChart } from "../../features/streams/charts"
 
 function StatisticsTab({ guild, getStreamRef, onClearStreamRefs }: TabProps) {
     const streamProps: Record<string, any> & SubscriptionOptions = {

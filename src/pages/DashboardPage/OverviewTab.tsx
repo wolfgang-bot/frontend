@@ -13,9 +13,7 @@ import MemberCount, { MemberTrend } from "../../features/streams/MemberCount"
 import MemberTrendAtDay, { MemberTrendAtDayTrend } from "../../features/streams/MemberTrendAtDay"
 import MessagesAtDay, { MessagesAtDayTrend } from "../../features/streams/MessagesAtDay"
 import VoiceDurationAtDay, { VoiceDurationAtDayTrend } from "../../features/streams/VoiceDurationAtDay"
-import MemberChart from "../../features/streams/MemberChart"
-import MessageChart from "../../features/streams/MessageChart"
-import VoiceDurationChart from "../../features/streams/VoiceDurationChart"
+import { MemberChart, MessageChart, VoiceDurationChart } from "../../features/streams/charts"
 
 function OverviewTab({ guild, getStreamRef, onClearStreamRefs }: TabProps) {
     const streamProps: Record<string, any> & SubscriptionOptions = {

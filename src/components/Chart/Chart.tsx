@@ -1,38 +1,22 @@
 import { useEffect, useRef } from "react"
 import { Theme, useTheme } from "@material-ui/core"
-import { createChart, ISeriesApi, IChartApi, CrosshairMode, DeepPartial, ChartOptions } from "lightweight-charts"
+import {
+    createChart,
+    ISeriesApi,
+    IChartApi,
+    CrosshairMode,
+    DeepPartial,
+    ChartOptions
+} from "lightweight-charts"
 
 import { API } from "../../config/types"
-import { insertThemeIntoSVDataset, isOHLCDataObject, isSVDataObject } from "../../features/streams/utils"
-import { barDataWithUNIX as datasetWithUNIX } from "../../features/streams/withBarDataInSeconds"
-
-function isMultiDataset(
-    dataset: API.Dataset | API.Dataset[]
-): dataset is API.Dataset[] {
-    return Array.isArray(dataset[0])
-}
-
-function isOHLCDataset(dataset: API.Dataset): dataset is API.OHLCDataset {
-    return isOHLCDataObject(dataset[0])
-}
-
-function isSVDataset(dataset: API.Dataset): dataset is API.SVDataset {
-    return isSVDataObject(dataset[0])
-}
-
-function isSVDatasetWithUpDown(dataset: API.Dataset) {
-    return isSVDataset(dataset) && dataset.some(dataObject => (
-        isSVDataObject(dataObject) ?
-            (dataObject.up || dataObject.down) :
-            false
-    ))
-}
-
-function datasetWithTheme(dataset: API.Dataset, theme: Theme) {
-    return isSVDatasetWithUpDown(dataset) ?
-        insertThemeIntoSVDataset(dataset, theme) :
-        dataset
-}
+import {
+    isMultiDataset,
+    datasetWithTheme,
+    datasetWithUNIX,
+    isOHLCDataset,
+    isSVDataset
+} from "../../features/streams/utils"
 
 function transformDataset(dataset: API.Dataset | API.Dataset[], { theme }: {
     theme: Theme
