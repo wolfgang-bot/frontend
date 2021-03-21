@@ -138,3 +138,9 @@ export function datasetWithUNIX(data: API.Dataset) {
         time: msToUNIX(dataObject.time as number)
     })) as API.Dataset
 }
+
+export function isEmptyDataset(dataset: API.Dataset | API.Dataset[]) {
+    return !isMultiDataset(dataset) ?
+        dataset.length === 0 :
+        dataset[0].length === 0
+}

@@ -28,6 +28,10 @@ function transformDataset(dataset: API.Dataset | API.Dataset[], { theme }: {
 }
 
 function addSeriesFromDataset(chart: IChartApi, dataset: API.Dataset) {
+    if (dataset.length === 0) {
+        return null
+    }
+
     if (isOHLCDataset(dataset)) {
         return chart.addCandlestickSeries()
     }
@@ -49,13 +53,17 @@ function Chart({ data, width, height = 300, hasMagnetCursor, chartOptions = {} }
     const theme = useTheme()
 
     const containerRef = useRef<HTMLDivElement>(null)
-    const seriesRefs = useRef<ISeriesApi<any>[]>([])
+    const seriesRefs = useRef<(ISeriesApi<any> | null)[]>([])
     const chartRef = useRef<IChartApi>()
 
     useEffect(() => {
         const datasets = transformDataset(data, { theme })
 
         seriesRefs.current.forEach((series, i) => {
+            if (!series) {
+                return
+            }
+            
             const dataset = datasets[i]
             series.update(dataset[dataset.length - 1])
         })
@@ -82,7 +90,9 @@ function Chart({ data, width, height = 300, hasMagnetCursor, chartOptions = {} }
         datasets.forEach((dataset, i) => {
             const series = addSeriesFromDataset(chartRef.current!, dataset)
             seriesRefs.current[i] = series
-            series.setData(dataset)
+            if (series) {
+                series.setData(dataset)
+            }
         })
 
         // eslint-disable-next-line

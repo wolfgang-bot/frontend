@@ -4,7 +4,14 @@ import { CircularProgress, Typography } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 
 import { API } from "../../config/types"
-import { subscribe, pause, resume, makeStreamStatusSelector, makeStreamDataSelector } from "./streamsSlice"
+import {
+    subscribe,
+    pause,
+    resume,
+    makeStreamStatusSelector,
+    makeStreamDataSelector
+} from "./streamsSlice"
+import { isEmptyDataset } from "./utils"
 
 export type SubscriptionOptions = {
     showOverlayIfEmpty?: boolean,
@@ -108,7 +115,7 @@ function withStreamSubscription(
             return <CircularProgress />
         }
 
-        if (!data || (data.length === 0 && options?.showOverlayIfEmpty !== false)) {
+        if (!data || (isEmptyDataset(data) && options?.showOverlayIfEmpty !== false)) {
             return (
                 <Overlay
                     overlay={(
