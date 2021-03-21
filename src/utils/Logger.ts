@@ -1,5 +1,5 @@
 class Logger {
-    static info = (...args: any[]) => {}
+    static info = console.log
     static error = console.error
 
     static debug(...args: any[]) {
