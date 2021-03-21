@@ -4,11 +4,11 @@ export type Options = {
     multiDataset?: boolean
 }
 
-function msToUNIX(ms: number) {
+export function msToUNIX(ms: number) {
     return Math.floor(ms / 1000)
 }
 
-function barDataWithUNIX(data: API.Dataset) {
+export function barDataWithUNIX(data: API.Dataset) {
     return data.map((dataObject: API.EmptyDataObject) => ({
         ...dataObject,
         time: msToUNIX(dataObject.time as number)

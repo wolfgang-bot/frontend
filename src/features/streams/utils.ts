@@ -35,7 +35,12 @@ export function isOHLCDataObject(
     return typeof dataObject === "object" && "close" in dataObject
 }
 
-export function insertThemeIntoSVDataset(dataset: API.SVDataset, theme: Theme) {
+export type SVDataObjectWithColor = API.SVDataObject & { color: string }
+
+export function insertThemeIntoSVDataset(
+    dataset: API.SVDataset,
+    theme: Theme
+): (SVDataObjectWithColor | API.EmptyDataObject)[] {
     return dataset.map(dataObject => {
         if (!isSVDataObject(dataObject)) {
             return dataObject
@@ -48,7 +53,7 @@ export function insertThemeIntoSVDataset(dataset: API.SVDataset, theme: Theme) {
             color: trend === -1 ?
                 theme.palette.error.main :
                 theme.palette.success.main
-        }
+        } as SVDataObjectWithColor
     })
 }
 
