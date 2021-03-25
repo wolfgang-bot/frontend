@@ -13,7 +13,7 @@ function RoleInput({ arg, guild, className }: {
     guild: API.Guild,
     className?: string
 }) {
-    const { control } = useFormContext()
+    const { control, errors } = useFormContext()
 
     const dispatch = useDispatch()
 
@@ -33,8 +33,11 @@ function RoleInput({ arg, guild, className }: {
         const roles = Object.values(data)
             .sort((a, b) => a.rawPosition - b.rawPosition)
 
+        const hasError = arg.key in errors
+        const helperText = hasError ? errors[arg.key]?.message : arg.desc
+
         return (
-            <FormControl className={className} fullWidth>
+            <FormControl className={className} fullWidth error={hasError}>
                 <InputLabel id={arg.key}>{arg.name}</InputLabel>
 
                 <Controller
@@ -52,7 +55,7 @@ function RoleInput({ arg, guild, className }: {
                     }
                 />
 
-                <FormHelperText>{arg.desc}</FormHelperText>
+                <FormHelperText>{helperText}</FormHelperText>
             </FormControl>
         )
     }

@@ -9,7 +9,7 @@ function BooleanInput({ arg, guild, className }: {
     guild: API.Guild,
     className?: string
 }) {
-    const { control } = useFormContext()
+    const { control, errors } = useFormContext()
 
     const makeChangeListener = (
         onChange: (...event: any[]) => void
@@ -19,12 +19,17 @@ function BooleanInput({ arg, guild, className }: {
         }
     }
 
+    const hasError = arg.key in errors
+    const helperText = hasError ? errors[arg.key]?.message : arg.desc
+
     return (
         <FormControlLabel
             control={
                 <Controller
                     control={control}
                     name={arg.key}
+                    error={hasError}
+                    helperText={helperText}
                     render={({ onChange, onBlur, value, name, ref }) => (
                         <Checkbox
                             onChange={makeChangeListener(onChange)}

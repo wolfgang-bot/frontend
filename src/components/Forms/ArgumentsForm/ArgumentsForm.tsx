@@ -5,7 +5,8 @@ import { API } from "../../../config/types"
 import ArgumentInput from "./ArgumentInput"
 
 export type RefHandle = {
-    getValues: () => Record<string, any>
+    getValues: () => Record<string, any>,
+    setErrors: (errors: Record<string, string>) => void
 }
 
 type Props = {
@@ -39,8 +40,13 @@ function ArgumentsForm({ args, guild, currentConfig }: Props, ref?: ForwardedRef
     ), [args, guild])
 
     useImperativeHandle(ref, () => ({
-        getValues: form.getValues
-    }), [form.getValues])
+        getValues: form.getValues,
+        setErrors: (errors) => {
+            Object.entries(errors).forEach(([key, message]) => {
+                form.setError(key, { message })
+            })
+        }
+    }), [form])
 
     return (
         <FormProvider {...form}>

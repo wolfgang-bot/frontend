@@ -9,14 +9,17 @@ function SelectInput({ arg, guild, className }: {
     guild: API.Guild,
     className?: string
 }) {
-    const { control } = useFormContext()
+    const { control, errors } = useFormContext()
 
     if (!arg.selectOptions) {
         throw new Error(`Missing property 'selectOptions' in argument '${arg.key}'`)
     }
 
+    const hasError = arg.key in errors
+    const helperText = hasError ? errors[arg.key]?.message : arg.desc
+
     return (
-        <FormControl className={className} fullWidth>
+        <FormControl className={className} fullWidth error={hasError}>
             <InputLabel id={arg.key}>{arg.name}</InputLabel>
 
             <Controller
@@ -34,7 +37,7 @@ function SelectInput({ arg, guild, className }: {
                 }
             />
 
-            <FormHelperText>{arg.desc}</FormHelperText>
+            <FormHelperText>{helperText}</FormHelperText>
         </FormControl>
     )
 }

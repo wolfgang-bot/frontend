@@ -23,7 +23,7 @@ function ArrayInput({ arg, guild, inputComponent, className }: {
         )
     }, [arg.defaultValue])
 
-    const { register, setValue } = useFormContext()
+    const { register, setValue, errors } = useFormContext()
 
     const form = useForm({ defaultValues })
 
@@ -58,10 +58,13 @@ function ArrayInput({ arg, guild, inputComponent, className }: {
         register(arg.key)
     }, [arg.key, register])
 
+    const hasError = arg.key in errors
+    const helperText = hasError ? errors[arg.key]?.message : arg.desc
+
     return (
         <FormProvider {...form}>
-            <InputLabel>{arg.name}</InputLabel>
-            <FormHelperText>{arg.desc}</FormHelperText>
+            <InputLabel error={hasError}>{arg.name}</InputLabel>
+            <FormHelperText error={hasError}>{helperText}</FormHelperText>
 
             {inputIds.map(id => (
                 <Box

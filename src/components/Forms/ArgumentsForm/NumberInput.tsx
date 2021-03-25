@@ -9,7 +9,10 @@ function NumberInput({ arg, guild, className }: {
     guild: API.Guild,
     className?: string
 }) {
-    const { register } = useFormContext()
+    const { register, errors } = useFormContext()
+
+    const hasError = arg.key in errors
+    const helperText = hasError ? errors[arg.key]?.message : arg.desc
 
     return (
         <TextField
@@ -18,8 +21,9 @@ function NumberInput({ arg, guild, className }: {
             name={arg.key}
             label={arg.name}
             inputRef={register()}
-            helperText={arg.desc}
+            helperText={helperText}
             className={className}
+            error={hasError}
         />
     )
 }

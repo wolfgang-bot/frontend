@@ -14,7 +14,7 @@ function ChannelInput({ arg, guild, className, channelType }: {
     className?: string,
     channelType: string
 }) {
-    const { control } = useFormContext()
+    const { control, errors } = useFormContext()
 
     const dispatch = useDispatch()
 
@@ -35,8 +35,11 @@ function ChannelInput({ arg, guild, className, channelType }: {
             .filter(channel => channel.type === channelType)
             .sort((a, b) => a.rawPosition - b.rawPosition)
 
+        const hasError = arg.key in errors
+        const helperText = hasError ? errors[arg.key]?.message : arg.desc
+
         return (
-            <FormControl className={className} fullWidth>
+            <FormControl className={className} fullWidth error={hasError}>
                 <InputLabel id={arg.key}>{arg.name}</InputLabel>
 
                 <Controller
@@ -54,7 +57,7 @@ function ChannelInput({ arg, guild, className, channelType }: {
                     }
                 />
 
-                <FormHelperText>{ arg.desc }</FormHelperText>
+                <FormHelperText>{helperText}</FormHelperText>
             </FormControl>
         )
     }

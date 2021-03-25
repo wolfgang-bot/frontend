@@ -8,6 +8,7 @@ import ArgumentsForm, { RefHandle } from "../Forms/ArgumentsForm/ArgumentsForm"
 import { updateConfig as updateConfigAction } from "../../features/moduleInstances/moduleInstancesSlice"
 import Logger from "../../utils/Logger"
 import opener from "../ComponentOpener"
+import api from "../../api"
 
 function GuildSettingsDialog({ open, onClose, guild }: {
     open: boolean,
@@ -21,7 +22,25 @@ function GuildSettingsDialog({ open, onClose, guild }: {
 
     const argsFormRef = useRef<RefHandle>(null)
 
+    const validateArguments = async (args: Record<string, any>) => {
+        try {
+            await api.ws.validateArguments({
+                moduleKey: "settings",
+                args
+            })
+        } catch (error) {
+            return error.message
+        }
+    }
+
     const updateConfig = async (config: object) => {
+        const validationError = await validateArguments(config)
+
+        if (validationError) {
+            argsFormRef.current?.setErrors(validationError)
+            return
+        }
+        
         const resultAction = await dispatch(updateConfigAction({
             guildId: guild.id,
             moduleKey: module.key,

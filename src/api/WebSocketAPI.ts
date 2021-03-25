@@ -58,7 +58,7 @@ class WebSocketAPI {
                 )
 
                 if (res.status === "error") {
-                    opener.openSnackbar(`Error: ${res.message}`, "error")
+                    this.handleError(res)
                     reject(res)
                 } else if (res.status === "ok") {
                     resolve(res)
@@ -67,6 +67,13 @@ class WebSocketAPI {
                 }
             })
         })
+    }
+
+    handleError(res: API.Response<any>) {
+        const errorMessage = typeof res.message === "string" ?
+            `Error: ${res.message}` :
+            "Error"
+        opener.openSnackbar(errorMessage, "error")
     }
 
     /**
@@ -103,6 +110,13 @@ class WebSocketAPI {
      */
     getModuleInstances(args: { guildId: string }) {
         return this.fetch<API.ModuleInstance[]>("get:module-instances", args)
+    }
+
+    /**
+     * @fires post:modules/validate-args
+     */
+    validateArguments(args: { moduleKey: string, args: Record<string, any> }) {
+        return this.fetch("post:modules/validate-args", args)
     }
 
     /**
