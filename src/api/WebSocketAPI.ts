@@ -30,7 +30,8 @@ class WebSocketAPI {
         this.socket = io(this.endpoint, {
             auth: {
                 token
-            }
+            },
+            transports: ["websocket"]
         })
 
         await new Promise<void>((resolve, reject) => {
