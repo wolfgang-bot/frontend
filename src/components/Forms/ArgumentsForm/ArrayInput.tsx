@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from "react"
+import React, { useState, useEffect, useRef, useMemo, useContext } from "react"
 import { useFormContext, useForm, FormProvider } from "react-hook-form"
 import { Button, IconButton, Box, InputLabel, FormHelperText } from "@material-ui/core"
 import DeleteIcon from "@material-ui/icons/Close"
@@ -6,24 +6,28 @@ import AddIcon from "@material-ui/icons/Add"
 
 import { API } from "../../../config/types"
 import { ArgumentInputComponent } from "./ArgumentInput"
+import { DefaultValuesContext } from "./ArgumentsForm"
 
-function ArrayInput({ arg, guild, inputComponent, className }: {
+function ArrayInput({ arg, guild, inputComponent, className, disabled }: {
     arg: API.Argument,
     guild: API.Guild,
     inputComponent: ArgumentInputComponent,
-    className?: string
+    className?: string,
+    disabled?: boolean
 }) {
+    const defaultValuesContext = useContext(DefaultValuesContext)
+    
+    const { register, setValue, errors } = useFormContext()
+
     const defaultValues = useMemo(() => {
-        if (!arg.defaultValue) {
+        const defaultValues: any[] = defaultValuesContext[arg.key] || arg.defaultValue
+        
+        if (!defaultValues) {
             return {}
         }
 
-        return Object.fromEntries(
-            (arg.defaultValue as any[]).map((value, i) => [i, value])
-        )
-    }, [arg.defaultValue])
-
-    const { register, setValue, errors } = useFormContext()
+        return Object.fromEntries(defaultValues.map((value, i) => [i, value]))
+    }, [arg.defaultValue, arg.key])
 
     const form = useForm({ defaultValues })
 
@@ -61,10 +65,12 @@ function ArrayInput({ arg, guild, inputComponent, className }: {
     const hasError = arg.key in errors
     const helperText = hasError ? errors[arg.key]?.message : arg.desc
 
+    const formControlProps = { error: hasError, disabled }
+
     return (
         <FormProvider {...form}>
-            <InputLabel error={hasError}>{arg.name}</InputLabel>
-            <FormHelperText error={hasError}>{helperText}</FormHelperText>
+            <InputLabel {...formControlProps}>{arg.name}</InputLabel>
+            <FormHelperText {...formControlProps}>{helperText}</FormHelperText>
 
             {inputIds.map(id => (
                 <Box
@@ -81,12 +87,17 @@ function ArrayInput({ arg, guild, inputComponent, className }: {
                                 desc: "",
                                 name: ""
                             },
-                            guild
+                            guild,
+                            disabled
                         })}
                     </Box>
 
                     {inputIds.length > 1 && (
-                        <IconButton onClick={() => handleInputRemove(id)} size="small">
+                        <IconButton
+                            onClick={() => handleInputRemove(id)}
+                            size="small"
+                            disabled={disabled}
+                        >
                             <DeleteIcon />
                         </IconButton>
                     )}
@@ -98,6 +109,7 @@ function ArrayInput({ arg, guild, inputComponent, className }: {
                     onClick={handleInputAdd}
                     variant="outlined"
                     startIcon={<AddIcon/>}
+                    disabled={disabled}
                 >
                     Add
                 </Button>

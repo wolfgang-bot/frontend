@@ -12,8 +12,11 @@ export type RefHandle = {
 type Props = {
     args: API.Argument[],
     guild: API.Guild,
-    currentConfig?: Record<string, any>
+    currentConfig?: Record<string, any>,
+    disabled?: boolean
 }
+
+export const DefaultValuesContext = React.createContext<Record<string, any>>({})
 
 function getDefaultValues(args: API.Argument[], config?: Record<string, any>) {
     return Object.fromEntries(
@@ -28,16 +31,24 @@ function getDefaultValues(args: API.Argument[], config?: Record<string, any>) {
     )
 }
 
-function ArgumentsForm({ args, guild, currentConfig }: Props, ref?: ForwardedRef<RefHandle>) {
-    const form = useForm({
-        defaultValues: getDefaultValues(args, currentConfig)
-    })
+function ArgumentsForm(
+    { args, guild, currentConfig, disabled }: Props,
+    ref?: ForwardedRef<RefHandle>
+) {
+    const defaultValues = getDefaultValues(args, currentConfig)
+
+    const form = useForm({ defaultValues })
 
     const inputs = useMemo(() => (
         args.map(arg => (
-            <ArgumentInput arg={arg} guild={guild} key={arg.key} />
+            <ArgumentInput
+                arg={arg}
+                guild={guild}
+                key={arg.key}
+                disabled={disabled}
+            />
         )) 
-    ), [args, guild])
+    ), [args, guild, disabled])
 
     useImperativeHandle(ref, () => ({
         getValues: form.getValues,
@@ -50,7 +61,9 @@ function ArgumentsForm({ args, guild, currentConfig }: Props, ref?: ForwardedRef
 
     return (
         <FormProvider {...form}>
-            {inputs}
+            <DefaultValuesContext.Provider value={defaultValues}>
+                {inputs}                
+            </DefaultValuesContext.Provider>
         </FormProvider>
     )
 }
