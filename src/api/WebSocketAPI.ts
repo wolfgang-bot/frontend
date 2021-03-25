@@ -115,7 +115,7 @@ class WebSocketAPI {
     /**
      * @fires post:modules/validate-args
      */
-    validateArguments(args: { moduleKey: string, args: Record<string, any> }) {
+    validateArguments(args: { guildId: string, moduleKey: string, args: Record<string, any> }) {
         return this.fetch("post:modules/validate-args", args)
     }
 

@@ -4,10 +4,11 @@ import { TextField } from "@material-ui/core"
 
 import { API } from "../../../config/types"
 
-function StringInput({ arg, guild, className }: {
+function StringInput({ arg, guild, className, disabled }: {
     arg: API.Argument,
     guild: API.Guild,
-    className?: string
+    className?: string,
+    disabled?: boolean
 }) {
     const { register, errors } = useFormContext()
 
@@ -23,6 +24,7 @@ function StringInput({ arg, guild, className }: {
             helperText={helperText}
             className={className}
             error={hasError}
+            disabled={disabled}
         />
     )
 }

@@ -4,10 +4,11 @@ import { FormControl, InputLabel, MenuItem, FormHelperText, Select } from "@mate
 
 import { API } from "../../../config/types"
 
-function SelectInput({ arg, guild, className }: {
+function SelectInput({ arg, guild, className, disabled }: {
     arg: API.Argument,
     guild: API.Guild,
-    className?: string
+    className?: string,
+    disabled?: boolean
 }) {
     const { control, errors } = useFormContext()
 
@@ -19,7 +20,12 @@ function SelectInput({ arg, guild, className }: {
     const helperText = hasError ? errors[arg.key]?.message : arg.desc
 
     return (
-        <FormControl className={className} fullWidth error={hasError}>
+        <FormControl
+            className={className}
+            fullWidth
+            error={hasError}
+            disabled={disabled}
+        >
             <InputLabel id={arg.key}>{arg.name}</InputLabel>
 
             <Controller

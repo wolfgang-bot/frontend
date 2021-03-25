@@ -4,10 +4,11 @@ import { FormControlLabel, Checkbox } from "@material-ui/core"
 
 import { API } from "../../../config/types"
 
-function BooleanInput({ arg, guild, className }: {
+function BooleanInput({ arg, guild, className, disabled }: {
     arg: API.Argument,
     guild: API.Guild,
-    className?: string
+    className?: string,
+    disabled?: boolean
 }) {
     const { control, errors } = useFormContext()
 
@@ -43,6 +44,7 @@ function BooleanInput({ arg, guild, className }: {
             }
             label={arg.desc}
             className={className}
+            disabled={disabled}
         />
     )
 }

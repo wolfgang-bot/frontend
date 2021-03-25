@@ -8,10 +8,11 @@ import { RootState } from "../../../store"
 import { fetchRoles } from "../../../features/guilds/guildsSlice"
 import { ChannelInputSkeleton } from "./ChannelInput"
 
-function RoleInput({ arg, guild, className }: {
+function RoleInput({ arg, guild, className, disabled }: {
     arg: API.Argument,
     guild: API.Guild,
-    className?: string
+    className?: string,
+    disabled?: boolean
 }) {
     const { control, errors } = useFormContext()
 
@@ -37,7 +38,12 @@ function RoleInput({ arg, guild, className }: {
         const helperText = hasError ? errors[arg.key]?.message : arg.desc
 
         return (
-            <FormControl className={className} fullWidth error={hasError}>
+            <FormControl
+                className={className}
+                fullWidth
+                error={hasError}
+                disabled={disabled}
+            >
                 <InputLabel id={arg.key}>{arg.name}</InputLabel>
 
                 <Controller

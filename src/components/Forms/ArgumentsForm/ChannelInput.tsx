@@ -8,11 +8,12 @@ import { API } from "../../../config/types"
 import { RootState } from "../../../store"
 import { fetchChannels } from "../../../features/guilds/guildsSlice"
 
-function ChannelInput({ arg, guild, className, channelType }: {
+function ChannelInput({ arg, guild, className, channelType, disabled }: {
     arg: API.Argument,
     guild: API.Guild,
     className?: string,
-    channelType: string
+    channelType: string,
+    disabled?: boolean
 }) {
     const { control, errors } = useFormContext()
 
@@ -39,7 +40,12 @@ function ChannelInput({ arg, guild, className, channelType }: {
         const helperText = hasError ? errors[arg.key]?.message : arg.desc
 
         return (
-            <FormControl className={className} fullWidth error={hasError}>
+            <FormControl
+                className={className}
+                fullWidth
+                error={hasError}
+                disabled={disabled}
+            >
                 <InputLabel id={arg.key}>{arg.name}</InputLabel>
 
                 <Controller

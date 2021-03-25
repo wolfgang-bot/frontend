@@ -46,7 +46,8 @@ const useStyles = makeStyles(theme => ({
 function ArgumentInput(props: {
     arg: API.Argument,
     guild: API.Guild,
-    className?: string
+    className?: string,
+    disabled?: boolean
 }) {
     const classes = useStyles()
 

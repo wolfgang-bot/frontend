@@ -25,6 +25,7 @@ function GuildSettingsDialog({ open, onClose, guild }: {
     const validateArguments = async (args: Record<string, any>) => {
         try {
             await api.ws.validateArguments({
+                guildId: guild.id,
                 moduleKey: "settings",
                 args
             })

@@ -16,6 +16,7 @@ function StartModuleDialog({ open, onClose, module, guild }: {
     const validateArgs = async (args: Record<string, any>) => {
         try {
             await api.ws.validateArguments({
+                guildId: guild.id,
                 moduleKey: module.key,
                 args
             })
