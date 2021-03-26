@@ -138,7 +138,8 @@ export declare namespace API {
         name: string,
         desc: string,
         defaultValue?: any,
-        selectOptions?: any[]
+        selectOptions?: any[],
+        allowEmptyArray?: boolean
     }
 
     export type GuildChannel = Discord.GuildChannel

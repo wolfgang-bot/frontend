@@ -7,6 +7,7 @@ import AddIcon from "@material-ui/icons/Add"
 import { API } from "../../../config/types"
 import { ArgumentInputComponent } from "./ArgumentInput"
 import { DefaultValuesContext } from "./ArgumentsForm"
+import { pick } from "../../../utils"
 
 function ArrayInput({ arg, guild, inputComponent, className, disabled }: {
     arg: API.Argument,
@@ -21,20 +22,24 @@ function ArrayInput({ arg, guild, inputComponent, className, disabled }: {
 
     const defaultValues = useMemo(() => {
         const defaultValues: any[] = defaultValuesContext[arg.key] || arg.defaultValue
-        
+
         if (!defaultValues) {
             return {}
         }
 
         return Object.fromEntries(defaultValues.map((value, i) => [i, value]))
-    }, [arg.defaultValue, arg.key])
+    }, [arg.defaultValue, arg.key, defaultValuesContext])
 
     const form = useForm({ defaultValues })
 
     const inputIdCounter = useRef(0)
-    const [inputIds, setInputIds] = useState(
-        Object.keys(defaultValues).map(() => inputIdCounter.current++)
+
+    const initialInputIds = useMemo(
+        () => Object.keys(defaultValues).map(() => inputIdCounter.current++),
+        [defaultValues]
     )
+
+    const [inputIds, setInputIds] = useState(initialInputIds)
 
     const handleInputAdd = () => {
         setInputIds([
@@ -52,7 +57,12 @@ function ArrayInput({ arg, guild, inputComponent, className, disabled }: {
     }
 
     useEffect(() => {
-        const newValuesArray = Object.values(form.watch())
+        /**
+         * An empty array as the form's value triggers the default-value, hence the
+         * form's value and the real value might be out of sync. (it's a workaround)
+         */
+        const values = pick(form.watch(), inputIds)
+        const newValuesArray = Object.values(values)
         setValue(arg.key, newValuesArray)
 
         // eslint-disable-next-line
@@ -92,7 +102,7 @@ function ArrayInput({ arg, guild, inputComponent, className, disabled }: {
                         })}
                     </Box>
 
-                    {inputIds.length > 1 && (
+                    {(arg.allowEmptyArray || inputIds.length > 1) && (
                         <IconButton
                             onClick={() => handleInputRemove(id)}
                             size="small"

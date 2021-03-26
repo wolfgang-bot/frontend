@@ -24,3 +24,12 @@ export async function copyToClipboard(text: string) {
         return false
     }
 }
+
+/**
+ * Pick a list of keys from an object
+ */
+export function pick<T extends Record<string, any>>(source: T, keys: (keyof T)[]) {
+    return Object.fromEntries(
+        keys.map(key => [key, source[key]])
+    )
+}
