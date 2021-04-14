@@ -1,11 +1,11 @@
 import React from "react"
 
-import StartModuleDialog from "./StartModuleDialog"
+import ModuleStartDialog from "./ModuleStartDialog"
 import GuildSettingsDialog from "./GuildSettingsDialog"
 import InstanceConfigDialog from "./InstanceConfigDialog"
 
 const dialogs: Record<string, React.FunctionComponent<any>> = {
-    StartModuleDialog,
+    ModuleStartDialog,
     GuildSettingsDialog,
     InstanceConfigDialog
 }

@@ -5,7 +5,7 @@ import { API } from "../../config/types"
 import ArgumentsForm, { RefHandle as ArgumentsRefHandle } from "../Forms/ArgumentsForm/ArgumentsForm"
 import api from "../../api"
 
-function StartModuleDialog({ open, onClose, module, guild }: {
+function ModuleStartDialog({ open, onClose, module, guild }: {
     open: boolean,
     onClose: (...args: any[]) => void,
     module: API.Module,
@@ -72,4 +72,4 @@ function StartModuleDialog({ open, onClose, module, guild }: {
     )
 }
 
-export default StartModuleDialog
+export default ModuleStartDialog

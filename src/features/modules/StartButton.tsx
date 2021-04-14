@@ -13,7 +13,7 @@ type Props = {
 
 function StartButton({ module, instance, guild, ...props }: Props) {
     const handleClick = async () => {
-        opener.openDialog("StartModuleDialog", { module, guild })
+        opener.openDialog("ModuleStartDialog", { module, guild })
     }
 
     return (
