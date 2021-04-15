@@ -38,6 +38,8 @@ function OAuthDiscord({ onClose }: { onClose: () => void }) {
         } else {
             onClose()
         }
+
+        // eslint-disable-next-line
     }, [])
 
     useEffect(() => {
