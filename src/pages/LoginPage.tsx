@@ -1,5 +1,5 @@
 import React from "react"
-import { Redirect, useLocation } from "react-router-dom"
+import { Redirect, useHistory, useLocation } from "react-router-dom"
 import { CircularProgress, Box, Typography } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 
@@ -17,6 +17,7 @@ const useStyles = makeStyles({
 
 function LoginPage() {
     const location = useLocation()
+    const history = useHistory()
 
     const classes = useStyles()
 
@@ -44,7 +45,7 @@ function LoginPage() {
 
     if (status === "idle") {
         child = (
-            <DiscordOAuth/>
+            <DiscordOAuth onClose={history.goBack}/>
         )
     }
 

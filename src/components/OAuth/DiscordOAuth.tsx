@@ -7,10 +7,22 @@ import { DISCORD_OAUTH_URL } from "../../config/constants"
 import format, { FORMATS } from "../../api/format"
 import { login } from "../../features/auth/authSlice"
 
-function OAuthDiscord() {
+function OAuthDiscord({ onClose }: { onClose: () => void }) {
     const dispatch = useDispatch()
 
     const popup = useRef<Window | null>()
+    const removeCloseListener = useRef<() => void | null>()
+
+    const addCloseListener = (popup: Window, callback: () => void) => {        
+        const interval = setInterval(() => {
+            if (popup.closed) {
+                clearInterval(interval)
+                callback()
+            }
+        }, 100)
+        
+        removeCloseListener.current = () => clearInterval(interval)
+    }
 
     useEffect(() => {
         const width = 1000
@@ -20,6 +32,12 @@ function OAuthDiscord() {
         const y = window.innerHeight / 2 - height / 2
 
         popup.current = window.open(DISCORD_OAUTH_URL, "Login with Discord", `width=${width},height=${height},left=${x},top=${y}`)
+
+        if (popup.current) {
+            addCloseListener(popup.current, onClose)
+        } else {
+            onClose()
+        }
     }, [])
 
     useEffect(() => {
@@ -31,6 +49,7 @@ function OAuthDiscord() {
             }
 
             if (res?.source === "oauth" && popup.current) {
+                removeCloseListener.current?.()
                 popup.current.close()
 
                 if (res.status === "ok") {
