@@ -1,0 +1,20 @@
+FROM node:14-slim
+
+ENV GENERATE_SOURCEMAP=false
+ENV REACT_APP_DISCORD_BOT_CLIENT_ID=832522488986599434
+ENV HOST=0.0.0.0
+ENV PORT=3000
+
+WORKDIR /app
+
+COPY package*.json .
+
+RUN npm install
+
+COPY . .
+
+RUN npm run build
+
+EXPOSE 3000
+
+CMD ["node", "server.js"]

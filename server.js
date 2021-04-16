@@ -14,6 +14,6 @@ fastify.get("/*", (_req, reply) => {
     reply.sendFile("index.html")
 })
 
-fastify.listen(process.env.PORT).then(() => {
+fastify.listen(process.env.PORT, process.env.HOST).then(() => {
     console.log(`Serving frontend on port ${process.env.PORT}`)
 })
