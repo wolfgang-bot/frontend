@@ -1,0 +1,52 @@
+import React from "react"
+import {
+    Card,
+    List,
+    ListItem,
+    ListItemAvatar,
+    ListItemText,
+    CardHeader,
+    Divider
+} from "@material-ui/core"
+
+import withStreamSubscription from "../../features/streams/withStreamSubscription"
+import { API } from "../../config/types"
+import Avatar from "../../components/User/Avatar"
+
+function LeaderboardItem({ user, score }: { user: API.User, score: number}) {
+    return (
+        <ListItem>
+            <ListItemAvatar>
+                <Avatar user={user}/>
+            </ListItemAvatar>
+            <ListItemText
+                primary={user.username}
+                secondary={`${score} Total Messages`}
+            />
+        </ListItem>
+    )
+}
+
+function UserMessageLeaderboard({ data }: { data: [API.User, number][] }) {
+    return (
+        <Card variant="outlined">
+            <CardHeader
+                title="Most Messages Sent"
+                titleTypographyProps={{
+                    variant: "body1"
+                }}
+            />
+            <Divider/>
+            <List>
+                {data.map(([user, score]) => (
+                    <LeaderboardItem user={user} score={score} key={user.id}/>
+                ))}
+            </List>
+        </Card>
+    )
+}
+
+export default withStreamSubscription(
+    UserMessageLeaderboard,
+    "user-message-leaderboard"
+)

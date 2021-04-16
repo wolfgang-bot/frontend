@@ -3,6 +3,7 @@ import { DISCORD_CDN_BASE_URL, DEFAULT_AVATAR_URL, STORAGE_BASE_URL } from "../c
 
 export enum FORMATS {
     USER,
+    USERS,
     GUILD,
     GUILDS,
     MODULE,
@@ -48,6 +49,7 @@ function formatModule(module: API.Module) {
 
 const formatterMap: Record<FORMATS, (data: Response<any>) => void> = {
     [FORMATS.USER]: (data: Response<API.User>) => formatUser(data.data!),
+    [FORMATS.USERS]: (data: Response<API.User[]>) => data.data!.map(formatUser),
     [FORMATS.GUILD]: (data: Response<API.Guild>) => formatGuild(data.data!),
     [FORMATS.GUILDS]: (data: Response<API.Guild[]>) => data.data!.map(formatGuild),
     [FORMATS.MODULE]: (data: Response<API.Module>) => formatModule(data.data!),

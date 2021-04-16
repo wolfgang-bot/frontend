@@ -6,6 +6,7 @@ import { RefHandle as StreamRefHandle } from "../../features/streams/withStreamS
 import Layout from "../../components/Layout/Layout"
 import OverviewTab from "./OverviewTab"
 import StatisticsTab from "./StatisticsTab"
+import CommunityTab from "./CommunityTab"
 
 export type TabProps = {
     guild: API.Guild,
@@ -15,22 +16,29 @@ export type TabProps = {
 
 const tabs = [
     { label: "Overview", component: OverviewTab },
-    { label: "Statistics", component: StatisticsTab }
+    { label: "Statistics", component: StatisticsTab },
+    { label: "Community", component: CommunityTab }
 ]
 
 function TabsRouter({ guild }: { guild: API.Guild }) {
     const [currentTab, setCurrentTab] = useState(0)
+    const currentLabel = tabs[currentTab].label
 
-    const streamRefs = useRef<StreamRefHandle[]>([])
+    const streamRefs = useRef<Record<string, StreamRefHandle[]>>({})
+
+    const collectStreamRefs = () => {
+        return Object.values(streamRefs.current).flat()
+    }
 
     const handleTabChange = (_event: React.ChangeEvent<{}>, newValue: number) => {
         setCurrentTab(newValue)
-        streamRefs.current = []
+        const tabLabel = tabs[newValue].label
+        streamRefs.current[tabLabel] = []
     }
 
     useEffect(() => {
         return () => {
-            streamRefs.current.forEach(ref => {
+            collectStreamRefs().forEach(ref => {
                 ref.pauseStream()
             })
         }
@@ -53,10 +61,10 @@ function TabsRouter({ guild }: { guild: API.Guild }) {
                         return
                     }
 
-                    streamRefs.current.push(ref)
+                    streamRefs.current[currentLabel].push(ref)
                 },
                 onClearStreamRefs: () => {
-                    streamRefs.current = []
+                    streamRefs.current[currentLabel] = []
                 }
             })}
         </Layout>
