@@ -5,6 +5,7 @@ import Header from "./Header"
 import { TabProps } from "./TabsRouter"
 import UserMessageLeaderboard from "../../features/streams/UserMessageLeaderboard"
 import { SubscriptionOptions } from "../../features/streams/withStreamSubscription"
+import UserVoiceLeaderboard from "../../features/streams/UserVoiceLeaderboard"
 
 function StatisticsTab({ guild, getStreamRef, onClearStreamRefs }: TabProps) {
     const streamProps: Record<string, any> & SubscriptionOptions = {
@@ -24,7 +25,9 @@ function StatisticsTab({ guild, getStreamRef, onClearStreamRefs }: TabProps) {
                     <UserMessageLeaderboard {...streamProps}/>
                 </Grid>
 
-                <Grid item xs/>
+                <Grid item xs>
+                    <UserVoiceLeaderboard {...streamProps}/>
+                </Grid>
             </Grid>
         </>
     )

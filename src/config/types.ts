@@ -154,7 +154,8 @@ export declare namespace API {
         "members" |
         "messages" |
         "voice" |
-        "user-message-leaderboard"
+        "user-message-leaderboard" |
+        "user-voice-leaderboard"
 
     export type Event<TMeta = undefined> = {
         type: EVENT_TYPES,

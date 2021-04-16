@@ -6,11 +6,17 @@ export default class StreamFormatter {
         Record<API.EVENT_STREAM, (data: any) => any>
     > = {
         "user-guilds": format(FORMATS.GUILDS),
-        "user-message-leaderboard": ({ data }: { data: [API.User][] }) =>
-            format(FORMATS.USERS)({ data: data.map(([user]) => user) })
+        "user-message-leaderboard": this.leaderboardFormatter.bind(this),
+        "user-voice-leaderboard": this.leaderboardFormatter.bind(this)
     }
 
     constructor(public args: API.StreamArgs) {}
+
+    leaderboardFormatter({ data }: { data: [API.User][] }) {
+        return format(FORMATS.USERS)({
+            data: data.map(([user]) => user)
+        })
+    }
 
     format(data: any) {
         const formatter = this.formatterMap[this.args.eventStream]
