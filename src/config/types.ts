@@ -153,7 +153,8 @@ export declare namespace API {
         "guild-module-instances" |
         "members" |
         "messages" |
-        "voice"
+        "voice" |
+        "user-message-leaderboard"
 
     export type Event<TMeta = undefined> = {
         type: EVENT_TYPES,
