@@ -4,15 +4,10 @@ import { Grid } from "@material-ui/core"
 import { TabProps } from "./TabsRouter"
 
 import { SubscriptionOptions } from "../../features/streams/withStreamSubscription"
+import ModuleList from "../../features/modules/ModuleList"
 import ModuleInstanceList from "../../features/modules/ModuleInstanceList"
 
 function ModulesTabHero() {
-    return (
-        <div></div>
-    )
-}
-
-function ModuleList() {
     return (
         <div></div>
     )
@@ -28,7 +23,7 @@ function ModulesTab({ guild, getStreamRef, onClearStreamRefs }: TabProps) {
     onClearStreamRefs()
 
     return (
-        <Grid container>
+        <Grid container spacing={4}>
             <Grid item xs>
                 <ModuleInstanceList
                     guild={guild}

@@ -1,9 +1,9 @@
 import React from "react"
-import { Card, CardHeader, CardActionArea, Typography, CircularProgress } from "@material-ui/core"
+import { Card, CardHeader, CardActionArea, Typography } from "@material-ui/core"
 import Skeleton from "@material-ui/lab/Skeleton"
 import { makeStyles } from "@material-ui/core/styles"
 
-import { API, INSTANCE_STATES } from "../../config/types"
+import { API } from "../../config/types"
 
 const useStyles = makeStyles({
     icon: {
@@ -13,19 +13,8 @@ const useStyles = makeStyles({
     }
 })
 
-function ModuleInstanceCard({ instance, module }: {
-    instance: API.ModuleInstance,
-    module: API.Module
-}) {
-    if (instance.moduleKey !== module.key) {
-        throw new Error("Instance and module do not match")
-    }
-
+function ModuleCard({ module }: { module: API.Module }) {
     const classes = useStyles()
-
-    const isLoading =
-        instance?.state === INSTANCE_STATES.STARTING ||
-        instance?.state === INSTANCE_STATES.STOPPING
 
     return (
         <Card variant="outlined">
@@ -45,14 +34,12 @@ function ModuleInstanceCard({ instance, module }: {
                         </Typography>
                     }
                 />
-
-                {isLoading && <CircularProgress/>}
             </CardActionArea>
         </Card>
     )
 }
 
-export function ModuleInstanceCardSkeleton() {
+export function ModuleCardSkeleton() {
     return (
         <Card>
             <CardHeader
@@ -68,4 +55,4 @@ export function ModuleInstanceCardSkeleton() {
     )
 }
 
-export default ModuleInstanceCard
+export default ModuleCard

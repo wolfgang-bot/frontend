@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { Box, Grid } from "@material-ui/core"
+import { Box, Typography } from "@material-ui/core"
 import { zip } from "lodash"
 
 import { RootState } from "../../store"
@@ -9,8 +9,26 @@ import withStreamSubscription from "../streams/withStreamSubscription"
 import { fetchModules } from "./modulesSlice"
 import { mergeStatus } from "../../utils"
 import { API } from "../../config/types"
+import emptyAnimation from "../../assets/images/tumbleweed.gif"
 
 const AMOUNT_OF_CARDS = 4
+
+function EmptyListIndicator() {
+    return (
+        <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+        >
+            <Box mb={2}>
+                <Typography align="center">
+                    No running instances
+                </Typography>
+            </Box>
+            <img src={emptyAnimation} alt="Empty"/>
+        </Box>
+    )
+}
 
 function ModuleInstanceList({ guild }: { guild: API.Guild }) {
     const dispatch = useDispatch()
@@ -36,24 +54,28 @@ function ModuleInstanceList({ guild }: { guild: API.Guild }) {
             Object.values(instances).map(instance => modules[instance.moduleKey]),
             Object.values(instances)
         ).filter(([module]) => !module?.isStatic)
+        
+        if (filtered.length === 0) {
+            return <EmptyListIndicator/>
+        }
 
         return (
-            <Grid container justify="space-between">
+            <>
                 {filtered.map(([module, instance]) => {
                     if (!module || !instance) {
                         throw new Error(`Missing module for instance ${instance?.moduleKey}`)
                     }
                     
                     return (
-                        <Grid item key={instance.moduleKey}>
+                        <Box key={instance.moduleKey} mb={2}>
                             <ModuleInstanceCard
                                 instance={instance}
                                 module={modules[instance.moduleKey]}
                             />
-                        </Grid>
+                        </Box>
                     )
                 })}
-            </Grid>
+            </>
         )
     }
 
