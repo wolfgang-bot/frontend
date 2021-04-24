@@ -1,5 +1,5 @@
 import React from "react"
-import { Box, Paper } from "@material-ui/core"
+import { Paper } from "@material-ui/core"
 
 import { API } from "../../config/types"
 import ModulesTabHeroModuleState from "./ModulesTabHeroModuleState"
