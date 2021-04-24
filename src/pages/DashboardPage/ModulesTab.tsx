@@ -15,8 +15,21 @@ import opener from "../../components/ComponentOpener"
 function ModulesTab({ guild, getStreamRef, onClearStreamRefs }: TabProps) {
     const modules = useSelector((store: RootState) => store.modules.data)
     const modulesState = useSelector((store: RootState) => store.modules.status)
+
+    const getInitialHeroState = () => {
+        const firstModule = Object.values(modules)[0]
+        if (firstModule) {
+            return {
+                type: "module",
+                guild,
+                module: Object.values(modules)[0]
+            } as HeroState
+        }
+    }
     
-    const [heroState, setHeroState] = useState<HeroState>()
+    const [heroState, setHeroState] = useState<HeroState | undefined>(
+        getInitialHeroState()
+    )
 
     const handleHover = (event: {
         module: API.Module,
@@ -34,14 +47,7 @@ function ModulesTab({ guild, getStreamRef, onClearStreamRefs }: TabProps) {
     }
     
     useEffect(() => {
-        const firstModule = Object.values(modules)[0]
-        if (firstModule) {
-            setHeroState({
-                type: "module",
-                guild,
-                module: firstModule
-            })
-        }
+        setHeroState(getInitialHeroState())
         // eslint-disable-next-line
     }, [modulesState])
 
