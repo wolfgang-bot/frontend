@@ -1,3 +1,4 @@
+import { LoadingState } from "../config/types"
 import Emittable, { EventListener } from "./Emittable"
 
 /**
@@ -33,3 +34,21 @@ export function pick<T extends Record<string, any>>(source: T, keys: (keyof T)[]
         keys.map(key => [key, source[key]])
     )
 }
+
+/**
+ * Merge multiple API status into a single status
+ */
+export function mergeStatus(...args: LoadingState[]): LoadingState {
+    const isIdle = args.every(status => status === "idle")
+    const isSuccess = args.every(status => status === "success")
+    const isError = args.some(status => status === "error")
+    const isPending = args.some(status => status === "pending")
+    return (
+        isIdle ? "idle" :
+        isSuccess ? "success" :
+        isError ? "error" :
+        isPending ? "pending" :
+        "error"
+    )
+}
+

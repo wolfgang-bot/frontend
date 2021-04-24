@@ -1,10 +1,12 @@
 import { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { Grid } from "@material-ui/core"
+import { Card, CardContent, Grid, Typography } from "@material-ui/core"
 
 import { RootState } from "../../store"
 import { fetchModules } from "./modulesSlice"
-import ModuleCard, { ModuleCardSkeleton } from "./ModuleCard"
+import { API } from "../../config/types"
+import Skeleton from "@material-ui/lab/Skeleton"
+// import ModuleCard, { ModuleCardSkeleton } from "./ModuleInstanceCard"
 
 const AMOUNT_OF_CARDS = 4
 
@@ -12,6 +14,22 @@ const seeds: number[] = []
 
 for (let i = 0; i < AMOUNT_OF_CARDS; i++) {
     seeds[i] = Math.random()
+}
+
+function ModuleCard({ module }: { module: API.Module }) {
+    return (
+        <Card>
+            <CardContent>
+                <Typography>{ module.name }</Typography>
+            </CardContent>
+        </Card>
+    )
+}
+
+function ModuleCardSkeleton({ seed }: { seed: number }) {
+    return (
+        <Skeleton width={100} height={40}/>
+    )
 }
 
 function ModuleList() {

@@ -5,7 +5,7 @@ import { API } from "../../config/types"
 import { RefHandle as StreamRefHandle } from "../../features/streams/withStreamSubscription"
 import Layout from "../../components/Layout/Layout"
 import OverviewTab from "./OverviewTab"
-import StatisticsTab from "./StatisticsTab"
+import ModulesTab from "./ModulesTab"
 import CommunityTab from "./CommunityTab"
 
 export type TabProps = {
@@ -16,7 +16,7 @@ export type TabProps = {
 
 const tabs = [
     { label: "Overview", component: OverviewTab },
-    { label: "Statistics", component: StatisticsTab },
+    { label: "Modules", component: ModulesTab },
     { label: "Community", component: CommunityTab }
 ]
 

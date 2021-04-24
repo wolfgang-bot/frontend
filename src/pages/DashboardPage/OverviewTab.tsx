@@ -5,7 +5,6 @@ import Header from "./Header"
 import { TabProps } from "./TabsRouter"
 
 import { SubscriptionOptions } from "../../features/streams/withStreamSubscription"
-import ModuleListForGuild from "../../features/modules/ModuleListForGuild"
 import StatisticCard from "../../components/Styled/StatisticCard"
 import ChartCard from "../../components/Styled/ChartCard"
 
@@ -84,10 +83,6 @@ function OverviewTab({ guild, getStreamRef, onClearStreamRefs }: TabProps) {
                             label="Voicechat"
                         />
                     </Grid>
-                </Grid>
-
-                <Grid item>
-                    <ModuleListForGuild {...streamProps} />
                 </Grid>
             </Grid>
         </>
