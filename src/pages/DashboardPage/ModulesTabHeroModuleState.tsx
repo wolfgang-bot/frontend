@@ -4,6 +4,8 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight"
 
 import { HeroState } from "./ModulesTabHero"
 import { API } from "../../config/types"
+import { useSelector } from "react-redux"
+import { RootState } from "../../store"
 
 const useStyles = makeStyles((theme) => ({
     icon: {
@@ -61,16 +63,23 @@ function ModuleDescription({ module }: { module: API.Module }) {
 }
 
 function ModulesTabHeroModuleState({ state }: { state: HeroState }) {
+    const module = useSelector((store: RootState) => store.modules.data?.[state.moduleKey])
+    const status = useSelector((store: RootState) => store.modules.status)
+
+    if (status !== "success") {
+        return <></>
+    }
+
     return (
         <>
             <Box p={2}>
-                <ModuleHeader module={state.module}/>
+                <ModuleHeader module={module}/>
             </Box>
 
             <Divider/>
 
             <Box overflow="auto" height={500} p={2}>
-                <ModuleDescription module={state.module}/>
+                <ModuleDescription module={module}/>
             </Box>
         </>
     )

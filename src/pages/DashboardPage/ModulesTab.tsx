@@ -22,7 +22,7 @@ function ModulesTab({ guild, getStreamRef, onClearStreamRefs }: TabProps) {
             return {
                 type: "module",
                 guild,
-                module: Object.values(modules)[0]
+                moduleKey: firstModule.key
             } as HeroState
         }
     }
@@ -36,7 +36,12 @@ function ModulesTab({ guild, getStreamRef, onClearStreamRefs }: TabProps) {
         instance?: API.ModuleInstance
     }) => {
         const type: HeroState["type"] = event.instance ? "instance" : "module"
-        setHeroState({ ...event, guild, type })
+        setHeroState({
+            type,
+            guild,
+            moduleKey: event.module.key,
+            instanceModuleKey: event.instance?.moduleKey
+        })
     }
 
     const handleModuleClick = (event: { module: API.Module }) => {
@@ -70,7 +75,10 @@ function ModulesTab({ guild, getStreamRef, onClearStreamRefs }: TabProps) {
             </Grid>
 
             <Grid item xs>
-                <ModulesTabHero state={heroState}/>
+                <ModulesTabHero
+                    state={heroState}
+                    reset={() => setHeroState(getInitialHeroState())}
+                />
             </Grid>
 
             <Grid item xs>

@@ -8,26 +8,29 @@ import ModulesTabHeroInstanceState from "./ModulesTabHeroInstanceState"
 export type HeroState = {
     type: "module" | "instance",
     guild: API.Guild,
-    module: API.Module,
-    instance?: API.ModuleInstance
+    moduleKey: string,
+    instanceModuleKey?: string
 }
 
 const contentMap: Record<
     HeroState["type"],
-    React.FunctionComponent<{ state: HeroState }>
+    React.FunctionComponent<{ state: HeroState, reset?: () => void }>
 > = {
     "module": ModulesTabHeroModuleState,
     "instance": ModulesTabHeroInstanceState
 }
 
-function ModulesTabHero({ state }: { state?: HeroState }) {
+function ModulesTabHero({ state, reset }: {
+    state?: HeroState,
+    reset: () => void
+}) {
     if (!state) {
-        return <></>
+        return null
     }
 
     return (
         <Paper variant="outlined">
-            {React.createElement(contentMap[state.type], { state })}
+            {React.createElement(contentMap[state.type], { state, reset })}
         </Paper>
     )
 }

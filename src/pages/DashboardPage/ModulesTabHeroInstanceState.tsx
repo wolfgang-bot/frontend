@@ -1,12 +1,16 @@
-import { Box, Button, Divider, Grid } from "@material-ui/core"
+import { Box, Divider, Grid } from "@material-ui/core"
+import { useSelector } from "react-redux"
 import api from "../../api"
 
 import ArgumentsForm from "../../components/Forms/ArgumentsForm/ArgumentsForm"
-import { API } from "../../config/types"
+import LoadingButton from "../../components/Styled/LoadingButton"
+import { API, INSTANCE_STATES } from "../../config/types"
+import { RootState } from "../../store"
+import { mergeStatus } from "../../utils"
 import { HeroState } from "./ModulesTabHero"
 import { ModuleHeader } from "./ModulesTabHeroModuleState"
 
-function ModuleStopButton({ module, guild }: {
+function ModuleStopButton({ instance, module, guild }: {
     instance: API.ModuleInstance,
     module: API.Module,
     guild: API.Guild
@@ -19,30 +23,59 @@ function ModuleStopButton({ module, guild }: {
     }
 
     return (
-        <Button onClick={handleClick}>
+        <LoadingButton
+            isLoading={
+                instance.state === INSTANCE_STATES.STOPPING
+            }
+            onClick={handleClick}
+        >
             Stop
-        </Button>
+        </LoadingButton>
     )
 }
 
-function ModulesTabHeroInstanceState({ state }: { state: HeroState }) {
-    if (!state.instance) {
+function ModulesTabHeroInstanceState({ state, reset = () => {} }: {
+    state: HeroState,
+    reset?: () => void
+}) {
+    if (!state.instanceModuleKey) {
         throw new Error("Missing prop: 'state.instance'")
+    }
+
+    const instance = useSelector((store: RootState) => 
+        store.moduleInstances.guilds[state.guild.id]?.data?.[state.instanceModuleKey!]
+    )
+    const instanceStatus = useSelector((store: RootState) =>
+        store.moduleInstances.guilds[state.guild.id]?.status
+    )
+
+    const module = useSelector((store: RootState) => store.modules.data?.[state.moduleKey])
+    const moduleStatus = useSelector((store: RootState) => store.modules.status)
+
+    const status = mergeStatus(instanceStatus, moduleStatus)
+
+    if (status !== "success") {
+        return null
+    }
+
+    if (!instance) {
+        requestAnimationFrame(reset)
+        return null
     }
 
     return (
         <>
             <Box p={2}>
-                <ModuleHeader module={state.module}/>
+                <ModuleHeader module={module}/>
             </Box>
 
             <Divider/>
 
             <Box overflow="auto" height={500-69} p={2}>
                 <ArgumentsForm
-                    args={state.module.args}
+                    args={module.args}
                     guild={state.guild}
-                    currentConfig={state.instance.config}
+                    currentConfig={instance.config}
                     disabled
                 />
             </Box>
@@ -57,8 +90,8 @@ function ModulesTabHeroInstanceState({ state }: { state: HeroState }) {
                 >
                     <Grid item>
                         <ModuleStopButton
-                            instance={state.instance}
-                            module={state.module}
+                            instance={instance}
+                            module={module}
                             guild={state.guild}
                         />
                     </Grid>
