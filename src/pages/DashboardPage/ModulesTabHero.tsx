@@ -27,9 +27,7 @@ function ModulesTabHero({ state }: { state?: HeroState }) {
 
     return (
         <Paper variant="outlined">
-            <Box m={2}>
-                {React.createElement(contentMap[state.type], { state })}
-            </Box>
+            {React.createElement(contentMap[state.type], { state })}
         </Paper>
     )
 }

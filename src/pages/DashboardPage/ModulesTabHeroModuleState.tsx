@@ -1,4 +1,4 @@
-import { Avatar, Box, Grid, Typography } from "@material-ui/core"
+import { Avatar, Box, Divider, Grid, Typography } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
 import ChevronRightIcon from "@material-ui/icons/ChevronRight"
 
@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-function ModuleHeader({ module }: { module: API.Module }) {
+export function ModuleHeader({ module }: { module: API.Module }) {
     const classes = useStyles()
 
     return (
@@ -63,11 +63,13 @@ function ModuleDescription({ module }: { module: API.Module }) {
 function ModulesTabHeroModuleState({ state }: { state: HeroState }) {
     return (
         <>
-            <Box mb={4}>
+            <Box p={2}>
                 <ModuleHeader module={state.module}/>
             </Box>
 
-            <Box overflow="auto" height={500} mb={4}>
+            <Divider/>
+
+            <Box overflow="auto" height={500} p={2}>
                 <ModuleDescription module={state.module}/>
             </Box>
         </>

@@ -27,17 +27,26 @@ export const darkTheme = createMuiTheme({
     }
 })
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
     "@global": {
         a: {
             textDecoration: "none"
+        },
+        "*::-webkit-scrollbar": {
+            width: "4px"
+        },
+        "*::-webkit-scrollbar-thumb": {
+            backgroundColor: "rgba(255, 255, 255, .5)"
         }
     }
-})
+}))
+
+function GlobalStyles() {
+    useStyles()
+    return <CssBaseline/>
+}
 
 function App() {
-    useStyles()
-
     useLogin()
 
     const isDarkMode = useSelector((store: RootState) => store.settings.isDarkMode)
@@ -48,7 +57,7 @@ function App() {
 
     return (
         <ThemeProvider theme={theme}>
-            <CssBaseline/>
+            <GlobalStyles/>
             <Router/>
         </ThemeProvider>
     )
