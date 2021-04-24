@@ -18,36 +18,36 @@ function ChartCard({ chart, label, className, width = "100%" }: {
     return (
         <Box width={width}>
             <Paper variant="outlined" className={className}>
-                    <Box
-                        display="flex"
-                        justifyContent="space-between"
-                        alignItems="center"
-                    >
-                        <Box mx={3} my={2}>
-                            <Typography variant="body1">{label}</Typography>
-                        </Box>
+                <Box
+                    display="flex"
+                    justifyContent="space-between"
+                    alignItems="center"
+                >
+                    <Box mx={3} my={2}>
+                        <Typography variant="body1">{label}</Typography>
+                    </Box>
 
-                        <Box mx={2}>
-                            <IconButton
-                                size="small"
-                            onClick={toggleHasMagnetCursor}
-                            >
-                                {
+                    <Box mx={2}>
+                        <IconButton
+                            size="small"
+                        onClick={toggleHasMagnetCursor}
+                        >
+                            {
                                 hasMagnetCursor ?
-                                    <MagnetOffIcon fontSize="small"/> :
-                                    <MagnetOnIcon fontSize="small"/>
-                                }
-                            </IconButton>
-                        </Box>
+                                <MagnetOffIcon fontSize="small"/> :
+                                <MagnetOnIcon fontSize="small"/>
+                            }
+                        </IconButton>
                     </Box>
+                </Box>
 
-                    <Divider/>
+                <Divider/>
 
-                    <Box mt={2}>
-                        {React.cloneElement(React.Children.only(chart), {
-                            hasMagnetCursor
-                        })}
-                    </Box>
+                <Box mt={2}>
+                    {React.cloneElement(React.Children.only(chart), {
+                        hasMagnetCursor
+                    })}
+                </Box>
             </Paper>
         </Box>
     )

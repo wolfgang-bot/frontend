@@ -1,7 +1,6 @@
 import React from "react"
 import { Grid } from "@material-ui/core"
 
-import Header from "./Header"
 import { TabProps } from "./TabsRouter"
 
 import { SubscriptionOptions } from "../../features/streams/withStreamSubscription"
@@ -18,52 +17,48 @@ function StatisticsTab({ guild, getStreamRef, onClearStreamRefs }: TabProps) {
     onClearStreamRefs()
 
     return (
-        <>
-            <Header guild={guild} />
+        <Grid container direction="column" spacing={4}>
+            <Grid item>
+                <ChartCard
+                    chart={
+                        <MemberChart
+                            {...streamProps}
+                            width={null}
+                            height={400}
+                        />
+                    }
+                    label="Members"
+                />
+            </Grid>
 
-            <Grid container direction="column" spacing={4}>
-                <Grid item>
+            <Grid item container justify="space-between" spacing={4}>
+                <Grid item xs>
                     <ChartCard
                         chart={
-                            <MemberChart
+                            <MessageChart
                                 {...streamProps}
                                 width={null}
                                 height={400}
                             />
                         }
-                        label="Members"
+                        label="Messages"
                     />
                 </Grid>
 
-                <Grid item container justify="space-between" spacing={4}>
-                    <Grid item xs>
-                        <ChartCard
-                            chart={
-                                <MessageChart
-                                    {...streamProps}
-                                    width={null}
-                                    height={400}
-                                />
-                            }
-                            label="Messages"
-                        />
-                    </Grid>
-
-                    <Grid item xs>
-                        <ChartCard
-                            chart={
-                                <VoiceDurationChart
-                                    {...streamProps}
-                                    width={null}
-                                    height={400}
-                                />
-                            }
-                            label="Voicechat"
-                        />
-                    </Grid>
+                <Grid item xs>
+                    <ChartCard
+                        chart={
+                            <VoiceDurationChart
+                                {...streamProps}
+                                width={null}
+                                height={400}
+                            />
+                        }
+                        label="Voicechat"
+                    />
                 </Grid>
             </Grid>
-        </>
+        </Grid>
     )
 }
 

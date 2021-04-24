@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react"
-import { Tabs, Tab } from "@material-ui/core"
+import { Tabs, Tab, Box } from "@material-ui/core"
 
 import { API } from "../../config/types"
 import { RefHandle as StreamRefHandle } from "../../features/streams/withStreamSubscription"
@@ -54,19 +54,21 @@ function TabsRouter({ guild }: { guild: API.Guild }) {
                 </Tabs>
             }
         >
-            {React.createElement(tabs[currentTab].component, {
-                guild,
-                getStreamRef: (ref: StreamRefHandle) => {
-                    if (!ref) {
-                        return
-                    }
+            <Box mt={4}>
+                {React.createElement(tabs[currentTab].component, {
+                    guild,
+                    getStreamRef: (ref: StreamRefHandle) => {
+                        if (!ref) {
+                            return
+                        }
 
-                    streamRefs.current[currentLabel].push(ref)
-                },
-                onClearStreamRefs: () => {
-                    streamRefs.current[currentLabel] = []
-                }
-            })}
+                        streamRefs.current[currentLabel].push(ref)
+                    },
+                    onClearStreamRefs: () => {
+                        streamRefs.current[currentLabel] = []
+                    }
+                })}
+            </Box>
         </Layout>
     )
 }
