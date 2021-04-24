@@ -30,7 +30,13 @@ function EmptyListIndicator() {
     )
 }
 
-function ModuleInstanceList({ guild }: { guild: API.Guild }) {
+function ModuleInstanceList({ guild, onHover = () => {} }: {
+    guild: API.Guild,
+    onHover?: (props: {
+        module: API.Module,
+        instance: API.ModuleInstance
+    }) => void
+}) {
     const dispatch = useDispatch()
     
     const modules = useSelector((state: RootState) => state.modules.data)
@@ -67,7 +73,11 @@ function ModuleInstanceList({ guild }: { guild: API.Guild }) {
                     }
                     
                     return (
-                        <Box key={instance.moduleKey} mb={2}>
+                        <Box
+                            key={instance.moduleKey}
+                            mb={2}
+                            onMouseEnter={() => onHover({ module, instance })}
+                        >
                             <ModuleInstanceCard
                                 instance={instance}
                                 module={modules[instance.moduleKey]}

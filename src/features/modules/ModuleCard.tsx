@@ -1,7 +1,8 @@
 import React from "react"
-import { Card, CardHeader, CardActionArea, Typography } from "@material-ui/core"
+import { Card, CardHeader, CardActionArea, Typography, Box } from "@material-ui/core"
 import Skeleton from "@material-ui/lab/Skeleton"
 import { makeStyles } from "@material-ui/core/styles"
+import ChevronRightIcon from "@material-ui/icons/ChevronRight"
 
 import { API } from "../../config/types"
 
@@ -13,12 +14,16 @@ const useStyles = makeStyles({
     }
 })
 
-function ModuleCard({ module }: { module: API.Module }) {
+type Props = React.ComponentProps<typeof CardActionArea> & {
+    module: API.Module
+}
+
+function ModuleCard({ module, ...props }: Props) {
     const classes = useStyles()
 
     return (
         <Card variant="outlined">
-            <CardActionArea>
+            <CardActionArea {...props}>
                 <CardHeader
                     disableTypography
                     avatar={
@@ -29,9 +34,17 @@ function ModuleCard({ module }: { module: API.Module }) {
                         />
                     }
                     title={
-                        <Typography variant="body1">
-                            {module.name}
-                        </Typography>
+                        <Box
+                            display="flex"
+                            justifyContent="space-between"
+                            alignItems="center"
+                        >
+                            <Typography variant="body1">
+                                {module.name}
+                            </Typography>
+
+                            <ChevronRightIcon/>
+                        </Box>
                     }
                 />
             </CardActionArea>

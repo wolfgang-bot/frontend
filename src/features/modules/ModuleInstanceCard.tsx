@@ -1,5 +1,5 @@
 import React from "react"
-import { Card, CardHeader, CardActionArea, Typography, CircularProgress } from "@material-ui/core"
+import { Card, CardHeader, CardActionArea, Typography, CircularProgress, Box } from "@material-ui/core"
 import Skeleton from "@material-ui/lab/Skeleton"
 import { makeStyles } from "@material-ui/core/styles"
 
@@ -40,13 +40,19 @@ function ModuleInstanceCard({ instance, module }: {
                         />
                     }
                     title={
-                        <Typography variant="body1">
-                            {module.name}
-                        </Typography>
+                        <Box
+                            display="flex"
+                            justifyContent="space-between"
+                            alignItems="center"
+                        >
+                            <Typography variant="body1">
+                                {module.name}
+                            </Typography>
+
+                            {isLoading && <CircularProgress size={24}/>}
+                        </Box>
                     }
                 />
-
-                {isLoading && <CircularProgress/>}
             </CardActionArea>
         </Card>
     )

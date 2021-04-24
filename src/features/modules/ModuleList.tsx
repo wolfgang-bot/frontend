@@ -5,10 +5,14 @@ import { Box } from "@material-ui/core"
 import { RootState } from "../../store"
 import { fetchModules } from "./modulesSlice"
 import ModuleCard, { ModuleCardSkeleton } from "./ModuleCard"
+import { API } from "../../config/types"
 
 const AMOUNT_OF_CARDS = 4
 
-function ModuleList() {
+function ModuleList({ onHover = () => {}, onClick = () => {} }: {
+    onHover?: (props: { module: API.Module }) => void,
+    onClick?: (props: { module: API.Module }) => void
+}) {
     const dispatch = useDispatch()
 
     const modules = useSelector((store: RootState) => store.modules.data)
@@ -29,7 +33,11 @@ function ModuleList() {
             <>
                 {filtered.map(module => (
                     <Box key={module.key} mb={2}>
-                        <ModuleCard module={module}/>
+                        <ModuleCard
+                            module={module}
+                            onMouseEnter={() => onHover({ module })}
+                            onClick={() => onClick({ module })}
+                        />
                     </Box>                    
                 ))}
             </>
