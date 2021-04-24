@@ -1,4 +1,4 @@
-import React, { ForwardedRef, useImperativeHandle, useMemo } from "react"
+import React, { ForwardedRef, useEffect, useImperativeHandle, useMemo } from "react"
 import { useForm, FormProvider } from "react-hook-form"
 
 import { API } from "../../../config/types"
@@ -22,9 +22,11 @@ function getDefaultValues(args: API.Argument[], config?: Record<string, any>) {
     return Object.fromEntries(
         args.map(arg => {
             const value =
-                config?.[arg.key] ? config[arg.key] :
-                arg.defaultValue ? arg.defaultValue :
-                undefined
+                config?.[arg.key] !== undefined
+                ? config[arg.key]
+                : arg.defaultValue !== undefined
+                ? arg.defaultValue
+                : undefined
             return [arg.key, value]
         })
             .filter(Boolean)
@@ -49,6 +51,11 @@ function ArgumentsForm(
             />
         )) 
     ), [args, guild, disabled])
+
+    useEffect(() => {
+        form.reset(defaultValues)
+        // eslint-disable-next-line
+    }, [currentConfig])
 
     useImperativeHandle(ref, () => ({
         getValues: form.getValues,
