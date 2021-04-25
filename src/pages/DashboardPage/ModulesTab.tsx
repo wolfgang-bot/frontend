@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react"
 import { Grid, makeStyles } from "@material-ui/core"
 
 import { TabProps } from "./TabsRouter"
-
 import { SubscriptionOptions } from "../../features/streams/withStreamSubscription"
 import ModuleInstanceList from "../../features/modules/ModuleInstanceList"
 import ModulesTabHero, { HeroState } from "./ModulesTabHero"

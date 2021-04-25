@@ -77,6 +77,7 @@ function ModuleStartCard({ module, guild, onBack }: {
             <Box height={600-52-60} overflow="auto" p={2}>
                 {(!guild || !module) ? <></> : (
                     <ArgumentsForm
+                        key={module.key}
                         args={module.args}
                         guild={guild}
                         ref={argsFormRef}

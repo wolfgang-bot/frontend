@@ -25,9 +25,6 @@ function ModulesPanel({ state, onHeroStateChange }: {
     }
 
     const handleModuleClick = (event: { module: API.Module }) => {
-        if (!state) {
-            return
-        }
         setActiveModule(event.module)
         setViewIndex(1)
     }
