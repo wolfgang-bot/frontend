@@ -73,6 +73,7 @@ function ModulesTabHeroInstanceState({ state, reset = () => {} }: {
 
             <Box overflow="auto" height={600-64-53} p={2}>
                 <ArgumentsForm
+                    key={module.key}
                     args={module.args}
                     guild={state.guild}
                     currentConfig={instance.config}
