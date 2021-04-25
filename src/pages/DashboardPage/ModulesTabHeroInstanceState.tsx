@@ -1,38 +1,11 @@
-import { Box, Divider, Grid } from "@material-ui/core"
+import { Box, Divider } from "@material-ui/core"
 import { useSelector } from "react-redux"
-import api from "../../api"
 
 import ArgumentsForm from "../../components/Forms/ArgumentsForm/ArgumentsForm"
-import LoadingButton from "../../components/Styled/LoadingButton"
-import { API, INSTANCE_STATES } from "../../config/types"
 import { RootState } from "../../store"
 import { mergeStatus } from "../../utils"
 import { HeroState } from "./ModulesTabHero"
 import { ModuleHeader } from "./ModulesTabHeroModuleState"
-
-function ModuleStopButton({ instance, module, guild }: {
-    instance: API.ModuleInstance,
-    module: API.Module,
-    guild: API.Guild
-}) {
-    const handleClick = () => {
-        api.ws.stopModuleInstance({
-            guildId: guild.id,
-            moduleKey: module.key
-        })
-    }
-
-    return (
-        <LoadingButton
-            isLoading={
-                instance.state === INSTANCE_STATES.STOPPING
-            }
-            onClick={handleClick}
-        >
-            Stop
-        </LoadingButton>
-    )
-}
 
 function ModulesTabHeroInstanceState({ state, reset = () => {} }: {
     state: HeroState,
@@ -71,7 +44,7 @@ function ModulesTabHeroInstanceState({ state, reset = () => {} }: {
 
             <Divider/>
 
-            <Box overflow="auto" height={600-64-53} p={2}>
+            <Box overflow="auto" height={600-64} p={2}>
                 <ArgumentsForm
                     key={module.key}
                     args={module.args}
@@ -79,24 +52,6 @@ function ModulesTabHeroInstanceState({ state, reset = () => {} }: {
                     currentConfig={instance.config}
                     disabled
                 />
-            </Box>
-
-            <Divider/>
-
-            <Box p={1}>
-                <Grid
-                    container
-                    spacing={2}
-                    justify="flex-end"
-                >
-                    <Grid item>
-                        <ModuleStopButton
-                            instance={instance}
-                            module={module}
-                            guild={state.guild}
-                        />
-                    </Grid>
-                </Grid>
             </Box>
         </>
     )

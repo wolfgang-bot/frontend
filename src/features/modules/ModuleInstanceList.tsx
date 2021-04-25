@@ -79,6 +79,7 @@ function ModuleInstanceList({ guild, onHover = () => {} }: {
                             onMouseEnter={() => onHover({ module, instance })}
                         >
                             <ModuleInstanceCard
+                                guild={guild}
                                 instance={instance}
                                 module={modules[instance.moduleKey]}
                             />
