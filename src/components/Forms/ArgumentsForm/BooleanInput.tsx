@@ -31,13 +31,12 @@ function BooleanInput({ arg, guild, className, disabled }: {
                     name={arg.key}
                     error={hasError}
                     helperText={helperText}
-                    render={({ onChange, onBlur, value, name, ref }) => (
+                    render={({ onChange, value, ...props }) => (
                         <Checkbox
                             onChange={makeChangeListener(onChange)}
-                            onBlur={onBlur}
+                            disabled={disabled}
                             checked={value}
-                            name={name}
-                            ref={ref}
+                            {...props}
                         />
                     )}
                 />

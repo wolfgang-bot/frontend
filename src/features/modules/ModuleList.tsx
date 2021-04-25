@@ -1,26 +1,22 @@
 import { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { Grid } from "@material-ui/core"
+import { Box } from "@material-ui/core"
 
 import { RootState } from "../../store"
 import { fetchModules } from "./modulesSlice"
 import ModuleCard, { ModuleCardSkeleton } from "./ModuleCard"
+import { API } from "../../config/types"
 
 const AMOUNT_OF_CARDS = 4
 
-const seeds: number[] = []
-
-for (let i = 0; i < AMOUNT_OF_CARDS; i++) {
-    seeds[i] = Math.random()
-}
-
-function ModuleList() {
+function ModuleList({ onHover = () => {}, onClick = () => {} }: {
+    onHover?: (props: { module: API.Module }) => void,
+    onClick?: (props: { module: API.Module }) => void
+}) {
     const dispatch = useDispatch()
 
+    const modules = useSelector((store: RootState) => store.modules.data)
     const status = useSelector((store: RootState) => store.modules.status)
-    const data = useSelector((store: RootState) => (
-        Object.values(store.modules.data).filter(module => !module.isStatic)
-    ))
     const error = useSelector((store: RootState) => store.modules.error)
 
     useEffect(() => {
@@ -30,14 +26,21 @@ function ModuleList() {
     }, [status, dispatch])
 
     if (status === "success") {
+        const filtered = Object.values(modules)
+            .filter(module => !module.isStatic)
+
         return (
-            <Grid container spacing={2}>
-                {data.map(module => (
-                    <Grid item key={module.key}>
-                        <ModuleCard module={module}/>
-                    </Grid>                    
+            <>
+                {filtered.map(module => (
+                    <Box key={module.key} mb={2}>
+                        <ModuleCard
+                            module={module}
+                            onMouseEnter={() => onHover({ module })}
+                            onClick={() => onClick({ module })}
+                        />
+                    </Box>                    
                 ))}
-            </Grid>
+            </>
         )
     }
 
@@ -52,13 +55,13 @@ function ModuleList() {
 
 export function ModuleListSkeleton() {
     return (
-        <Grid container spacing={2}>
-            {seeds.map((seed, index) => (
-                <Grid item key={index}>
-                    <ModuleCardSkeleton seed={seed} />
-                </Grid>
+        <>
+            {Array(AMOUNT_OF_CARDS).fill(0).map((_, index) => (
+                <Box key={index} mb={2}>
+                    <ModuleCardSkeleton />
+                </Box>
             ))}
-        </Grid>
+        </>
     )
 }
 
