@@ -71,7 +71,7 @@ function ModulesTabHeroInstanceState({ state, reset = () => {} }: {
 
             <Divider/>
 
-            <Box overflow="auto" height={500-69} p={2}>
+            <Box overflow="auto" height={600-64-53} p={2}>
                 <ArgumentsForm
                     args={module.args}
                     guild={state.guild}
@@ -82,7 +82,7 @@ function ModulesTabHeroInstanceState({ state, reset = () => {} }: {
 
             <Divider/>
 
-            <Box p={2}>
+            <Box p={1}>
                 <Grid
                     container
                     spacing={2}

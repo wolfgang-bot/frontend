@@ -1,18 +1,25 @@
 import React, { useEffect, useState } from "react"
-import { Grid } from "@material-ui/core"
+import { Grid, makeStyles } from "@material-ui/core"
 
 import { TabProps } from "./TabsRouter"
 
 import { SubscriptionOptions } from "../../features/streams/withStreamSubscription"
-import ModuleList from "../../features/modules/ModuleList"
 import ModuleInstanceList from "../../features/modules/ModuleInstanceList"
 import ModulesTabHero, { HeroState } from "./ModulesTabHero"
 import { API } from "../../config/types"
 import { useSelector } from "react-redux"
 import { RootState } from "../../store"
-import opener from "../../components/ComponentOpener"
+import ModulesPanel from "./ModulesPanel"
+
+const useStyles = makeStyles({
+    panel: {
+        width: `${100/3}%`
+    }
+})
 
 function ModulesTab({ guild, getStreamRef, onClearStreamRefs }: TabProps) {
+    const classes = useStyles()
+
     const modules = useSelector((store: RootState) => store.modules.data)
     const modulesState = useSelector((store: RootState) => store.modules.status)
 
@@ -43,13 +50,6 @@ function ModulesTab({ guild, getStreamRef, onClearStreamRefs }: TabProps) {
             instanceModuleKey: event.instance?.moduleKey
         })
     }
-
-    const handleModuleClick = (event: { module: API.Module }) => {
-        opener.openDialog("ModuleStartDialog", {
-            module: event.module,
-            guild
-        })
-    }
     
     useEffect(() => {
         setHeroState(getInitialHeroState())
@@ -66,7 +66,7 @@ function ModulesTab({ guild, getStreamRef, onClearStreamRefs }: TabProps) {
 
     return (
         <Grid container spacing={4}>
-            <Grid item xs>
+            <Grid item xs className={classes.panel}>
                 <ModuleInstanceList
                     guild={guild}
                     onHover={handleHover}
@@ -74,17 +74,17 @@ function ModulesTab({ guild, getStreamRef, onClearStreamRefs }: TabProps) {
                 />
             </Grid>
 
-            <Grid item xs>
+            <Grid item xs className={classes.panel}>
                 <ModulesTabHero
                     state={heroState}
                     reset={() => setHeroState(getInitialHeroState())}
                 />
             </Grid>
 
-            <Grid item xs>
-                <ModuleList
-                    onHover={handleHover}
-                    onClick={handleModuleClick}
+            <Grid item xs className={classes.panel}>
+                <ModulesPanel
+                    state={heroState}
+                    onHeroStateChange={setHeroState}
                 />
             </Grid>
         </Grid>

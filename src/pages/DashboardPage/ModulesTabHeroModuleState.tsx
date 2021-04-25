@@ -78,7 +78,7 @@ function ModulesTabHeroModuleState({ state }: { state: HeroState }) {
 
             <Divider/>
 
-            <Box overflow="auto" height={500} p={2}>
+            <Box overflow="auto" height={600-64} p={2}>
                 <ModuleDescription module={module}/>
             </Box>
         </>
