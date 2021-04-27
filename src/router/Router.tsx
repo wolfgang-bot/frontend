@@ -9,6 +9,7 @@ import IndexPage from "../pages/IndexPage"
 import LoginPage from "../pages/LoginPage"
 import NotFoundPage from "../pages/NotFoundPage"
 import ModulePage from "../pages/ModulePage"
+import ErrorBoundary from "../ErrorBoundary"
 
 function Router() {
     return (
@@ -16,35 +17,37 @@ function Router() {
             isDashboard: false
         }}>
             <BrowserRouter>
-                <Switch>
-                    <ProtectedRoute path="/dashboard">
-                        <DashboardRouter />
-                    </ProtectedRoute>
+                <ErrorBoundary>
+                    <Switch>
+                        <ProtectedRoute path="/dashboard">
+                            <DashboardRouter />
+                        </ProtectedRoute>
 
-                    <ProtectedRoute path="/admin">
-                        <AdminRouter />
-                    </ProtectedRoute>
+                        <ProtectedRoute path="/admin">
+                            <AdminRouter />
+                        </ProtectedRoute>
 
-                    <Route path="/login">
-                        <LoginPage />
-                    </Route>
+                        <Route path="/login">
+                            <LoginPage />
+                        </Route>
 
-                    <Route path="/module/:key">
-                        <ModulePage />
-                    </Route>
+                        <Route path="/module/:key">
+                            <ModulePage />
+                        </Route>
 
-                    <Route exact path="/">
-                        <IndexPage />
-                    </Route>
+                        <Route exact path="/">
+                            <IndexPage />
+                        </Route>
 
-                    <Route path="/not-found">
-                        <NotFoundPage />
-                    </Route>
+                        <Route path="/not-found">
+                            <NotFoundPage />
+                        </Route>
 
-                    <Route>
-                        <Redirect to="/not-found" />
-                    </Route>
-                </Switch>
+                        <Route>
+                            <Redirect to="/not-found" />
+                        </Route>
+                    </Switch>
+                </ErrorBoundary>
             </BrowserRouter>
         </LayoutContext.Provider>
     )

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { Dialog, DialogContent, DialogActions, Button, CircularProgress } from "@material-ui/core"
+import { Dialog, DialogContent, DialogActions, Button } from "@material-ui/core"
 import Skeleton from "@material-ui/lab/Skeleton"
 
 import { API } from "../../config/types"

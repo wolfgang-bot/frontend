@@ -11,29 +11,19 @@ import {
 } from "@material-ui/core"
 import Skeleton from "@material-ui/lab/Skeleton"
 import { makeStyles } from "@material-ui/core/styles"
-import ChevronRightIcon from "@material-ui/icons/ChevronRight"
 
 import { API, INSTANCE_STATES } from "../../config/types"
-import clsx from "clsx"
 import ModuleStopButton from "./ModuleStopButton"
 import ModuleRestartButton from "./ModuleRestartButton"
+import ExpandIcon from "../../components/Styled/ExpandIcon"
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
     icon: {
         borderRadius: "50%",
         width: 32,
         height: 32
-    },
-
-    expandIcon: {
-        transform: "rotate(90deg)",
-        transition: theme.transitions.create("transform")
-    },
-
-    expandIconRotated: {
-        transform: "rotate(-90deg)"
     }
-}))
+})
 
 function ModuleInstanceCard({ instance, module, guild }: {
     instance: API.ModuleInstance,
@@ -80,12 +70,7 @@ function ModuleInstanceCard({ instance, module, guild }: {
                                         <CircularProgress size={24}/>
                                     </Box>
                                 )}
-                                <ChevronRightIcon
-                                    className={clsx(
-                                        classes.expandIcon,
-                                        { [classes.expandIconRotated]: isExpanded }
-                                    )}
-                                />
+                                <ExpandIcon expanded={isExpanded}/>
                             </Box>
                         </Box>
                     }
