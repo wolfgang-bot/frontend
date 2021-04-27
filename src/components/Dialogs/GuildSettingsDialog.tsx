@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, CircularProgress } from "@material-ui/core"
+import { Dialog, DialogContent, DialogActions, Button, CircularProgress } from "@material-ui/core"
+import Skeleton from "@material-ui/lab/Skeleton"
 
 import { API } from "../../config/types"
 import { RootState } from "../../store"
@@ -11,6 +12,7 @@ import opener from "../ComponentOpener"
 import api from "../../api"
 import withStreamSubscription from "../../features/streams/withStreamSubscription"
 import { fetchModules } from "../../features/modules/modulesSlice"
+import DialogTitle from "../Styled/DialogTitle"
 
 function GuildSettingsDialog({ open, onClose, guild }: {
     open: boolean,
@@ -80,39 +82,54 @@ function GuildSettingsDialog({ open, onClose, guild }: {
         if (status === "idle") {
             dispatch(fetchModules("ws"))
         }
-    }, [status])
+    }, [status, dispatch])
+
+    let child = <GuildSettingsDialogSkeleton/>
 
     if (status === "success") {
-        return (
-            <Dialog open={open} onClose={onClose}>
-                <DialogTitle>Settings</DialogTitle>
-    
-                <DialogContent>
-                    <ArgumentsForm
-                        args={module.args}
-                        guild={guild}
-                        currentConfig={instance.config}
-                        ref={argsFormRef}
-                    />
-                </DialogContent>
-    
-                <DialogActions>
-                    <Button
-                        onClick={handleSubmit}
-                        color="primary"
-                    >
-                        Save
-                    </Button>
-                </DialogActions>
-            </Dialog>
+        child = (
+            <ArgumentsForm
+                args={module.args}
+                guild={guild}
+                currentConfig={instance.config}
+                ref={argsFormRef}
+            />
         )
     }
 
     if (status === "error") {
-        return <div>{error}</div>
+        child = error
     }
 
-    return <CircularProgress/>
+    return (
+        <Dialog open={open} onClose={onClose}>
+            <DialogTitle onClose={onClose}>Settings</DialogTitle>
+
+            <DialogContent dividers>
+                { child }
+            </DialogContent>
+
+            <DialogActions>
+                <Button onClick={handleSubmit}>
+                    Save
+                </Button>
+            </DialogActions>
+        </Dialog>
+    )
+}
+
+function GuildSettingsDialogSkeleton() {
+    return (
+        <>
+            {Array(4).fill(0).map((_, i) => (
+                <Skeleton
+                    width={500}
+                    height={50}
+                    key={i}
+                />
+            ))}
+        </>
+    )
 }
 
 export default withStreamSubscription(
