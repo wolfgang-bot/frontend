@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useRef } from "react"
+import React, { useEffect, useRef } from "react"
+import { useHistory, useRouteMatch } from "react-router-dom"
 import { Tabs, Tab, Box } from "@material-ui/core"
 
 import { API } from "../../config/types"
@@ -15,14 +16,34 @@ export type TabProps = {
 }
 
 const tabs = [
-    { label: "Overview", component: OverviewTab },
-    { label: "Modules", component: ModulesTab },
-    { label: "Community", component: CommunityTab }
+    {
+        label: "Overview",
+        path: "overview",
+        component: OverviewTab
+    },
+    {
+        label: "Modules",
+        path: "modules",
+        component: ModulesTab
+    },
+    {
+        label: "Community",
+        path: "community",
+        component: CommunityTab,
+    }
 ]
 
+function getTabFromPath(path: string) {
+    return tabs.find(tab => tab.path === path)
+}
+
 function TabsRouter({ guild }: { guild: API.Guild }) {
-    const [currentTab, setCurrentTab] = useState(0)
-    const currentLabel = tabs[currentTab].label
+    const history = useHistory()
+    
+    const { path, url } = useRouteMatch()
+    const match = useRouteMatch<{ tab: string }>(`${path}/:tab`)
+
+    const currentTab = getTabFromPath(match?.params.tab || "") || tabs[0]
 
     const streamRefs = useRef<Record<string, StreamRefHandle[]>>({})
 
@@ -30,10 +51,8 @@ function TabsRouter({ guild }: { guild: API.Guild }) {
         return Object.values(streamRefs.current).flat()
     }
 
-    const handleTabChange = (_event: React.ChangeEvent<{}>, newValue: number) => {
-        setCurrentTab(newValue)
-        const tabLabel = tabs[newValue].label
-        streamRefs.current[tabLabel] = []
+    const handleTabChange = (_event: React.ChangeEvent<{}>, newPath: string) => {
+        history.push(`${url}/${newPath}`)
     }
 
     useEffect(() => {
@@ -44,28 +63,34 @@ function TabsRouter({ guild }: { guild: API.Guild }) {
         }
     }, [])
 
+    streamRefs.current[currentTab.label] = []
+
     return (
         <Layout
             navbar={
-                <Tabs value={currentTab} onChange={handleTabChange}>
+                <Tabs value={currentTab.path} onChange={handleTabChange}>
                     {tabs.map((tab, i) => (
-                        <Tab label={tab.label} key={i}/>
+                        <Tab
+                            label={tab.label}
+                            value={tab.path}
+                            key={i}
+                        />
                     ))}
                 </Tabs>
             }
         >
             <Box mt={4}>
-                {React.createElement(tabs[currentTab].component, {
+                {React.createElement(currentTab.component, {
                     guild,
                     getStreamRef: (ref: StreamRefHandle) => {
                         if (!ref) {
                             return
                         }
 
-                        streamRefs.current[currentLabel].push(ref)
+                        streamRefs.current[currentTab.label].push(ref)
                     },
                     onClearStreamRefs: () => {
-                        streamRefs.current[currentLabel] = []
+                        streamRefs.current[currentTab.label] = []
                     }
                 })}
             </Box>
