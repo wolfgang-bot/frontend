@@ -109,6 +109,12 @@ export declare namespace API {
         isBotAdmin: boolean
     }
 
+    export type Admin = {
+        id: string,
+        user_id: string,
+        user?: User
+    }
+
     export type Module = {
         key: string,
         name: string,

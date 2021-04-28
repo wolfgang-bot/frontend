@@ -7,7 +7,9 @@ export enum FORMATS {
     GUILD,
     GUILDS,
     MODULE,
-    MODULES
+    MODULES,
+    ADMIN,
+    ADMINS
 }
 
 type Response<T> = {
@@ -47,13 +49,21 @@ function formatModule(module: API.Module) {
     module.icon = `${STORAGE_BASE_URL}/modules/${module.key}/icon.png`
 }
 
+function formatAdmin(admin: API.Admin) {
+    if (admin.user) {
+        formatUser(admin.user)
+    }
+}
+
 const formatterMap: Record<FORMATS, (data: Response<any>) => void> = {
     [FORMATS.USER]: (data: Response<API.User>) => formatUser(data.data!),
     [FORMATS.USERS]: (data: Response<API.User[]>) => data.data!.map(formatUser),
     [FORMATS.GUILD]: (data: Response<API.Guild>) => formatGuild(data.data!),
     [FORMATS.GUILDS]: (data: Response<API.Guild[]>) => data.data!.map(formatGuild),
     [FORMATS.MODULE]: (data: Response<API.Module>) => formatModule(data.data!),
-    [FORMATS.MODULES]: (data: Response<API.Module[]>) => data.data!.map(formatModule)
+    [FORMATS.MODULES]: (data: Response<API.Module[]>) => data.data!.map(formatModule),
+    [FORMATS.ADMIN]: (data: Response<API.Admin>) => formatAdmin(data.data!),
+    [FORMATS.ADMINS]: (data: Response<API.Admin[]>) => data.data!.map(formatAdmin),
 }
 
 export default function format<T>(type: FORMATS) {

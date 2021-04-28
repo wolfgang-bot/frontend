@@ -174,6 +174,30 @@ class WebSocketAPI {
     resumeStream(args: API.StreamArgs) {
         return this.fetch("post:stream/resume", args)
     }
+
+    /**
+     * @fires get:admins
+     */
+    async getAdmins() {
+        const data = await this.fetch<API.Admin[]>("get:admins")
+        return format<API.Admin[]>(FORMATS.ADMINS)(data)
+    }
+
+    /**
+     * @fires post:admins/create
+     */
+    async createAdmin(args: { userId: string }) {
+        const data = await this.fetch<API.Admin>("post:admins/create", args)
+        return format<API.Admin>(FORMATS.ADMIN)(data)
+    }
+
+    /**
+     * @fires post:admins/remove
+     */
+    async removeAdmin(args: { id: string }) {
+        const data = await this.fetch<API.Admin>("post:admins/remove", args)
+        return format<API.Admin>(FORMATS.ADMIN)(data)
+    }
 }
 
 export default WebSocketAPI
