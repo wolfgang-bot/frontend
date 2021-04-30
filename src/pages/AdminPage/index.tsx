@@ -10,6 +10,7 @@ import GuildCount, { GuildTrend } from "../../features/streams/GuildCount"
 import UserCount, { UserTrend } from "../../features/streams/UserCount"
 import ModuleInstanceCount, { ModuleInstanceTrend } from "../../features/streams/ModuleInstanceCount"
 import { GuildChart, UserChart, ModuleInstanceChart } from "../../features/streams/charts"
+import ModuleShares from "../../features/streams/ModuleShares"
 import AdminList from "../../features/users/AdminList"
 import AdminForm from "../../components/Forms/AdminForm"
 import GuildList from "../../features/guilds/GlobalGuildList"
@@ -69,6 +70,14 @@ function AdminPage() {
                             trend={<ModuleInstanceTrend />}
                             label="Active Module-Instances"
                         />
+                    </Grid>
+
+                    <Grid item xs>
+                        <Paper variant="outlined">
+                            <Box p={2}>
+                                <ModuleShares/>
+                            </Box>
+                        </Paper>
                     </Grid>
                 </Grid>
 

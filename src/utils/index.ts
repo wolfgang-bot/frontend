@@ -51,4 +51,3 @@ export function mergeStatus(...args: LoadingState[]): LoadingState {
         "error"
     )
 }
-

@@ -154,6 +154,7 @@ export declare namespace API {
         "guilds-resources" |
         "users" |
         "module-instances" |
+        "module-shares" |
         "user-guilds" |
         "guild-module-instances" |
         "members" |

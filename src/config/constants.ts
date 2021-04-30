@@ -21,3 +21,16 @@ export const DISCORD_BOT_INVITE_URL = `https://discord.com/oauth2/authorize?clie
 
 export const LOCAL_STORAGE_REDUX_SETTINGS_KEY = "settings"
 export const LOCAL_STORAGE_TOKEN_KEY = "token"
+
+export const COLORS = [
+    "#f1c40f",
+    "#9b59b6",
+    "#2ecc71",
+    "#34495e",
+    "#e74c3c",
+    "#1abc9c",
+    "#e67e22",
+    "#3498db",
+    "#ecf0f1",
+    "#95a5a6"
+]

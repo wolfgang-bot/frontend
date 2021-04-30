@@ -27,7 +27,8 @@ const STREAM_GROUPS: Record<keyof SliceState, API.EVENT_STREAM[]> = {
         "guilds",
         "guilds-resources",
         "users",
-        "module-instances"
+        "module-instances",
+        "module-shares"
     ]
 }
 
@@ -61,7 +62,8 @@ function createInitialAdminState(): StreamsMap {
         "guilds": createStreamState<API.Event<API.GuildEventMeta>>("guilds"),
         "guilds-resources": createStreamState<API.Guild[]>("guilds-resources"),
         "users": createStreamState<API.Event<API.UserEventMeta>>("users"),
-        "module-instances": createStreamState<API.Event<API.ModuleInstanceEventMeta>>("module-instances")
+        "module-instances": createStreamState<API.Event<API.ModuleInstanceEventMeta>>("module-instances"),
+        "module-shares": createStreamState<Record<string, number>>("module-shares")
     }
 }
 
