@@ -3,11 +3,14 @@ import { API } from "../../config/types"
 import withStreamSubscription from "../streams/withStreamSubscription"
 import GuildListItem from "./GuildListItem"
 
-function GloablGuildList({ data }: {
-    data: API.Guild[]
-}) {
+type Props = React.ComponentProps<typeof List> & {
+    data: API.Guild[],
+    isLoading: boolean
+}
+
+function GlobalGuildList({ data, isLoading, ...props }: Props) {
     return (
-        <List>
+        <List {...props}>
             {data.map(guild => (
                 <GuildListItem
                     guild={guild}
@@ -18,4 +21,4 @@ function GloablGuildList({ data }: {
     )
 }
 
-export default withStreamSubscription(GloablGuildList, "guilds-resources")
+export default withStreamSubscription(GlobalGuildList, "guilds-resources")

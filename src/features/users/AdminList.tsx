@@ -17,7 +17,7 @@ import Avatar from "../../components/User/Avatar"
 import { API } from "../../config/types"
 import opener from "../../components/ComponentOpener"
 
-function AdminList() {
+function AdminList(props: React.ComponentProps<typeof List>) {
     const dispatch = useDispatch()
     
     const admins = useSelector((store: RootState) => store.users.admins.data)
@@ -50,7 +50,7 @@ function AdminList() {
 
     if (status === "success") {
         return (
-            <List>
+            <List {...props}>
                 {Object.values(admins).map(admin => (
                     <ListItem key={admin.id}>
                         {admin.user && (
