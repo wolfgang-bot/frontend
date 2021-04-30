@@ -74,9 +74,7 @@ function AdminPage() {
 
                     <Grid item xs>
                         <Paper variant="outlined">
-                            <Box p={2}>
-                                <ModuleShares/>
-                            </Box>
+                            <ModuleShares/>
                         </Paper>
                     </Grid>
                 </Grid>

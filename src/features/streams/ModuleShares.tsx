@@ -25,6 +25,10 @@ function ModuleShares({ data }: { data: Record<string, number> }) {
                     }
                 ]
             }}
+            options={{
+                maintainAspectRatio: false
+            }}
+            height={129}
         />
     )
 }
