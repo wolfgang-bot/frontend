@@ -20,7 +20,7 @@ function ChannelInput({ arg, guild, className, channelType, disabled }: {
     const dispatch = useDispatch()
 
     const { status, error, data } = useSelector(
-        (store: RootState) => store.guilds.data[guild.id]?.channels
+        (store: RootState) => store.guilds.user.data[guild.id]?.channels
     )
 
     useEffect(() => {

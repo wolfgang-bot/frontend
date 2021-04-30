@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 import { API } from "../../config/types"
 import { RootState } from "../../store"
-import { updateGuilds } from "../guilds/guildsSlice"
+import { updateUserGuilds } from "../guilds/guildsSlice"
 
 type StreamsMap = Partial<Record<API.EVENT_STREAM, API.Stream<any>>>
 type SliceState = {
@@ -25,6 +25,7 @@ const STREAM_GROUPS: Record<keyof SliceState, API.EVENT_STREAM[]> = {
     ],
     admin: [
         "guilds",
+        "guilds-resources",
         "users",
         "module-instances"
     ]
@@ -58,6 +59,7 @@ function createInitialGuildState(): StreamsMap {
 function createInitialAdminState(): StreamsMap {
     return {
         "guilds": createStreamState<API.Event<API.GuildEventMeta>>("guilds"),
+        "guilds-resources": createStreamState<API.Guild[]>("guilds-resources"),
         "users": createStreamState<API.Event<API.UserEventMeta>>("users"),
         "module-instances": createStreamState<API.Event<API.ModuleInstanceEventMeta>>("module-instances")
     }
@@ -149,7 +151,7 @@ const streamsSlice = createSlice({
         }
     },
     extraReducers: {
-        [updateGuilds.toString()]: (state, action: PayloadAction<API.Guild[]>) => {
+        [updateUserGuilds.toString()]: (state, action: PayloadAction<API.Guild[]>) => {
             action.payload.forEach(guild => {
                 if (!state.guild[guild.id]) {
                     state.guild[guild.id] = createInitialGuildState()

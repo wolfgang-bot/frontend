@@ -19,7 +19,7 @@ function RoleInput({ arg, guild, className, disabled }: {
     const dispatch = useDispatch()
 
     const { status, error, data } = useSelector(
-        (store: RootState) => store.guilds.data[guild.id]?.roles
+        (store: RootState) => store.guilds.user.data[guild.id]?.roles
     )
 
     useEffect(() => {

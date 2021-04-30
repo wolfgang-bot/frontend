@@ -12,7 +12,7 @@ import {
 import RemoveIcon from "@material-ui/icons/Close"
 
 import { RootState } from "../../store"
-import { fetchAdmins, removeAdmin } from "../../features/users/usersSlice"
+import { fetchAdmins, removeAdmin } from "./usersSlice"
 import Avatar from "../../components/User/Avatar"
 import { API } from "../../config/types"
 import opener from "../../components/ComponentOpener"
@@ -58,7 +58,10 @@ function AdminList() {
                                 <Box mr={2}>
                                     <Avatar user={admin.user}/>
                                 </Box>
-                                <ListItemText primary={admin.user.username}/>
+                                <ListItemText
+                                    primary={admin.user.username}
+                                    secondary={admin.user.id}
+                                />
                             </>
                         )}
 

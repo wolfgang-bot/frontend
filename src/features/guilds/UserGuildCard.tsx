@@ -8,7 +8,7 @@ import GuildIcon from "../../components/Discord/GuildIcon"
 import { DISCORD_BOT_INVITE_URL } from "../../config/constants"
 import GuildStatus from "./GuildStatus"
 
-function GuildCard({ guild, className }: {
+function UserGuildCard({ guild, className }: {
     guild: API.Guild,
     className?: string
 }) {
@@ -68,7 +68,7 @@ function GuildCard({ guild, className }: {
     )
 }
 
-export function GuildCardSkeleton(
+export function UserGuildCardSkeleton(
     props: React.ComponentProps<typeof Skeleton>
 ) {
     return (
@@ -80,4 +80,4 @@ export function GuildCardSkeleton(
     )
 }
 
-export default GuildCard
+export default UserGuildCard

@@ -6,6 +6,7 @@ export default class StreamFormatter {
         Record<API.EVENT_STREAM, (data: any) => any>
     > = {
         "user-guilds": format(FORMATS.GUILDS),
+        "guilds-resources": format(FORMATS.GUILDS),
         "user-message-leaderboard": this.leaderboardFormatter.bind(this),
         "user-voice-leaderboard": this.leaderboardFormatter.bind(this)
     }

@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form"
 import AddIcon from "@material-ui/icons/Add"
 
 import { createAdmin as createAdminAction } from "../../features/users/usersSlice"
-import opener from "../../components/ComponentOpener"
+import opener from "../ComponentOpener"
 
 function AdminForm() {
     const dispatch = useDispatch()

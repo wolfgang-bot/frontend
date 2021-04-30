@@ -15,9 +15,9 @@ function MemberCount({ guild, data }: {
 }) {
     const dispatch = useDispatch()
 
-    const status = useSelector((store: RootState) => store.guilds.data[guild.id]?.memberCount.status)
-    const apiMemberCount = useSelector((store: RootState) => store.guilds.data[guild.id]?.memberCount.data)
-    const error = useSelector((store: RootState) => store.guilds.data[guild.id]?.memberCount.error)
+    const status = useSelector((store: RootState) => store.guilds.user.data[guild.id]?.memberCount.status)
+    const apiMemberCount = useSelector((store: RootState) => store.guilds.user.data[guild.id]?.memberCount.data)
+    const error = useSelector((store: RootState) => store.guilds.user.data[guild.id]?.memberCount.error)
 
     useEffect(() => {
         if (status === "idle") {

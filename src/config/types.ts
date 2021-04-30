@@ -92,8 +92,6 @@ export declare namespace API {
         icon?: string,
         icon_animated: string,
         status?: GUILD_STATUS,
-        owner: boolean,
-        permissions: number,
         channels: ReduxAPIState<Record<string, Discord.GuildChannel>>,
         roles: ReduxAPIState<Record<string, API.Role>>,
         memberCount: ReduxAPIState<number>
@@ -153,6 +151,7 @@ export declare namespace API {
 
     export type EVENT_STREAM =
         "guilds" |
+        "guilds-resources" |
         "users" |
         "module-instances" |
         "user-guilds" |

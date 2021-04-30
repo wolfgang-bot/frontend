@@ -8,7 +8,7 @@ import { fetchUser, initAPI, logout } from "../features/auth/authSlice"
 import { updateInstances } from "../features/moduleInstances/moduleInstancesSlice"
 import { makeStreamStatusSelector } from "../features/streams/streamsSlice"
 import api from "../api"
-import { updateGuilds } from "../features/guilds/guildsSlice"
+import { updateUserGuilds, updateGlobalGuilds } from "../features/guilds/guildsSlice"
 
 export const authMiddleware: Middleware = () => next => (action: PayloadAction<{
     token?: string
@@ -88,7 +88,11 @@ export const streamDataMiddleware: Middleware = () => next => (action: PayloadAc
                 break
 
             case "user-guilds":
-                store.dispatch(updateGuilds(action.payload.data))
+                store.dispatch(updateUserGuilds(action.payload.data))
+                break
+
+            case "guilds-resources":
+                store.dispatch(updateGlobalGuilds(action.payload.data))
                 break
         }
     }

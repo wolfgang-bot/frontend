@@ -9,8 +9,9 @@ import GuildCount, { GuildTrend } from "../../features/streams/GuildCount"
 import UserCount, { UserTrend } from "../../features/streams/UserCount"
 import ModuleInstanceCount, { ModuleInstanceTrend } from "../../features/streams/ModuleInstanceCount"
 import { GuildChart, UserChart, ModuleInstanceChart } from "../../features/streams/charts"
-import AdminList from "./AdminList"
-import AdminForm from "./AdminForm"
+import AdminList from "../../features/users/AdminList"
+import AdminForm from "../../components/Forms/AdminForm"
+import GuildList from "../../features/guilds/GlobalGuildList"
 
 function AdminPage() {
     return (
@@ -74,6 +75,20 @@ function AdminPage() {
                 <Grid item xs>
                     <Paper variant="outlined">
                         <Box px={3} py={2}>
+                            <Typography variant="body1">Guilds</Typography>
+                        </Box>
+
+                        <Divider/>
+
+                        <Box px={1}>
+                            <GuildList/>
+                        </Box>
+                    </Paper>
+                </Grid>
+
+                <Grid item xs>
+                    <Paper variant="outlined">
+                        <Box px={3} py={2}>
                             <Typography variant="body1">Admins</Typography>
                         </Box>
 
@@ -88,8 +103,6 @@ function AdminPage() {
                         </Box>
                     </Paper>
                 </Grid>
-
-                <Grid item xs/>
             </Grid>
         </Layout>
     )

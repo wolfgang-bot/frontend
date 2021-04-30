@@ -2,7 +2,7 @@ import React from "react"
 import { makeStyles } from "@material-ui/core/styles"
 import { Box } from "@material-ui/core"
 
-import GuildCard, { GuildCardSkeleton } from "../guilds/GuildCard"
+import GuildCard, { UserGuildCardSkeleton } from "./UserGuildCard"
 import { API } from "../../config/types"
 import withStreamSubscription from "../streams/withStreamSubscription"
 
@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-function GuildList({ data, isLoading }: {
+function UserGuildList({ data, isLoading }: {
     data: API.Guild[],
     isLoading: boolean
 }) {
@@ -36,7 +36,7 @@ function GuildList({ data, isLoading }: {
         <>
             {Array(3).fill(3).map((_, i) => (
                 <Box mt={2} key={i}>
-                    <GuildCardSkeleton
+                    <UserGuildCardSkeleton
                         className={classes.guildCard}
                     />
                 </Box>
@@ -45,7 +45,7 @@ function GuildList({ data, isLoading }: {
     )
 }
 
-export default withStreamSubscription(GuildList, "user-guilds", {
+export default withStreamSubscription(UserGuildList, "user-guilds", {
     showOverlayIfEmpty: false,
     renderProgressWhileLoading: false,
     useAutomatedStreamPausing: false
