@@ -21,8 +21,8 @@ export const darkTheme = createMuiTheme({
     palette: {
         type: "dark",
         background: {
-            default: "#181818",
-            paper: "#202020"
+            default: "#0B0E11",
+            paper: "#151A21"
         }
     }
 })

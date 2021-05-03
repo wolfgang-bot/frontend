@@ -1,7 +1,10 @@
 import { Typography } from "@material-ui/core"
 import { makeStyles } from "@material-ui/core/styles"
+import { useSelector } from "react-redux"
 
-import icon from "../../assets/images/icon-white.svg"
+import defaultIcon from "../../assets/images/icon.svg"
+import whiteIcon from "../../assets/images/icon-white.svg"
+import { RootState } from "../../store"
 
 const useStyles = makeStyles(theme => ({
     brand: {
@@ -22,9 +25,15 @@ const useStyles = makeStyles(theme => ({
 function Brand() {
     const classes = useStyles()
 
+    const isDarkMode = useSelector((store: RootState) => store.settings.isDarkMode)
+
     return (
         <div className={classes.brand}>
-            <img src={icon} alt="icon" className={classes.logo}/>
+            <img
+                src={isDarkMode ? whiteIcon : defaultIcon}
+                alt="icon"
+                className={classes.logo}
+            />
             <Typography
                 color="textPrimary"
                 variant="h6"
