@@ -69,7 +69,6 @@ function Header() {
                                 <Brand/>
                             </Link>
                         </Box>
-
                         
                         <Box display="flex" alignItems="center">
                             {!isLoggedIn ? (
