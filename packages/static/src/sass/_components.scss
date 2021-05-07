@@ -64,6 +64,26 @@
     font-size: $font-size-xl;
 }
 
+.subtitle {
+    font-size: $font-size-l;
+}
+
 .text {
     font-size: $font-size-s;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    
+    img {
+        width: 48px;
+        margin-right: 12px;
+    }
+
+    span {
+        color: $color-text-87;
+        font-size: $font-size-m;
+        letter-spacing: $letter-spacing-l;
+    }
 }
