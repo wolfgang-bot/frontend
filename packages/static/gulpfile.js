@@ -17,7 +17,7 @@ const source = require('vinyl-source-stream');
 const buffer = require('vinyl-buffer');
 
 const src = './src';
-const dest = './dist';
+const dest = './build';
 
 const reload = (done) => {
     browserSync.reload();

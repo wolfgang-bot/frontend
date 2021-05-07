@@ -16,7 +16,7 @@ function Router() {
         <LayoutContext.Provider value={{
             isDashboard: false
         }}>
-            <BrowserRouter>
+            <BrowserRouter basename="/dashboard">
                 <ErrorBoundary>
                     <Switch>
                         <ProtectedRoute path="/dashboard">
