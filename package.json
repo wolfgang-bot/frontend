@@ -4,9 +4,11 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "npx lerna exec --parallel npm start",
-    "install": "npx lerna exec npm install",
-    "ci": "npx lerna exec npm ci"
+    "start": "npm start",
+    "packages:start": "npx lerna exec --parallel npm start",
+    "packages:install": "npx lerna exec npm install",
+    "packages:ci": "npx lerna exec npm ci",
+    "packages:build": "npx lerna exec npm run build"
   },
   "repository": {
     "type": "git",
@@ -19,6 +21,11 @@
     "url": "https://github.com/Personal-Discord-Bot/frontend/issues"
   },
   "homepage": "https://github.com/Personal-Discord-Bot/frontend#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "fastify": "^3.14.0",
+    "fastify-static": "^4.0.1"
+  },
   "devDependencies": {
     "lerna": "^4.0.0"
   }
