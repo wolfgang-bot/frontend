@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Source+Code+Pro&family=Varela+Round&display=swap');
+
+body {
+    background-color: $color-background-900;
+    font-family: "Varela Round", sans-serif;
+    color: $color-text-87;
+}
+
+a {
+    text-decoration: none;
+    color: $color-text-100;
+}
+
+header {
+    height: 128px;
+    margin-bottom: 64px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+section {
+    margin-bottom: 400px;
+}
+
+ul, ol {
+    list-style: none;
+    padding: 0;
+}
