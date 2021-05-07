@@ -1,0 +1,105 @@
+$height: 500px;
+
+.modules {
+    .title {
+        margin-bottom: 48px;
+    }   
+}
+
+.module-action-container {
+    display: flex;
+} 
+
+$list-item-spacing: 16px;
+
+#module-list {
+    margin-left: -$list-item-spacing;
+    margin-right: 0;
+    height: $height;
+}
+
+.module-list-item {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    width: 400px;
+    background-color: $color-background-800;
+    border-radius: 32px;
+    margin: $list-item-spacing;
+    cursor: pointer;
+
+    img {
+        width: 32px;
+        height: 32px;
+        margin-right: 16px;
+    }
+
+    &:nth-child(2) {
+        margin-top: 0;
+    }
+}
+
+.module-name {
+    font-size: $font-size-s;
+    font-family: inherit;
+}
+
+#module-content {
+    $padding: 48px;
+
+    width: 100%;
+    background-color: $color-background-800;
+    border-radius: 32px;
+    padding: $padding;
+    font-size: $font-size-s;
+    height: $height - $padding * 2;
+    overflow-y: auto;
+}
+
+.module-features, .module-commands {
+    margin-bottom: 48px;
+}
+
+.module-feature {
+    margin-bottom: 16px;
+    padding-left: 24px;
+    position: relative;
+
+    &:before {
+        content: "";
+        background-image: url("/assets/arrow-right.svg");
+        background-position: center;
+        width: 16px;
+        height: 16px;
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+}
+
+.module-command {
+    margin-bottom: 32px;
+}
+
+.module-command-desc {
+    margin-bottom: 8px;
+}
+
+.module-command-usage {
+    padding: 8px;
+    font-family: "Source Code Pro", monospace;
+    background-color: $color-background-700;
+    border-radius: 4px;
+}
+
+.module-images {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 16px;
+
+    img {
+        height: 100px;
+    }
+}

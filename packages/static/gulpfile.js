@@ -80,7 +80,8 @@ const script = () => {
         .transform('babelify', {
             presets: ['babel-preset-env'],
             plugins: ['babel-plugin-transform-runtime']
-        }).plugin('tinyify')
+        })
+        .plugin('tinyify')
         .bundle()
         .pipe(source(`main.bundle.js`))
         .pipe(buffer())
