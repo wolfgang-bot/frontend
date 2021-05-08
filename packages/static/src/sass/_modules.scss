@@ -95,7 +95,6 @@ $list-item-spacing: 16px;
 }
 
 .module-name {
-    font-size: $font-size-s;
     font-family: inherit;
 }
 
@@ -106,7 +105,6 @@ $list-item-spacing: 16px;
     background-color: $color-background-800;
     border-radius: 32px;
     padding: $padding;
-    font-size: $font-size-s;
     height: $height - $padding * 2;
     overflow-y: auto;
 }
