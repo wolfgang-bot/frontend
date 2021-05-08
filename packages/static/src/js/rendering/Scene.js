@@ -7,6 +7,7 @@ const { ensureIsArray } = require("../utils.js")
 class Scene {
     constructor(canvas) {
         this.canvas = canvas
+        this.objects = []
         this.init()
     }
     
@@ -27,10 +28,14 @@ class Scene {
     }
 
     addObject(object) {
+        this.objects.push(object)
         this.scene.add(...ensureIsArray(object.getObject()))
     }
     
     update(time) {
+        for (let object of this.objects) {
+            object.update?.(time)
+        }
         this.renderer.render(this.scene, this.camera.getObject())
     }
 

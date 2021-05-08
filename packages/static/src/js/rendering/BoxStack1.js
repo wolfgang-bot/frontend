@@ -21,6 +21,13 @@ class BoxStack1 extends BoxStackAbstract {
     constructor(boxSize) {
         super(matrix, colors, boxSize)
     }
+
+    update(time) {
+        this.forEachCell((i, x, y, z) => {
+            const offset = (x + z) / 2
+            this.boxes[i].move(0, Math.sin(time / 3000 + offset) / 12, 0)
+        })
+    }
 }
 
 module.exports = BoxStack1

@@ -18,7 +18,7 @@ class BoxStackAbstract {
         })
     }
 
-    update() {
+    updateBoxPositions() {
         this.forEachCell((i, x, y, z) => {
             this.boxes[i].setPosition(...this.getBoxPosition(x, y, z))
         })
@@ -52,7 +52,7 @@ class BoxStackAbstract {
 
     setPosition(x, y, z) {
         this.position = [x, y, z]
-        this.update()
+        this.updateBoxPositions()
     }
 }
 

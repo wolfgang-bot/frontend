@@ -30,6 +30,18 @@ class Box {
     setPosition(x, y, z) {
         this.mesh.position.set(x, y, z)
     }
+
+    move(x, y, z) {
+        this.mesh.position.add(new THREE.Vector3(x, y, z))
+    }
+
+    setUpdateFunction(fn) {
+        this.updateFunction = fn
+    }
+
+    update(time) {
+        this.updateFunction?.call(this, time)
+    }
 }
 
 module.exports = Box
