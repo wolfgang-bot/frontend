@@ -12,8 +12,6 @@ const cssnano = require("cssnano");
 
 const htmlmin = require('gulp-htmlmin');
 
-const terser = require('gulp-terser-js');
-const source = require('vinyl-source-stream');
 const buffer = require('vinyl-buffer');
 
 const esbuild = createGulpEsbuild({
