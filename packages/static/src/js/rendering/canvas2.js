@@ -8,7 +8,7 @@ const canvas = document.getElementById("canvas-2")
 const scene = new Scene(canvas)
 scene.setCameraPosition(-300, 300, 400)
 scene.setCameraFocusPosition(0, 0, 0)
-scene.setLightPosition(-100, 1500, 200)
+scene.setLightPosition(-100, 1500, 300)
 
 const box = new Box(70, config.colors[0])
 box.setPosition(1000, 0, 300)
