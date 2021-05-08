@@ -8,6 +8,7 @@
         "build": "gulp build"
     },
     "dependencies": {
+        "animejs": "^3.2.1",
         "babel-runtime": "^6.26.0",
         "normalize.css": "^8.0.1"
     },
