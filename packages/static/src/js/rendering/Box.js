@@ -17,7 +17,6 @@ class Box {
             color: this.color
         })
         this.mesh = new THREE.Mesh(this.geometry, this.material)
-        this.setRotation(Math.PI / 6, Math.PI / 4, 0)
     }
 
     getObject() {
