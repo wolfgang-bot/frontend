@@ -1,4 +1,12 @@
 module.exports = {
     apiBaseURL: "http://localhost:8080/api",
-    storageBaseURL: "http://localhost:8080/storage"
+    storageBaseURL: "http://localhost:8080/storage",
+
+    colors: [
+        "#1abc9c",
+        "#3498db",
+        "#9b59b6",
+        "#34495e",
+        "#95a5a6"
+    ]
 }

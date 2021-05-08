@@ -2,7 +2,7 @@ const gulp = require('gulp');
 const plumber = require("gulp-plumber");
 const rename = require("gulp-rename");
 const browserSync = require('browser-sync').create();
-const browserify = require('browserify');
+const { createGulpEsbuild } = require("gulp-esbuild")
 const sourcemaps = require('gulp-sourcemaps');
 
 const sass = require('gulp-sass');
@@ -15,6 +15,10 @@ const htmlmin = require('gulp-htmlmin');
 const terser = require('gulp-terser-js');
 const source = require('vinyl-source-stream');
 const buffer = require('vinyl-buffer');
+
+const esbuild = createGulpEsbuild({
+    pipe: true
+})
 
 const src = './src';
 const dest = './build';
@@ -76,18 +80,14 @@ const html = () => {
 
 // Compile .js to minified .js
 const script = () => {
-    return browserify(`${src}/js/main.js`, { debug: true })
-        .transform('babelify', {
-            presets: ['babel-preset-env'],
-            plugins: ['babel-plugin-transform-runtime']
-        })
-        .plugin('tinyify')
-        .bundle()
-        .pipe(source(`main.bundle.js`))
+    return gulp.src(`${src}/js/main.js`)
+        .pipe(esbuild({
+            bundle: true,
+            minify: true,
+            sourcemap: "external",
+            platform: "browser"
+        }))
         .pipe(buffer())
-        .pipe(sourcemaps.init({ loadMaps: true }))
-        .pipe(terser())
-        .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(`${dest}/js`));
 };
 
