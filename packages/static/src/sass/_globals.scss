@@ -25,16 +25,25 @@ ul, ol {
     padding: 0;
 }
 
+section {
+    margin-bottom: $section-gap;
+
+    &:last-child {
+        margin-bottom: $last-section-gap;
+    }
+}
+
+canvas {
+    height: $section-gap;
+    margin-top: -$section-gap;
+    width: 100%;
+    pointer-events: none;
+}
+
 *::-webkit-scrollbar {
     width: 4px;
 }
 
 *::-webkit-scrollbar-thumb {
     background-color: rgba(255, 255, 255, .5);
-}
-
-canvas {
-    height: $section-gap;
-    width: 100%;
-    pointer-events: none;
 }

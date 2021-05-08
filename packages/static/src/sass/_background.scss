@@ -2,5 +2,5 @@
    $offset: 200px;
    
    height: $section-gap + $offset;
-   margin-top: -$offset;
+   margin-top: -($section-gap + $offset);
 }
