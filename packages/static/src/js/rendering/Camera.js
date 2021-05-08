@@ -1,18 +1,16 @@
 const THREE = require("three")
 const { OrbitControls } = require("three/examples/jsm/controls/OrbitControls")
+const { getNodeDimensions } = require("../utils.js")
 
 class Camera {
-    constructor(width, height, canvas) {
-        this.width = width
-        this.height = height
+    constructor(canvas) {
         this.canvas = canvas
         this.createObject()
     }
 
     createObject() {
-        this.camera = new THREE.OrthographicCamera(
-            0, this.width, this.height, 0, 1e-2, 1e4
-        )
+        const [width, height] = getNodeDimensions(this.canvas)
+        this.camera = new THREE.OrthographicCamera(0, width, height, 0, 1e-2, 1e4)
         // this.camera = new THREE.PerspectiveCamera(70, this.width / this.height, 1e-2, 1e4)
     }
     

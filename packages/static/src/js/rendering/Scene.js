@@ -1,11 +1,8 @@
 const THREE = require("three")
 const Renderer = require("./Renderer")
 const Light = require("./Light")
-const Box = require("./Box.js")
 const Camera = require("./Camera.js")
-const BoxStack = require("./BoxStack1.js")
-const config = require("../config")
-const { getNodeDimensions, ensureIsArray } = require("../utils.js")
+const { ensureIsArray } = require("../utils.js")
 
 class Scene {
     constructor(canvas) {
@@ -14,26 +11,12 @@ class Scene {
     }
     
     init() {
-        const [width, height] = getNodeDimensions(this.canvas)
-
         this.scene = new THREE.Scene()
         
-        this.camera = new Camera(width, height, this.canvas)
-        this.camera.setPosition(-300, 600, 500)
-        this.camera.lookAt(100, 0, -200)
+        this.camera = new Camera(this.canvas)
         this.addObject(this.camera)
 
-        this.box = new Box(70, config.colors[0])
-        this.box.setPosition(150, 400, 0)
-        this.box.setRotation(0, Math.PI / 6, 0)
-        this.addObject(this.box)
-
-        this.stack = new BoxStack(100)
-        this.stack.setPosition(900, 400, 0)
-        this.addObject(this.stack)
-
         this.light = new Light()
-        this.light.setPosition(width / 2, 1000, 0)
         this.addObject(this.light)
 
         this.renderer = new Renderer(this.canvas)
@@ -49,6 +32,18 @@ class Scene {
     
     update(time) {
         this.renderer.render(this.scene, this.camera.getObject())
+    }
+
+    setCameraPosition(x, y, z) {
+        this.camera.setPosition(x, y, z)
+    }
+
+    setCameraFocusPosition(x, y, z) {
+        this.camera.lookAt(x, y, z)
+    }
+
+    setLightPosition(x, y, z) {
+        this.light.setPosition(x, y, z)
     }
 }
 

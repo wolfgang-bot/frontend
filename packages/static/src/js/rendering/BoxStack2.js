@@ -4,23 +4,23 @@ const config = require("../config.js")
 const matrix = [
     [
         [0, 0, 0],
-        [0, 0, 0],
-        [0, 0, 1]
+        [0, 1, 0],
+        [0, 0, 0]
     ],
     [
-        [0, 0, 1],
-        [0, 1, 1],
-        [1, 1, 1]
+        [0, 1, 0],
+        [1, 1, 1],
+        [0, 1, 0]
     ]
 ]
 
-const colors = [0, 4, 3, 1, 1, 2, 3]
+const colors = [1, 4, 3, 0, 0, 2]
     .map((index) => config.colors[index])
 
-class BoxStack1 extends BoxStackAbstract {
+class BoxStack2 extends BoxStackAbstract {
     constructor(boxSize) {
         super(matrix, colors, boxSize)
     }
 }
 
-module.exports = BoxStack1
+module.exports = BoxStack2
