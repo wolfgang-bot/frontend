@@ -63,5 +63,5 @@ api.fetchModules().then((res) => {
         return
     }
     res.filter(moduleFilter).forEach(renderModule)
-    setActiveModule(res[2])
+    setActiveModule(res[0])
 })

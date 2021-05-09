@@ -1,9 +1,11 @@
 const THREE = require("three")
+const config = require("../config.js")
 
 class Box {
-    constructor(size, color) {
+    constructor(size, color, animated = false) {
         this.size = size
         this.color = color
+        this.animated = animated
         this.createObject()
     }
 
@@ -35,12 +37,12 @@ class Box {
         this.mesh.position.add(new THREE.Vector3(x, y, z))
     }
 
-    setUpdateFunction(fn) {
-        this.updateFunction = fn
-    }
-
     update(time) {
-        this.updateFunction?.call(this, time)
+        if (!this.animated) {
+            return
+        }
+        this.setRotation(0, time / (8 * config.animationSpeed), 0)
+        this.move(0, Math.sin(time / (4 * config.animationSpeed)) / 8, 0)
     }
 }
 

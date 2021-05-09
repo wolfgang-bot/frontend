@@ -1,4 +1,5 @@
 const Box = require("./Box.js")
+const config = require("../config.js")
 
 class BoxStackAbstract {
     constructor(matrix, colors, boxSize) {
@@ -53,6 +54,14 @@ class BoxStackAbstract {
     setPosition(x, y, z) {
         this.position = [x, y, z]
         this.updateBoxPositions()
+    }
+
+    update(time) {
+        this.forEachCell((i, x, _y, z) => {
+            const offset = (x + z) / 2
+            const dy = Math.sin(time / (3 * config.animationSpeed) + offset) / 12
+            this.boxes[i].move(0, dy, 0)
+        })
     }
 }
 

@@ -10,7 +10,7 @@ scene.setCameraPosition(-300, 300, 400)
 scene.setCameraFocusPosition(0, 0, 0)
 scene.setLightPosition(-100, 1500, 300)
 
-const box = new Box(70, config.colors[0])
+const box = new Box(70, config.colors[0], true)
 box.setPosition(1000, 0, 300)
 box.setRotation(0, 0, 0)
 scene.addObject(box)
