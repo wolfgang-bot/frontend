@@ -12,13 +12,15 @@
     <div class="container">
         <!-- Header -->
         <header>
-            <div class="brand">
-                <img src="/assets/icon-white.svg" alt="icon">
-                <span>wolfgang</span>
-            </div>
+            <a href="/">
+                <div class="brand">
+                    <img src="/assets/icon-white.svg" alt="icon">
+                    <span>wolfgang</span>
+                </div>
+            </a>
 
             <nav>
-                <a href="#" class="link">Login</a>
+                <a href="/dashboard" class="link">Login</a>
             </nav>
         </header>
 
@@ -32,10 +34,10 @@
             </div>
 
             <div class="actions">
-                <a href="#" class="btn btn-primary btn-arrow">
+                <a class="btn btn-primary btn-arrow" data-invite>
                     Invite
                 </a>
-                <a href="#" class="btn btn-secondary btn-arrow">
+                <a href="/dashboard" class="btn btn-secondary btn-arrow">
                     Login
                 </a>
             </div>
@@ -58,15 +60,15 @@
                 <ol>
                     <li>
                         <span>1. Invite The Bot</span>
-                        <a href="">
-                            <button class="btn btn-primary">Invite</button>
+                        <a class="btn btn-primary" data-invite>
+                            Invite
                         </a>
                     </li>
 
                     <li>
                         <span>2. Start Some Modules</span>
-                        <a href="#">
-                            <button class="btn btn-primary">Dashboard</button>
+                        <a class="btn btn-primary" href="/dashboard">
+                            Dashboard
                         </a>
                     </li>
 

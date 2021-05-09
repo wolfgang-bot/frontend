@@ -1,3 +1,5 @@
+const path = require("path")
+require("dotenv").config({ path: path.join(__dirname, ".env") })
 const gulp = require('gulp');
 const plumber = require("gulp-plumber");
 const rename = require("gulp-rename");
@@ -78,12 +80,24 @@ const html = () => {
 
 // Compile .js to minified .js
 const script = () => {
+    const envKeys = [
+        "REACT_APP_DISCORD_BOT_CLIENT_ID"
+    ]
+
+    const env = Object.fromEntries(
+        envKeys.map((key) => [
+            "process.env." + key,
+            JSON.stringify(process.env[key])
+        ])
+    )
+
     return gulp.src(`${src}/js/main.js`)
         .pipe(esbuild({
             bundle: true,
             minify: true,
             sourcemap: "external",
-            platform: "browser"
+            platform: "browser",
+            define: env
         }))
         .pipe(buffer())
         .pipe(gulp.dest(`${dest}/js`));
@@ -100,13 +114,12 @@ const watch = () => gulp.watch(
     [`${src}/*.html`, `${src}/js/**/*.js`, `${src}/sass/**/*.{sass,scss}`, `${src}/assets/**/*.*`],
     gulp.series(assets, css, script, html, reload));
 
-// Development tasks
-const dev = gulp.series(assets, css, script, html, serve, watch);
+const buildTasks = [assets, css, script, html]
 
-// Build tasks
-const build = gulp.series(css, script, html, assets);
+const dev = gulp.series(...buildTasks, serve, watch);
 
-// Default function (used when type "gulp")
+const build = gulp.series(...buildTasks);
+
 exports.default = dev;
 exports.dev = dev;
 exports.build = build;
