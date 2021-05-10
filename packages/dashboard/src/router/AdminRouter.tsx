@@ -2,7 +2,6 @@ import React from "react"
 import { useSelector } from "react-redux"
 import { Switch, Route, useRouteMatch, Redirect } from "react-router-dom"
 
-import { LayoutContext } from "../components/Layout/Layout"
 import AdminPage from "../pages/AdminPage"
 import { RootState } from "../store"
 
@@ -16,15 +15,11 @@ function AdminRouter() {
     }
 
     return (
-        <LayoutContext.Provider value={{
-            isDashboard: true
-        }}>
-            <Switch>
-                <Route exact path={path}>
-                    <AdminPage />
-                </Route>
-            </Switch>
-        </LayoutContext.Provider>
+        <Switch>
+            <Route exact path={path}>
+                <AdminPage />
+            </Route>
+        </Switch>
     )
 }
 

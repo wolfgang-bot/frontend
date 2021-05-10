@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef } from "react"
+import React, { useState, useRef } from "react"
 import clsx from "clsx"
 import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
@@ -10,7 +10,6 @@ import DarkModeSwitch from "../../features/settings/DarkModeSwitch"
 import Avatar from "../User/Avatar"
 import Brand from "./Brand"
 import Menu from "./Menu"
-import { LayoutContext } from "./Layout"
 
 const useStyles = makeStyles(theme => ({
     header: {
@@ -39,8 +38,6 @@ const useStyles = makeStyles(theme => ({
 }))
 
 function Header() {
-    const context = useContext(LayoutContext)
-
     const classes = useStyles()
 
     const menuAnchorRef = useRef<HTMLElement | null>(null)
@@ -65,9 +62,9 @@ function Header() {
                 <Container>
                     <Grid item container justify="space-between" wrap="nowrap">
                         <Box display="flex" alignItems="center">
-                            <Link to="/">
+                            <a href="/">
                                 <Brand/>
-                            </Link>
+                            </a>
                         </Box>
                         
                         <Box display="flex" alignItems="center">
@@ -82,30 +79,16 @@ function Header() {
                                     </Button>
                                 </Link>
                             ) : (
-                                <>
-                                    {!context.isDashboard && (
-                                        <Link to="/dashboard">
-                                            <Button
-                                                variant="contained"
-                                                className={classes.spacingRight}
-                                                color="secondary"
-                                            >
-                                                Dashboard
-                                            </Button>
-                                        </Link>
-                                    )}
-                                    
-                                    <div
-                                        className={clsx(classes.user, classes.spacingRight)}
-                                        onClick={handleUserClick}
-                                    >
-                                        <Avatar className={classes.avatar}/>
+                                <div
+                                    className={clsx(classes.user, classes.spacingRight)}
+                                    onClick={handleUserClick}
+                                >
+                                    <Avatar className={classes.avatar}/>
 
-                                        <Typography variant="subtitle1">
-                                            {user?.username}
-                                        </Typography>
-                                    </div>
-                                </>
+                                    <Typography variant="subtitle1">
+                                        {user?.username}
+                                    </Typography>
+                                </div>
                             )}
 
                             <DarkModeSwitch />

@@ -24,7 +24,7 @@ function UserGuildCard({ guild, className }: {
                 "noopener,noreferrer"
             )
         } else if (guild.status === GUILD_STATUS.ACTIVE) {
-            history.push("/dashboard/" + guild.id)
+            history.push("/guild/" + guild.id)
         }
     }
 

@@ -7,7 +7,7 @@ import Layout from "../components/Layout/Layout"
 import DiscordOAuth from "../components/OAuth/DiscordOAuth"
 import useLogin from "../utils/useLogin"
 
-const DEFAULT_REDIRECT = "/dashboard"
+const DEFAULT_REDIRECT = "/guild"
 
 const useStyles = makeStyles({
     loginText: {

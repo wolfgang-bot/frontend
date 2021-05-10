@@ -33,10 +33,6 @@ const useStyles = makeStyles<Theme, StyleProps>(theme => ({
     } : {}
 }))
 
-export const LayoutContext = React.createContext({
-    isDashboard: false
-})
-
 function Layout({
     center = false,
     navbar,

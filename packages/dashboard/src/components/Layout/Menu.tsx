@@ -20,12 +20,12 @@ function Menu(props: React.ComponentProps<typeof MuiMenu>) {
 
     const handleLogout = () => {
         dispatch(logout())
-        redirect("/")()
+        window.location.pathname = "/"
     }
     
     return (
         <MuiMenu {...props}>
-            <MenuItem onClick={redirect("/dashboard")}>Guilds</MenuItem>
+            <MenuItem onClick={redirect("/guild")}>Guilds</MenuItem>
             {isBotAdmin && (
                 <MenuItem onClick={redirect("/admin")}>Admin</MenuItem>
             )}
