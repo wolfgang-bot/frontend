@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/Personal-Discord-Bot/frontend#readme",
   "devDependencies": {
+    "gulp-ejs": "^5.1.0",
     "lerna": "^4.0.0"
   },
   "dependencies": {

@@ -12,6 +12,7 @@ const postcss = require("gulp-postcss");
 const autoprefixer = require("autoprefixer");
 const cssnano = require("cssnano");
 
+const ejs = require("gulp-ejs")
 const htmlmin = require('gulp-htmlmin');
 
 const buffer = require('vinyl-buffer');
@@ -62,12 +63,15 @@ const css = () => {
         .pipe(browserSync.stream());
 };
 
-// Compile .html to minified .html
+// Compile .ejs to minfied .html
 const html = () => {
     // Find HTML
-    return gulp.src(`${src}/*.html`)
+    return gulp.src(`${src}/*.ejs`)
         // Init Plumber
         .pipe(plumber())
+        // Render templates
+        .pipe(ejs())
+        .pipe(rename({ extname: ".html" }))
         // Compile HTML to minified HTML
         .pipe(htmlmin({
             collapseWhitespace: true,
@@ -114,7 +118,7 @@ const assets = () => {
 
 // Watch changes and refresh page
 const watch = () => gulp.watch(
-    [`${src}/*.html`, `${src}/js/**/*.js`, `${src}/sass/**/*.{sass,scss}`, `${src}/assets/**/*.*`],
+    [`${src}/*.ejs`, `${src}/js/**/*.js`, `${src}/sass/**/*.{sass,scss}`, `${src}/assets/**/*.*`],
     gulp.series(assets, css, script, html, reload));
 
 const buildTasks = [assets, css, script, html]

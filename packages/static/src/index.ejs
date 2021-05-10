@@ -1,12 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>wolfgang | Discord Bot</title>
-    <link rel="stylesheet" href="./css/main.min.css">
-</head>
+<%- include("partials/head", { title: "Discord Bot" }) %>
 
 <body>
     <div class="container">
@@ -16,19 +11,7 @@
             <a href="#modules">Modules</a>
         </div>
         
-        <!-- Header -->
-        <header>
-            <a href="/">
-                <div class="brand">
-                    <img src="/assets/icon-white.svg" alt="icon">
-                    <span>wolfgang</span>
-                </div>
-            </a>
-
-            <nav>
-                <a href="/dashboard" class="link">Login</a>
-            </nav>
-        </header>
+        <%- include("partials/header") %>
 
         <!-- Hero -->
         <section class="hero">
@@ -163,45 +146,9 @@
         </section>
     </div>
 
-    <footer>
-        <div class="container">
-            <div class="left">
-                <ul>
-                    <li><a href="#">Support</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Terms Of Use</a></li>
-                    <li><a href="#">Contact</a></li>
-                </ul>
-            </div>
+    <%- include("partials/footer") %>
 
-            <div class="center">
-                <span>©2021 Merlin Moelter, All rights reserved</span>
-            </div>
-
-            <div class="right">
-                <span>Author</span>
-                <ul>
-                    <li>
-                        <a href="https://github.com/Tracer1337">
-                            <img src="/assets/github-brand.png" alt="GitHub">
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <img src="/assets/discord-brand.svg" alt="Discord">
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://www.pornhub.com/users/tracer1312">
-                            <img src="/assets/ph-brand.png" alt="PH" class="large">
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </footer>
-
-    <script src="./js/main.js"></script>
+    <%- include("partials/scripts") %>
 </body>
 
 </html>
