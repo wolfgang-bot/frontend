@@ -10,7 +10,7 @@ fastify.register(proxy, {
 })
 
 fastify.register(proxy, {
-    upstream: getURL(process.env.DASHBOARD_PORT),
+    upstream: getURL(process.env.DASHBOARD_PORT) + "/dashboard",
     prefix: "/dashboard"
 })
 

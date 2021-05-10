@@ -32,7 +32,10 @@ const serve = (done) => {
     browserSync.init({
         server: {
             baseDir: `${dest}`
-        }
+        },
+        port: process.env.PORT,
+        ui: false,
+        open: false
     });
     done();
 };

@@ -4,8 +4,9 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "npm start",
-    "serve": "node packages/server",
+    "start": "cross-env NODE_ENV=development npm run packages:start",
+    "start:server": "cd packages/server && npm start",
+    "serve": "cross-env NODE_ENV=production npm run start:server",
     "packages:start": "npx lerna exec --parallel npm start",
     "packages:install": "npx lerna exec npm install",
     "packages:ci": "npx lerna exec npm ci",
@@ -24,5 +25,8 @@
   "homepage": "https://github.com/Personal-Discord-Bot/frontend#readme",
   "devDependencies": {
     "lerna": "^4.0.0"
+  },
+  "dependencies": {
+    "cross-env": "^7.0.3"
   }
 }
