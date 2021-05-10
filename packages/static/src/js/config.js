@@ -8,6 +8,8 @@ module.exports = {
 
     animationSpeed: 1000,
 
+    linkActivationMargin: window.innerHeight / 4,
+
     colors: [
         "#1abc9c",
         "#3498db",
