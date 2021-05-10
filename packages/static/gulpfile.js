@@ -3,9 +3,9 @@ require("dotenv").config({ path: path.join(__dirname, ".env") })
 const gulp = require('gulp');
 const plumber = require("gulp-plumber");
 const rename = require("gulp-rename");
+const browserSync = require('browser-sync').create();
 const { createGulpEsbuild } = require("gulp-esbuild")
 const sourcemaps = require('gulp-sourcemaps');
-const gulpServe = require("gulp-serve")
 
 const sass = require('gulp-sass');
 const postcss = require("gulp-postcss");
@@ -16,17 +16,26 @@ const htmlmin = require('gulp-htmlmin');
 
 const buffer = require('vinyl-buffer');
 
-const src = './src';
-const dest = './build';
-
 const esbuild = createGulpEsbuild({
     pipe: true
 })
 
-const serve = gulpServe({
-    root: [dest],
-    post: process.env.PORT
-})
+const src = './src';
+const dest = './build';
+
+const reload = (done) => {
+    browserSync.reload();
+    done();
+};
+
+const serve = (done) => {
+    browserSync.init({
+        server: {
+            baseDir: `${dest}`
+        }
+    });
+    done();
+};
 
 // Compile SASS to CSS with gulp
 const css = () => {
@@ -45,7 +54,9 @@ const css = () => {
         // Write sourcemap
         .pipe(sourcemaps.write(''))
         // Write everything to destination folder
-        .pipe(gulp.dest(`${dest}/css`));
+        .pipe(gulp.dest(`${dest}/css`))
+        // Reload page
+        .pipe(browserSync.stream());
 };
 
 // Compile .html to minified .html
@@ -101,7 +112,7 @@ const assets = () => {
 // Watch changes and refresh page
 const watch = () => gulp.watch(
     [`${src}/*.html`, `${src}/js/**/*.js`, `${src}/sass/**/*.{sass,scss}`, `${src}/assets/**/*.*`],
-    gulp.series(assets, css, script, html));
+    gulp.series(assets, css, script, html, reload));
 
 const buildTasks = [assets, css, script, html]
 

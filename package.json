@@ -4,8 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "npm run packages:start",
-    "serve": "cd packages/server && npm start",
+    "start": "npm start",
+    "serve": "node packages/server",
     "packages:start": "npx lerna exec --parallel npm start",
     "packages:install": "npx lerna exec npm install",
     "packages:ci": "npx lerna exec npm ci",
@@ -23,7 +23,6 @@
   },
   "homepage": "https://github.com/Personal-Discord-Bot/frontend#readme",
   "devDependencies": {
-    "gulp-serve": "^1.4.0",
     "lerna": "^4.0.0"
   }
 }
