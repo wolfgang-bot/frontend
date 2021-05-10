@@ -1,9 +1,8 @@
 const path = require("path")
 const fastify = require("fastify")()
 const static = require("fastify-static")
-require("dotenv").config({ path: path.join(__dirname, ".env") })
 
-const PACKAGES_DIR = path.join(__dirname, "..")
+const PACKAGES_DIR = path.join(__dirname, "..", "..")
 const DASHBOARD_BUILD_DIR = path.join(PACKAGES_DIR, "dashboard", "build")
 const STATIC_BUILD_DIR = path.join(PACKAGES_DIR, "static", "build")
 
