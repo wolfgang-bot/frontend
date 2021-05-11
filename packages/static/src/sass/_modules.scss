@@ -28,6 +28,11 @@ $list-item-spacing: 16px;
     margin: $list-item-spacing;
     cursor: pointer;
     position: relative;
+    transition: background-color 150ms;
+
+    &.active {
+        background-color: $color-background-700;
+    }
 
     img {
         width: 32px;
@@ -40,56 +45,6 @@ $list-item-spacing: 16px;
 
         .connector:before {
             display: none;
-        }
-    }
-
-    .connector {
-        width: 80px;
-        height: 64px;
-        background-color: $color-background-800;
-        position: absolute;
-        top: 0;
-        right: -48px;
-
-        @mixin inverted_circle($direction) {
-            content: "";
-            width: 32px;
-            height: 32px;
-            border-radius: 32px;
-            background-color: transparent;
-            position: absolute;
-            top: 16px - 48px * $direction;
-            right: 32px;
-            box-shadow: 8px 8px * $direction 0 -2px $color-background-800;
-        }
-
-        &:before {
-            @include inverted_circle(1);
-        }
-
-        &:after {
-            @include inverted_circle(-1);
-        }
-    }
-
-    .connector-mask {
-        position: absolute;
-        right: -16px;
-        top: -16px;
-        width: calc(48px - var(--offset));
-        height: 96px;
-        background-color: #0b0e11;
-
-        &:before {
-            content: "";
-            height: 64px;
-            width: 32px;
-            border-top-right-radius: 32px;
-            border-bottom-right-radius: 32px;
-            background-color: #151a21;
-            position: absolute;
-            top: 16px;
-            left: calc(var(--offset) * -1);
         }
     }
 }
