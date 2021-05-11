@@ -8,9 +8,9 @@
     "start:server": "cd packages/server && npm start",
     "serve": "cross-env NODE_ENV=production npm run start:server",
     "packages:start": "npx lerna exec --parallel npm start",
-    "packages:install": "npx lerna exec npm install",
-    "packages:ci": "npx lerna exec npm ci",
-    "packages:build": "npx lerna exec --stream npm run build"
+    "packages:install": "npx lerna exec --parallel npm install",
+    "packages:ci": "npx lerna exec --parallel npm ci",
+    "packages:build": "npx lerna exec --parallel npm run build"
   },
   "repository": {
     "type": "git",
