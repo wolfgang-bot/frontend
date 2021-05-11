@@ -1,6 +1,6 @@
 module.exports = {
-    apiBaseURL: "http://localhost:8080/api",
-    storageBaseURL: "http://localhost:8080/storage",
+    apiBaseURL: `${window.location.origin}/api`,
+    storageBaseURL: `${window.location.origin}/storage`,
 
     inviteURL: `https://discord.com/oauth2/authorize?client_id=${
         process.env.REACT_APP_DISCORD_BOT_CLIENT_ID
