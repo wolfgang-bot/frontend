@@ -1,0 +1,28 @@
+.hero {
+    .primary {
+        font-size: $font-size-xxl;
+        margin-bottom: 16px;
+        letter-spacing: $letter-spacing-l;
+    }
+
+    .secondary {
+        margin-bottom: 24px;
+    }
+
+    .actions {
+        display: flex;
+        margin-bottom: 64px;
+
+        .btn:first-child {
+            margin-right: 32px;
+        }
+    }
+
+    .desc {
+        width: 50%;
+
+        div:first-child {
+            margin-bottom: 16px;
+        }
+    }
+}

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include("partials/head", { title: "Discord Bot" }) %>
+
+<body>
+    <div class="container">
+        <div id="stepper">
+            <a href="#how-it-works">How it works</a>
+            <a href="#dashboard">Dashboard</a>
+            <a href="#modules">Modules</a>
+        </div>
+        
+        <%- include("partials/header") %>
+
+        <!-- Hero -->
+        <section class="hero">
+            <div class="primary">wolfgang</div>
+
+            <div class="secondary subtitle">
+                Everything you ever wanted <br>
+                - in one bot
+            </div>
+
+            <div class="actions">
+                <a class="btn btn-primary btn-arrow" data-invite>
+                    Invite
+                </a>
+                <a href="/dashboard" class="btn btn-secondary btn-arrow">
+                    Login
+                </a>
+            </div>
+
+            <div class="desc">
+                <div>
+                    Are you tired of adding a new bot for literally anything to your server? Adding a feature can be as simple as clicking a single button!
+                </div>
+                <div>
+                    We offer all the features, available through an intuitive web interface. You choose which you want and which you don't.
+                </div>
+            </div>
+        </section>
+
+        <canvas id="canvas-1"></canvas>
+
+        <!-- How it works -->
+        <section id="how-it-works">
+            <div>
+                <ol>
+                    <li>
+                        <span>1. Invite The Bot</span>
+                        <a class="btn btn-primary" data-invite>
+                            Invite
+                        </a>
+                    </li>
+
+                    <li>
+                        <span>2. Start Some Modules</span>
+                        <a class="btn btn-primary" href="/dashboard">
+                            Dashboard
+                        </a>
+                    </li>
+
+                    <li>
+                        <span>3. Enjoy 🥳</span>
+                    </li>
+                </ol>
+            </div>
+
+            <div>
+                <div class="title">how it works</div>
+
+                <div class="text">
+                    In wolfgang everything is a module. Each module adds a unique feature to your server and when combined, they will form a beautiful synergy which flies your server to the moon. 🚀
+                </div>
+
+                <div class="text">
+                    You can start, stop and restart modules as you want and some modules can even be started multiple times. All operations are available through the dashboard, where you can also fully customize the bot.
+                </div>
+            </div>
+        </section>
+
+        <canvas id="canvas-2"></canvas>
+
+        <!-- Dashboard -->
+        <section id="dashboard">
+            <div>
+                <div class="title">dashboard</div>
+
+                <div class="caption">
+                    - designed by server admins, for server admins
+                </div>
+
+                <div>
+                    Our dashboard delivers deep insights into your server. Track your server's growth through our expressive graphs or understand your community with our user rankings.
+                    <br>
+                    All in real time.
+                </div>
+            </div>
+
+            <div>
+                <div class="subtitle">Screenshots</div>
+
+                <img src="/assets/dashboard-screenshot-1.png" alt="Screenshot 1">
+                <img src="/assets/dashboard-screenshot-2.png" alt="Screenshot 2">
+            </div>
+        </section>
+
+        <canvas id="canvas-3"></canvas>
+
+        <!-- Modules -->
+        <section id="modules">
+            <div class="title">modules</div>
+
+            <div class="module-action-container">
+                <div id="module-list">
+                    <template id="module-list-item-template">
+                        <div class="module-list-item">
+                            <img>
+                            <div class="module-name"></div>
+                        </div>
+                    </template>
+                </div>
+    
+                <div id="module-content">
+                    <template id="module-content-template">
+                        <div class="module-features"></div>
+                        <div class="module-commands"></div>
+                        <div class="module-images"></div>
+                    </template>
+
+                    <template id="module-feature-template">
+                        <div class="module-feature">
+                            <div class="module-feature-content"></div>
+                        </div>
+                    </template>
+
+                    <template id="module-command">
+                        <div class="module-command">
+                            <div class="module-command-desc"></div>
+                            <div class="module-command-usage"></div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <%- include("partials/footer") %>
+
+    <%- include("partials/scripts") %>
+</body>
+
+</html>
