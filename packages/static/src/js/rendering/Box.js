@@ -1,4 +1,7 @@
-const THREE = require("three")
+const { BoxGeometry } = require("three/src/geometries/BoxGeometry")
+const { MeshLambertMaterial } = require("three/src/materials/MeshLambertMaterial")
+const { Mesh } = require("three/src/objects/Mesh")
+const { Vector3 } = require("three/src/math/Vector3")
 const config = require("../config.js")
 
 class Box {
@@ -10,15 +13,15 @@ class Box {
     }
 
     createObject() {
-        this.geometry = new THREE.BoxGeometry(
+        this.geometry = new BoxGeometry(
             this.size,
             this.size,
             this.size
         )
-        this.material = new THREE.MeshLambertMaterial({
+        this.material = new MeshLambertMaterial({
             color: this.color
         })
-        this.mesh = new THREE.Mesh(this.geometry, this.material)
+        this.mesh = new Mesh(this.geometry, this.material)
     }
 
     getObject() {
@@ -34,7 +37,7 @@ class Box {
     }
 
     move(x, y, z) {
-        this.mesh.position.add(new THREE.Vector3(x, y, z))
+        this.mesh.position.add(new Vector3(x, y, z))
     }
 
     update(time) {

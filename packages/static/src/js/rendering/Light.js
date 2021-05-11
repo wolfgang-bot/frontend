@@ -1,4 +1,6 @@
-const THREE = require("three")
+const { PointLight } = require("three/src/lights/PointLight")
+const { AmbientLight } = require("three/src/lights/AmbientLight")
+const { PointLightHelper } = require("three/src/helpers/PointLightHelper")
 
 class Light {
     constructor() {
@@ -6,12 +8,12 @@ class Light {
     }
 
     createObject() {
-        this.light = new THREE.PointLight(0xFFFFFF, 1.2)
-        this.ambientLight = new THREE.AmbientLight(0xFFFFFF, .5)
+        this.light = new PointLight(0xFFFFFF, 1.2)
+        this.ambientLight = new AmbientLight(0xFFFFFF, .5)
     }
     
     attachHelper() {
-        this.helper = new THREE.PointLightHelper(this.light, 10)
+        this.helper = new PointLightHelper(this.light, 10)
     }
 
     getObject() {
