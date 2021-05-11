@@ -1,0 +1,84 @@
+.container {
+    max-width: 1232px;
+    margin: auto;
+}
+
+.btn {
+    padding: 10px 16px;
+    border-radius: 4px;
+    border: none;
+    font-size: $font-size-xs;
+    letter-spacing: $letter-spacing-l;
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 150ms;
+
+    &:hover {
+        background-color: $color-background-800;
+    }
+}
+
+.btn-primary {
+    background-color: $color-action-primary;
+    color: $color-text-87-inverted;
+
+    &:hover {
+        background-color: $color-action-primary-darkened;
+    }
+
+    &:after {
+        background-image: url("/assets/chevron-right-inverted.svg") !important;
+    }
+}
+
+.btn-secondary {
+    background-color: $color-background-900;
+    border: 1px solid $color-action-primary;
+}
+
+.btn-arrow {
+    padding-right: 36px;
+    position: relative;
+
+    &:after {
+        content: "";
+        background-image: url("/assets/chevron-right.svg");
+        width: 24px;
+        height: 24px;
+        display: block;
+        position: absolute;
+        right: 8px;
+        top: 6px;
+    }
+}
+
+.link {
+    text-transform: uppercase;
+    letter-spacing: $letter-spacing-l;
+}
+
+.title {
+    font-size: $font-size-xl;
+}
+
+.subtitle {
+    font-size: $font-size-l;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    
+    img {
+        width: 48px;
+        margin-right: 12px;
+    }
+
+    span {
+        color: $color-text-87;
+        font-size: $font-size-m;
+        letter-spacing: $letter-spacing-l;
+    }
+}

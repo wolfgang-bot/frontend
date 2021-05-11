@@ -1,0 +1,6 @@
+#canvas-1 {
+   $offset: 200px;
+   
+   height: $section-gap + $offset;
+   margin-top: -($section-gap + $offset);
+}
