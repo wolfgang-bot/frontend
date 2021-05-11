@@ -42,25 +42,34 @@ const serve = (done) => {
 };
 
 // Compile SASS to CSS with gulp
-const css = () => {
-    // Find SASS
-    return gulp.src(`${src}/sass/**/*.{sass,scss}`)
-        // Init Plumber
-        .pipe(plumber())
-        // Start sourcemap
-        .pipe(sourcemaps.init())
-        // Compile SASS to CSS
-        .pipe(sass.sync({ outputStyle: "compressed" })).on('error', sass.logError)
-        // Add suffix
-        .pipe(rename({ basename: 'main', suffix: ".min" }))
-        // Add Autoprefixer & cssNano
-        .pipe(postcss([autoprefixer(), cssnano()]))
-        // Write sourcemap
-        .pipe(sourcemaps.write(''))
-        // Write everything to destination folder
-        .pipe(gulp.dest(`${dest}/css`))
-        // Reload page
-        .pipe(browserSync.stream());
+const css = (config) => {
+    return () => {
+        let stream = gulp.src(`${src}/sass/**/*.{sass,scss}`)
+
+        const add = (pipeStream) => {
+            stream = stream.pipe(pipeStream)
+        }
+
+        add(plumber())
+
+        if (config.sourcemaps) {
+            add(sourcemaps.init())
+        }
+
+        add(sass.sync({ outputStyle: "compressed" }))
+        stream.on('error', sass.logError)
+        add(rename({ basename: 'main', suffix: ".min" }))
+        add(postcss([autoprefixer(), cssnano()]))
+
+        if (config.sourcemaps) {
+            add(sourcemaps.write(''))
+        }
+
+        add(gulp.dest(`${dest}/css`))
+        add(browserSync.stream())
+
+        return stream
+    }
 };
 
 // Compile .ejs to minfied .html
@@ -86,28 +95,30 @@ const html = () => {
 };
 
 // Compile .js to minified .js
-const script = () => {
-    const envKeys = [
-        "REACT_APP_DISCORD_BOT_CLIENT_ID"
-    ]
-
-    const env = Object.fromEntries(
-        envKeys.map((key) => [
-            "process.env." + key,
-            JSON.stringify(process.env[key])
-        ])
-    )
-
-    return gulp.src(`${src}/js/main.js`)
-        .pipe(esbuild({
-            bundle: true,
-            minify: true,
-            sourcemap: "external",
-            platform: "browser",
-            define: env
-        }))
-        .pipe(buffer())
-        .pipe(gulp.dest(`${dest}/js`));
+const script = (config) => {
+    return () => {
+        const envKeys = [
+            "REACT_APP_DISCORD_BOT_CLIENT_ID"
+        ]
+    
+        const env = Object.fromEntries(
+            envKeys.map((key) => [
+                "process.env." + key,
+                JSON.stringify(process.env[key])
+            ])
+        )
+    
+        return gulp.src(`${src}/js/main.js`)
+            .pipe(esbuild({
+                bundle: true,
+                minify: true,
+                sourcemap: config.sourcemaps && "external",
+                platform: "browser",
+                define: env
+            }))
+            .pipe(buffer())
+            .pipe(gulp.dest(`${dest}/js`));
+    }
 };
 
 // Copy assets
@@ -116,16 +127,26 @@ const assets = () => {
         .pipe(gulp.dest(`${dest}/assets`));
 };
 
+function makeBuildTasks(config) {
+    return [assets, css(config), script(config), html]
+}
+
+const devBuildTasks = makeBuildTasks({
+    sourcemaps: true
+})
+
+const prodBuildTasks = makeBuildTasks({
+    sourcemaps: false
+})
+
 // Watch changes and refresh page
 const watch = () => gulp.watch(
     [`${src}/*.ejs`, `${src}/**/*.ejs`, `${src}/js/**/*.js`, `${src}/sass/**/*.{sass,scss}`, `${src}/assets/**/*.*`],
-    gulp.series(assets, css, script, html, reload));
+    gulp.series(...devBuildTasks, reload));
 
-const buildTasks = [assets, css, script, html]
+const dev = gulp.series(...devBuildTasks, serve, watch);
 
-const dev = gulp.series(...buildTasks, serve, watch);
-
-const build = gulp.series(...buildTasks);
+const build = gulp.series(...prodBuildTasks);
 
 exports.default = dev;
 exports.dev = dev;

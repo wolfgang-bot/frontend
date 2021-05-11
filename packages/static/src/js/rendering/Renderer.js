@@ -1,4 +1,4 @@
-const THREE = require("three")
+const { WebGLRenderer } = require("three/src/renderers/WebGLRenderer")
 const { getNodeDimensions } = require("../utils.js")
 
 class Renderer {
@@ -8,7 +8,7 @@ class Renderer {
     }
 
     init() {
-        this.renderer = new THREE.WebGLRenderer({
+        this.renderer = new WebGLRenderer({
             antialias: true,
             canvas: this.canvas,
             alpha: true

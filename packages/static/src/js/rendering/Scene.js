@@ -1,4 +1,4 @@
-const THREE = require("three")
+const { Scene: ThreeScene } = require("three/src/scenes/Scene")
 const Renderer = require("./Renderer")
 const Light = require("./Light")
 const Camera = require("./Camera.js")
@@ -12,7 +12,7 @@ class Scene {
     }
     
     init() {
-        this.scene = new THREE.Scene()
+        this.scene = new ThreeScene()
         
         this.camera = new Camera(this.canvas)
         this.addObject(this.camera)

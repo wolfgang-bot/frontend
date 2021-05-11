@@ -1,15 +1,14 @@
 const api = require("./api.js")
 const ModuleContent = require("./templates/ModuleContent.js")
-const ModuleListConnector = require("./templates/ModuleListConnector.js")
 const ModuleListItem = require("./templates/ModuleListItem.js")
 
 const MODULE_LIST_ITEM_CLASS = "module-list-item"
+const MODULE_ACTIVE_CLASS = "active"
 
 const list = document.getElementById("module-list")
 const contentContainer = document.getElementById("module-content")
 
 let currentActiceModule
-let currentConnector
 
 function moduleFilter(module) {
     return !module.isStatic
@@ -29,29 +28,24 @@ function setActiveModule(module) {
     }
 
     if (currentActiceModule) {
-        removeConnector(findModuleListItem(currentActiceModule))
+        deactivateModule(currentActiceModule)
     }
     
     contentContainer.innerHTML = ""
     const content = new ModuleContent(module)
     contentContainer.appendChild(content.getNode())
 
-    addConnector(findModuleListItem(module))
+    activateModule(module)
 
     currentActiceModule = module
 }
 
-function addConnector(element) {
-    currentConnector = new ModuleListConnector()
-    element.appendChild(currentConnector.getNode())
-    currentConnector.animateIn()
+function activateModule(module) {
+    findModuleListItem(module).classList.add(MODULE_ACTIVE_CLASS)
 }
 
-function removeConnector(element) {
-    currentConnector.animateOut().then(() => {
-        const connector = element.querySelector(".connector-container")
-        element.removeChild(connector)
-    })
+function deactivateModule(module) {
+    findModuleListItem(module).classList.remove(MODULE_ACTIVE_CLASS)
 }
 
 function findModuleListItem(module) {
