@@ -6,5 +6,5 @@ require("dotenv").config({
 if (process.env.NODE_ENV === "development") {
     require("./dev.js")
 } else {
-    require("./prod.js")
+    throw new Error("Files should be served via the nginx docker image in production")
 }
