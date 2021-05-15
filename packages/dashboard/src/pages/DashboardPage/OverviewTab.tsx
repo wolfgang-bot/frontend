@@ -29,7 +29,7 @@ function OverviewTab({ guild, getStreamRef, onClearStreamRefs }: TabProps) {
 
             <Grid container direction="column" spacing={4}>
                 <Grid item container justify="space-between" spacing={4}>
-                    <Grid item xs>
+                    <Grid item xs={12} sm={6} lg>
                         <StatisticCard
                             main={<MemberCount {...streamProps} />}
                             trend={<MemberTrend {...streamProps} />}
@@ -37,7 +37,7 @@ function OverviewTab({ guild, getStreamRef, onClearStreamRefs }: TabProps) {
                         />
                     </Grid>
 
-                    <Grid item xs>
+                    <Grid item xs={12} sm={6} lg>
                         <StatisticCard
                             main={<MemberTrendAtDay {...streamProps} />}
                             trend={<MemberTrendAtDayTrend {...streamProps} />}
@@ -45,7 +45,7 @@ function OverviewTab({ guild, getStreamRef, onClearStreamRefs }: TabProps) {
                         />
                     </Grid>
 
-                    <Grid item xs>
+                    <Grid item xs={12} sm={6} lg>
                         <StatisticCard
                             main={<MessagesAtDay {...streamProps} />}
                             trend={<MessagesAtDayTrend {...streamProps} />}
@@ -53,7 +53,7 @@ function OverviewTab({ guild, getStreamRef, onClearStreamRefs }: TabProps) {
                         />
                     </Grid>
 
-                    <Grid item xs>
+                    <Grid item xs={12} sm={6} lg>
                         <StatisticCard
                             main={<VoiceDurationAtDay {...streamProps} />}
                             trend={<VoiceDurationAtDayTrend {...streamProps} />}
@@ -63,21 +63,21 @@ function OverviewTab({ guild, getStreamRef, onClearStreamRefs }: TabProps) {
                 </Grid>
 
                 <Grid item container justify="space-between" spacing={4}>
-                    <Grid item xs>
+                    <Grid item xs={12} lg>
                         <ChartCard
                             chart={<MemberChart {...streamProps} />}
                             label="Members"
                         />
                     </Grid>
 
-                    <Grid item xs>
+                    <Grid item xs={12} lg>
                         <ChartCard
                             chart={<MessageChart {...streamProps} />}
                             label="Messages"
                         />
                     </Grid>
 
-                    <Grid item xs>
+                    <Grid item xs={12} lg>
                         <ChartCard
                             chart={<VoiceDurationChart {...streamProps} />}
                             label="Voicechat"

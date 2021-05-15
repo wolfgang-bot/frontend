@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Grid, makeStyles } from "@material-ui/core"
+import { Grid, makeStyles, Theme, useMediaQuery } from "@material-ui/core"
 
 import { TabProps } from "./TabsRouter"
 import { SubscriptionOptions } from "../../features/streams/withStreamSubscription"
@@ -10,14 +10,18 @@ import { useSelector } from "react-redux"
 import { RootState } from "../../store"
 import ModulesPanel from "./ModulesPanel"
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
     panel: {
-        width: `${100/3}%`
+        [theme.breakpoints.up("md")]: {
+            width: `${100/3}%`
+        }
     }
-})
+}))
 
 function ModulesTab({ guild, getStreamRef, onClearStreamRefs }: TabProps) {
     const classes = useStyles()
+
+    const isSmallScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"))
 
     const modules = useSelector((store: RootState) => store.modules.data)
     const modulesState = useSelector((store: RootState) => store.modules.status)
@@ -64,8 +68,12 @@ function ModulesTab({ guild, getStreamRef, onClearStreamRefs }: TabProps) {
     onClearStreamRefs()
 
     return (
-        <Grid container spacing={4}>
-            <Grid item xs className={classes.panel}>
+        <Grid
+            container
+            spacing={4}
+            direction={isSmallScreen ? "column-reverse" : "row"}
+        >
+            <Grid item xs={12} md className={classes.panel}>
                 <ModuleInstanceList
                     guild={guild}
                     onHover={handleHover}
@@ -73,14 +81,14 @@ function ModulesTab({ guild, getStreamRef, onClearStreamRefs }: TabProps) {
                 />
             </Grid>
 
-            <Grid item xs className={classes.panel}>
+            <Grid item xs={12} md className={classes.panel}>
                 <ModulesTabHero
                     state={heroState}
                     reset={() => setHeroState(getInitialHeroState())}
                 />
             </Grid>
 
-            <Grid item xs className={classes.panel}>
+            <Grid item xs={12} md className={classes.panel}>
                 <ModulesPanel
                     state={heroState}
                     onHeroStateChange={setHeroState}

@@ -65,6 +65,8 @@ function OAuthDiscord({ onClose }: { onClose: () => void }) {
                         user: res.data.user,
                         token: res.data.token
                     }))
+                } else {
+                    alert("Authorization failed")
                 }
             }
         }

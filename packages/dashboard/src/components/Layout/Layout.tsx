@@ -17,7 +17,11 @@ type Props = React.PropsWithChildren<{
 const useStyles = makeStyles<Theme, StyleProps>(theme => ({
     layout: {
         paddingTop: theme.spacing(8),
-        paddingBottom: theme.spacing(8)
+        paddingBottom: theme.spacing(8),
+
+        [theme.breakpoints.down("sm")]: {
+            paddingTop: theme.spacing(7)
+        }
     },
 
     navbar: {

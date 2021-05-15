@@ -1,4 +1,4 @@
-import { Box, Divider } from "@material-ui/core"
+import { Box, Divider, Theme, useMediaQuery } from "@material-ui/core"
 import { useSelector } from "react-redux"
 
 import ArgumentsForm from "../../components/Forms/ArgumentsForm/ArgumentsForm"
@@ -14,6 +14,8 @@ function ModulesTabHeroInstanceState({ state, reset = () => {} }: {
     if (!state.instanceModuleKey) {
         throw new Error("Missing prop: 'state.instance'")
     }
+
+    const isSmallScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"))
 
     const instance = useSelector((store: RootState) => 
         store.moduleInstances.guilds[state.guild.id]?.data?.[state.instanceModuleKey!]
@@ -44,7 +46,11 @@ function ModulesTabHeroInstanceState({ state, reset = () => {} }: {
 
             <Divider/>
 
-            <Box overflow="auto" height={600-64} p={2}>
+            <Box
+                overflow="auto"
+                height={!isSmallScreen ? 600-64 : undefined}
+                p={2}
+            >
                 <ArgumentsForm
                     key={module.key}
                     args={module.args}
