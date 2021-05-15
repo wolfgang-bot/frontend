@@ -1,9 +1,11 @@
 const { WebGLRenderer } = require("three/src/renderers/WebGLRenderer")
-const { getNodeDimensions } = require("../utils.js")
+const Dimensions = require("./Dimensions.js")
 
 class Renderer {
     constructor(canvas) {
         this.canvas = canvas
+        this.dimensions = new Dimensions(this.canvas)
+        this.dimensions.addEventListener("update", this.setDimensions.bind(this))
         this.init()
     }
 
@@ -13,8 +15,13 @@ class Renderer {
             canvas: this.canvas,
             alpha: true
         })
-        this.renderer.setSize(...getNodeDimensions(this.canvas))
+        this.renderer.setPixelRatio(window.devicePixelRatio)
         this.renderer.setClearColor(0xFFFFFF, 0)
+        this.dimensions.update()
+    }
+    
+    setDimensions({ detail: { width, height } }) {
+        this.renderer.setSize(width, height)
     }
 
     render(scene, camera) {
@@ -23,6 +30,10 @@ class Renderer {
 
     startAnimationLoop(fn) {
         this.renderer.setAnimationLoop(fn)
+    }
+
+    dispose() {
+        this.renderer.dispose()
     }
 }
 

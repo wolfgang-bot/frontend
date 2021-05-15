@@ -1,6 +1,10 @@
 .container {
-    max-width: 1232px;
+    padding: 0 24px;
     margin: auto;
+
+    @media (min-width: 1280px) {
+        max-width: 1280px;
+    }
 }
 
 .btn {
@@ -61,10 +65,18 @@
 
 .title {
     font-size: $font-size-xl;
+
+    @media (max-width: $breakpoint_s) {
+        font-size: 48px;
+    }
 }
 
 .subtitle {
     font-size: $font-size-l;
+
+    @media (max-width: $breakpoint_s) {
+        font-size: $font-size-m
+    }
 }
 
 .brand {

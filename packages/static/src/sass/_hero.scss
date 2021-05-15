@@ -3,8 +3,9 @@
         font-size: $font-size-xxl;
         margin-bottom: 16px;
         letter-spacing: $letter-spacing-l;
-    }
 
+    }
+    
     .secondary {
         margin-bottom: 24px;
     }
@@ -23,6 +24,16 @@
 
         div:first-child {
             margin-bottom: 16px;
+        }
+    }
+
+    @media (max-width: $breakpoint_s) {
+        .primary {
+            font-size: 60px;
+        }
+
+        .desc {
+            width: 100%;
         }
     }
 }

@@ -26,6 +26,11 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    @media (max-width: $breakpoint_s) {
+        height: 96px;
+        margin-bottom: 32px;
+    }
 }
 
 ul, ol {
@@ -38,6 +43,10 @@ section {
 
     &:last-child {
         margin-bottom: $last-section-gap;
+
+        @media (max-width: $breakpoint_s) {
+            margin-bottom: $last-section-gap / 2;
+        }
     }
 }
 

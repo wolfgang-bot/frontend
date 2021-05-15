@@ -31,6 +31,12 @@ class Scene {
         this.objects.push(object)
         this.scene.add(...ensureIsArray(object.getObject()))
     }
+
+    removeObject(object) {
+        const index = this.objects.indexOf(object)
+        this.objects.splice(index, 1)
+        this.scene.remove(...ensureIsArray(object.getObject()))
+    }
     
     update(time) {
         for (let object of this.objects) {
@@ -49,6 +55,10 @@ class Scene {
 
     setLightPosition(x, y, z) {
         this.light.setPosition(x, y, z)
+    }
+    
+    dispose() {
+        this.renderer.dispose()
     }
 }
 

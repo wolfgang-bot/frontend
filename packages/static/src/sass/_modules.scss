@@ -1,4 +1,5 @@
 $height: 500px;
+$list-item-spacing: 16px;
 
 #modules {
     .title {
@@ -8,14 +9,22 @@ $height: 500px;
 
 .module-action-container {
     display: flex;
-} 
 
-$list-item-spacing: 16px;
+    @media (max-width: $breakpoint_l) {
+        flex-direction: column;
+    }
+} 
 
 #module-list {
     margin-left: -$list-item-spacing;
     margin-right: 0;
     height: $height;
+
+    @media (max-width: $breakpoint_l) {
+        margin-right: -$list-item-spacing;
+        margin-bottom: $list-item-spacing * 3;
+        height: unset;
+    }
 }
 
 .module-list-item {
@@ -29,6 +38,8 @@ $list-item-spacing: 16px;
     cursor: pointer;
     position: relative;
     transition: background-color 150ms;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-tap-highlight-color: transparent;
 
     &.active {
         background-color: $color-background-700;
@@ -46,6 +57,10 @@ $list-item-spacing: 16px;
         .connector:before {
             display: none;
         }
+    }
+
+    @media (max-width: $breakpoint_l) {
+        width: unset;
     }
 }
 
@@ -66,6 +81,12 @@ $list-item-spacing: 16px;
     &::-webkit-scrollbar-thumb {
         display: none;
     }
+
+    @media (max-width: $breakpoint_l) {
+        width: unset;
+        height: unset;
+        padding: 32px;
+    }
 }
 
 .module-features, .module-commands {
@@ -76,6 +97,10 @@ $list-item-spacing: 16px;
     margin-bottom: 16px;
     padding-left: 24px;
     position: relative;
+
+    @media (max-width: $breakpoint_s) {
+        font-size: $font-size-xs;
+    }
 
     &:before {
         content: "";
@@ -92,6 +117,10 @@ $list-item-spacing: 16px;
 
 .module-command {
     margin-bottom: 32px;
+
+    @media (max-width: $breakpoint_s) {
+        font-size: $font-size-xs;
+    }
 }
 
 .module-command-desc {
@@ -112,6 +141,7 @@ $list-item-spacing: 16px;
     gap: 16px;
 
     img {
-        height: 100px;
+        max-height: 100px;
+        max-width: 100%;
     }
 }
