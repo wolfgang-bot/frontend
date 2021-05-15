@@ -6,6 +6,7 @@ import { HeroState } from "./ModulesTabHero"
 import { API } from "../../config/types"
 import { useSelector } from "react-redux"
 import { RootState } from "../../store"
+import Codeblock from "../../components/Styled/Codeblock"
 
 const useStyles = makeStyles((theme) => ({
     icon: {
@@ -50,14 +51,27 @@ function ModuleDescription({ module }: { module: API.Module }) {
 
     return (
         <>
-            {module.features.map((feature, index) => (
-                <Box key={index} display="flex" mb={2}>
-                    <ChevronRightIcon className={classes.bullet}/>
-                    <Typography variant="body1">
-                        {feature}
-                    </Typography>
-                </Box>
-            ))}
+            <Box mb={4}>
+                {module.features.map((feature, index) => (
+                    <Box key={index} display="flex" mb={2}>
+                        <ChevronRightIcon className={classes.bullet}/>
+                        <Typography variant="body1">
+                            {feature}
+                        </Typography>
+                    </Box>
+                ))}
+            </Box>
+
+            <Box>
+                {module.commands.map((command, index) => (
+                    <Box key={index} mb={2}>
+                        <Box mb={0.5}>
+                            <Typography>{command.description}</Typography>
+                        </Box>
+                        <Codeblock>{command.usage}</Codeblock>
+                    </Box>
+                ))}
+            </Box>
         </>
     )
 }
