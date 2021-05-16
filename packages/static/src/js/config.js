@@ -18,5 +18,9 @@ module.exports = {
         "#95a5a6"
     ],
     
-    breakpointS: 600
+    breakpointS: 600,
+
+    localStorageKeys: {
+        consent: "consent"
+    }
 }

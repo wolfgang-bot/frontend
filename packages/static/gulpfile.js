@@ -79,7 +79,11 @@ const html = () => {
         // Init Plumber
         .pipe(plumber())
         // Render templates
-        .pipe(ejs())
+        .pipe(ejs({
+            process: {
+                env: process.env
+            }
+        }))
         .pipe(rename({ extname: ".html" }))
         // Compile HTML to minified HTML
         .pipe(htmlmin({
