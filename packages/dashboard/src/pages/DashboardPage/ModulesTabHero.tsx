@@ -24,7 +24,7 @@ function ModulesTabHero({ state, reset }: {
     state?: HeroState,
     reset: () => void
 }) {
-    if (!state) {
+    if (!state || !state.moduleKey) {
         return null
     }
 

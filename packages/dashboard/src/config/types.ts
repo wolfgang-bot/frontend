@@ -159,6 +159,7 @@ export declare namespace API {
         "module-instances" |
         "module-shares" |
         "user-guilds" |
+        "guild-modules" |
         "guild-module-instances" |
         "members" |
         "messages" |

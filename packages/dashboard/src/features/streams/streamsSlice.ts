@@ -16,6 +16,7 @@ const STREAM_GROUPS: Record<keyof SliceState, API.EVENT_STREAM[]> = {
         "user-guilds"
     ],
     guild: [
+        "guild-modules",
         "guild-module-instances",
         "members",
         "messages",
@@ -48,6 +49,7 @@ function createInitialUserState(): StreamsMap {
 
 function createInitialGuildState(): StreamsMap {
     return {
+        "guild-modules": createStreamState<API.Module>("guild-modules"),
         "guild-module-instances": createStreamState<API.ModuleInstance>("guild-module-instances"),
         "members": createStreamState<API.Event<API.MemberEventMeta>>("members"),
         "messages": createStreamState<API.Event>("messages"),

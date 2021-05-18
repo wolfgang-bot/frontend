@@ -27,20 +27,15 @@ function ModulesTab({ guild, getStreamRef, onClearStreamRefs }: TabProps) {
     const modulesState = useSelector((store: RootState) => store.modules.guilds[guild.id]?.status)
 
     const getInitialHeroState = () => {
-        if (!modules) {
-            return
-        }
-        const firstModule = Object.values(modules)[0]
-        if (firstModule) {
-            return {
-                type: "module",
-                guild,
-                moduleKey: firstModule.key
-            } as HeroState
-        }
+        const firstModule = Object.values(modules || {})[0]
+        return {
+            type: "module",
+            guild,
+            moduleKey: firstModule?.key
+        } as HeroState
     }
     
-    const [heroState, setHeroState] = useState<HeroState | undefined>(
+    const [heroState, setHeroState] = useState<HeroState>(
         getInitialHeroState()
     )
 

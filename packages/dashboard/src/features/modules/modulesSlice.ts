@@ -36,7 +36,21 @@ export const fetchModules = createAsyncThunk<
 const modulesSlice = createSlice({
     name: "modules",
     initialState,
-    reducers: {},
+    reducers: {
+        updateModules: (state, action: PayloadAction<{
+            guildId: string,
+            data: API.Module[]
+        }>) => {
+            const guild = state.guilds[action.payload.guildId]
+            if (!guild) {
+                return
+            }
+            guild.status = "success"
+            action.payload.data.forEach(module => {
+                guild.data[module.key] = module
+            })
+        }
+    },
     extraReducers: {
         [updateUserGuilds.toString()]: (state, action: PayloadAction<API.Guild[]>) => {
             action.payload.forEach(guild => {
@@ -85,4 +99,5 @@ const modulesSlice = createSlice({
     }
 })
 
+export const { updateModules } = modulesSlice.actions
 export default modulesSlice.reducer
