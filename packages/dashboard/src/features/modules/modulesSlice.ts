@@ -2,12 +2,23 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 import { API, ReduxAPIState } from "../../config/types"
 import { ThunkExtraArgument } from "../../store"
+import { updateUserGuilds } from "../guilds/guildsSlice"
 
-type ModuleState = ReduxAPIState<Record<string, API.Module>>
+type ModulesMap = Record<string, API.Module>
+type GuildState = ReduxAPIState<ModulesMap>
+type ModuleState = {
+    guilds: Record<string, GuildState>
+}
 
 const initialState: ModuleState = {
-    data: {},
-    status: "idle"
+    guilds: {}
+}
+
+function makeInitialGuildState(): GuildState {
+    return {
+        data: {},
+        status: "idle"
+    }
 }
 
 export const fetchModules = createAsyncThunk<
@@ -27,13 +38,28 @@ const modulesSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: {
-        [fetchModules.pending.toString()]: (state) => {
-            state.status = "pending"
+        [updateUserGuilds.toString()]: (state, action: PayloadAction<API.Guild[]>) => {
+            action.payload.forEach(guild => {
+                if (!state.guilds[guild.id]) {
+                    state.guilds[guild.id] = makeInitialGuildState()
+                }
+            })
         },
-        [fetchModules.fulfilled.toString()]: (state, action: PayloadAction<API.Module[]>) => {
-            state.status = "success"
-            action.payload.forEach(module => {
-                state.data[module.key] = module
+        [fetchModules.pending.toString()]: (state, action) => {
+            const guild = state.guilds[action.meta.arg.guildId]
+            if (!guild) {
+                return
+            }
+            guild.status = "pending"
+        },
+        [fetchModules.fulfilled.toString()]: (state, action) => {
+            const guild = state.guilds[action.meta.arg.guildId]
+            if (!guild) {
+                return
+            }
+            guild.status = "success"
+            action.payload.forEach((module: API.Module) => {
+                guild.data[module.key] = module
 
                 module.commands.forEach(command => {
                     if (!module.commandGroups) {
@@ -49,8 +75,12 @@ const modulesSlice = createSlice({
             })
         },
         [fetchModules.rejected.toString()]: (state, action) => {
-            state.status = "error"
-            state.error = action.payload
+            const guild = state.guilds[action.meta.arg.guildId]
+            if (!guild) {
+                return
+            }
+            guild.status = "error"
+            guild.error = action.payload
         }
     }
 })

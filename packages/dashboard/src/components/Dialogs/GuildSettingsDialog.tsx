@@ -21,9 +21,9 @@ function GuildSettingsDialog({ open, onClose, guild }: {
 }) {
     const dispatch = useDispatch()
     
-    const module = useSelector((store: RootState) => store.modules.data.settings)
-    const status = useSelector((store: RootState) => store.modules.status)
-    const error = useSelector((store: RootState) => store.modules.error)
+    const module = useSelector((store: RootState) => store.modules.guilds[guild.id]?.data.settings)
+    const status = useSelector((store: RootState) => store.modules.guilds[guild.id]?.status)
+    const error = useSelector((store: RootState) => store.modules.guilds[guild.id]?.error)
     const instance = useSelector(selectInstanceByModuleKey(guild.id, "settings"))
 
     if (!instance) {

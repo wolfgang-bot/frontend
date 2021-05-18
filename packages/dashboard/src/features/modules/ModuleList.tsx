@@ -16,9 +16,9 @@ function ModuleList({ guild, onHover = () => {}, onClick = () => {} }: {
 }) {
     const dispatch = useDispatch()
 
-    const modules = useSelector((store: RootState) => store.modules.data)
-    const status = useSelector((store: RootState) => store.modules.status)
-    const error = useSelector((store: RootState) => store.modules.error)
+    const modules = useSelector((store: RootState) => store.modules.guilds[guild?.id || '']?.data)
+    const status = useSelector((store: RootState) => store.modules.guilds[guild?.id || '']?.status)
+    const error = useSelector((store: RootState) => store.modules.guilds[guild?.id || '']?.error)
 
     useEffect(() => {
         if (!guild?.id) {

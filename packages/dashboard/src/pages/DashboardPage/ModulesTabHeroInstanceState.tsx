@@ -24,8 +24,8 @@ function ModulesTabHeroInstanceState({ state, reset = () => {} }: {
         store.moduleInstances.guilds[state.guild.id]?.status
     )
 
-    const module = useSelector((store: RootState) => store.modules.data?.[state.moduleKey])
-    const moduleStatus = useSelector((store: RootState) => store.modules.status)
+    const module = useSelector((store: RootState) => store.modules.guilds[state.guild.id]?.data?.[state.moduleKey])
+    const moduleStatus = useSelector((store: RootState) => store.modules.guilds[state.guild.id]?.status)
 
     const status = mergeStatus(instanceStatus, moduleStatus)
 

@@ -23,10 +23,13 @@ function ModulesTab({ guild, getStreamRef, onClearStreamRefs }: TabProps) {
 
     const isSmallScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"))
 
-    const modules = useSelector((store: RootState) => store.modules.data)
-    const modulesState = useSelector((store: RootState) => store.modules.status)
+    const modules = useSelector((store: RootState) => store.modules.guilds[guild.id]?.data)
+    const modulesState = useSelector((store: RootState) => store.modules.guilds[guild.id]?.status)
 
     const getInitialHeroState = () => {
+        if (!modules) {
+            return
+        }
         const firstModule = Object.values(modules)[0]
         if (firstModule) {
             return {
