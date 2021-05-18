@@ -117,6 +117,8 @@ export declare namespace API {
         key: string,
         name: string,
         desc: string,
+        maxInstances: number,
+        remainingInstances: number,
         features: string[],
         args: Argument[],
         commands: Command[],

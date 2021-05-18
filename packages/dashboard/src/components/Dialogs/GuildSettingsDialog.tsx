@@ -80,9 +80,11 @@ function GuildSettingsDialog({ open, onClose, guild }: {
 
     useEffect(() => {
         if (status === "idle") {
-            dispatch(fetchModules("ws"))
+            dispatch(fetchModules({
+                guildId: guild.id
+            }))
         }
-    }, [status, dispatch])
+    }, [status, dispatch, guild.id])
 
     let child = <GuildSettingsDialogSkeleton/>
 

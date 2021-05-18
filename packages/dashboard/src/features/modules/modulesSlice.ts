@@ -12,19 +12,12 @@ const initialState: ModuleState = {
 
 export const fetchModules = createAsyncThunk<
     API.Module[] | undefined,
-    "ws" | "http",
+    { guildId: string },
     { extra: ThunkExtraArgument }
 >(
     "module/fetchModules",
-    async (apiMode, { extra: { api } }) => {
-        let res
-
-        if (apiMode === "ws") {
-            res = await api.ws.getModules()
-        } else if (apiMode === "http") {
-            res = await api.http.getModules()
-        }
-
+    async (args, { extra: { api } }) => {
+        const res = await api.ws.getModules(args)
         return res?.data
     }
 )

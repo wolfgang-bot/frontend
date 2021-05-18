@@ -49,9 +49,11 @@ function ModuleInstanceList({ guild, onHover = () => {} }: {
 
     useEffect(() => {
         if (modulesStatus === "idle") {
-            dispatch(fetchModules("ws"))
+            dispatch(fetchModules({
+                guildId: guild.id
+            }))
         }
-    }, [modulesStatus, dispatch])
+    }, [modulesStatus, dispatch, guild.id])
 
     const status = mergeStatus(modulesStatus, instancesStatus)
 

@@ -44,6 +44,7 @@ function ModulesPanel({ state, onHeroStateChange }: {
                     {}
             }>
                 <ModuleList
+                    guild={state?.guild}
                     onHover={handleHover}
                     onClick={handleModuleClick}
                 />

@@ -9,7 +9,8 @@ import { API } from "../../config/types"
 
 const AMOUNT_OF_CARDS = 4
 
-function ModuleList({ onHover = () => {}, onClick = () => {} }: {
+function ModuleList({ guild, onHover = () => {}, onClick = () => {} }: {
+    guild?: API.Guild,
     onHover?: (props: { module: API.Module }) => void,
     onClick?: (props: { module: API.Module }) => void
 }) {
@@ -20,10 +21,16 @@ function ModuleList({ onHover = () => {}, onClick = () => {} }: {
     const error = useSelector((store: RootState) => store.modules.error)
 
     useEffect(() => {
-        if (status === "idle") {
-            dispatch(fetchModules("http"))
+        if (!guild?.id) {
+            return
         }
-    }, [status, dispatch])
+
+        if (status === "idle") {
+            dispatch(fetchModules({
+                guildId: guild.id
+            }))
+        }
+    }, [status, dispatch, guild?.id])
 
     if (status === "success") {
         const filtered = Object.values(modules)

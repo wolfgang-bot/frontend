@@ -43,7 +43,13 @@ function ModuleCard({ module, ...props }: Props) {
                                 {module.name}
                             </Typography>
 
-                            <ChevronRightIcon/>
+                            <Box display="flex">
+                                <Typography>
+                                    {module.remainingInstances} /
+                                    {module.maxInstances}
+                                </Typography>
+                                <ChevronRightIcon/>
+                            </Box>
                         </Box>
                     }
                 />
