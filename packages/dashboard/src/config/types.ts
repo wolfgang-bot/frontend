@@ -130,6 +130,7 @@ export declare namespace API {
     }
 
     export type ModuleInstance = {
+        id: string,
         moduleKey: string,
         guildId: string,
         state: INSTANCE_STATES,

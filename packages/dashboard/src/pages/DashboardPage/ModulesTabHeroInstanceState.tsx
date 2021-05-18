@@ -11,14 +11,14 @@ function ModulesTabHeroInstanceState({ state, reset = () => {} }: {
     state: HeroState,
     reset?: () => void
 }) {
-    if (!state.instanceModuleKey) {
+    if (!state.instance) {
         throw new Error("Missing prop: 'state.instance'")
     }
 
     const isSmallScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"))
 
     const instance = useSelector((store: RootState) => 
-        store.moduleInstances.guilds[state.guild.id]?.data?.[state.instanceModuleKey!]
+        store.moduleInstances.guilds[state.guild.id]?.data?.[state.instance!.id]
     )
     const instanceStatus = useSelector((store: RootState) =>
         store.moduleInstances.guilds[state.guild.id]?.status

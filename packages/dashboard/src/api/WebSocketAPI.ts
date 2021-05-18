@@ -129,21 +129,21 @@ class WebSocketAPI {
     /**
      * @fires post:module-instances/stop
      */
-    stopModuleInstance(args: { guildId: string, moduleKey: string }) {
+    stopModuleInstance(args: { instanceId: string }) {
         return this.fetch("post:module-instances/stop", args)
     }
     
     /**
      * @fires post:module-instances/restart
      */
-    restartModuleInstance(args: { guildId: string, moduleKey: string }) {
+    restartModuleInstance(args: { instanceId: string }) {
         return this.fetch("post:module-instances/restart", args)
     }
 
     /**
      * @fires post:module-instance/config
      */
-    updateModuleInstanceConfig(args: { guildId: string, moduleKey: string, newConfig: object }) {
+    updateModuleInstanceConfig(args: { instanceId: string, newConfig: object }) {
         return this.fetch("post:module-instances/config", args)
     }
 

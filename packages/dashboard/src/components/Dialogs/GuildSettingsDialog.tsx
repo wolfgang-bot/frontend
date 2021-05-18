@@ -6,7 +6,7 @@ import Skeleton from "@material-ui/lab/Skeleton"
 import { API } from "../../config/types"
 import { RootState } from "../../store"
 import ArgumentsForm, { RefHandle } from "../Forms/ArgumentsForm/ArgumentsForm"
-import { updateConfig as updateConfigAction } from "../../features/moduleInstances/moduleInstancesSlice"
+import { selectInstanceByModuleKey, updateConfig as updateConfigAction } from "../../features/moduleInstances/moduleInstancesSlice"
 import Logger from "../../utils/Logger"
 import opener from "../ComponentOpener"
 import api from "../../api"
@@ -24,7 +24,11 @@ function GuildSettingsDialog({ open, onClose, guild }: {
     const module = useSelector((store: RootState) => store.modules.data.settings)
     const status = useSelector((store: RootState) => store.modules.status)
     const error = useSelector((store: RootState) => store.modules.error)
-    const instance = useSelector((store: RootState) => store.moduleInstances.guilds[guild.id]?.data.settings)
+    const instance = useSelector(selectInstanceByModuleKey(guild.id, "settings"))
+
+    if (!instance) {
+        throw new Error("Could not find instance of module 'settings'")
+    }
 
     const argsFormRef = useRef<RefHandle>(null)
 
@@ -50,7 +54,7 @@ function GuildSettingsDialog({ open, onClose, guild }: {
         
         const resultAction = await dispatch(updateConfigAction({
             guildId: guild.id,
-            moduleKey: module.key,
+            instanceId: instance.id,
             value: config
         })) as any
 

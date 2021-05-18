@@ -25,10 +25,9 @@ const useStyles = makeStyles({
     }
 })
 
-function ModuleInstanceCard({ instance, module, guild }: {
+function ModuleInstanceCard({ instance, module }: {
     instance: API.ModuleInstance,
-    module: API.Module,
-    guild: API.Guild
+    module: API.Module
 }) {
     if (instance.moduleKey !== module.key) {
         throw new Error("Instance and module do not match")
@@ -81,18 +80,10 @@ function ModuleInstanceCard({ instance, module, guild }: {
                 <Box p={1}>
                     <Grid container spacing={2}>
                         <Grid item>
-                            <ModuleRestartButton
-                                module={module}
-                                instance={instance}
-                                guild={guild}
-                            />
+                            <ModuleRestartButton instance={instance} />
                         </Grid>
                         <Grid item>
-                            <ModuleStopButton
-                                module={module}
-                                instance={instance}
-                                guild={guild}
-                            />
+                            <ModuleStopButton instance={instance} />
                         </Grid>
                     </Grid>
                 </Box>

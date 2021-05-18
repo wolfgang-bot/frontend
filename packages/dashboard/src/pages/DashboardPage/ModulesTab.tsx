@@ -50,7 +50,7 @@ function ModulesTab({ guild, getStreamRef, onClearStreamRefs }: TabProps) {
             type,
             guild,
             moduleKey: event.module.key,
-            instanceModuleKey: event.instance?.moduleKey
+            instance: event.instance
         })
     }
     

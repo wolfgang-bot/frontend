@@ -9,7 +9,7 @@ export type HeroState = {
     type: "module" | "instance",
     guild: API.Guild,
     moduleKey: string,
-    instanceModuleKey?: string
+    instance?: API.ModuleInstance
 }
 
 const contentMap: Record<
