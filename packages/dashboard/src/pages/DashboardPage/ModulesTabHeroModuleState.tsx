@@ -1,11 +1,12 @@
-import { Avatar, Box, Divider, Grid, Typography } from "@material-ui/core"
-import { makeStyles } from "@material-ui/core/styles"
+import { Avatar, Box, Divider, Grid, Typography, useMediaQuery } from "@material-ui/core"
+import { makeStyles, Theme } from "@material-ui/core/styles"
 import ChevronRightIcon from "@material-ui/icons/ChevronRight"
 
 import { HeroState } from "./ModulesTabHero"
 import { API } from "../../config/types"
 import { useSelector } from "react-redux"
 import { RootState } from "../../store"
+import Codeblock from "../../components/Styled/Codeblock"
 
 const useStyles = makeStyles((theme) => ({
     icon: {
@@ -50,21 +51,36 @@ function ModuleDescription({ module }: { module: API.Module }) {
 
     return (
         <>
-            {module.features.map((feature, index) => (
-                <Box key={index} display="flex" mb={2}>
-                    <ChevronRightIcon className={classes.bullet}/>
-                    <Typography variant="body1">
-                        {feature}
-                    </Typography>
-                </Box>
-            ))}
+            <Box mb={4}>
+                {module.features.map((feature, index) => (
+                    <Box key={index} display="flex" mb={2}>
+                        <ChevronRightIcon className={classes.bullet}/>
+                        <Typography variant="body1">
+                            {feature}
+                        </Typography>
+                    </Box>
+                ))}
+            </Box>
+
+            <Box>
+                {module.commands.map((command, index) => (
+                    <Box key={index} mb={2}>
+                        <Box mb={0.5}>
+                            <Typography>{command.description}</Typography>
+                        </Box>
+                        <Codeblock>{command.usage}</Codeblock>
+                    </Box>
+                ))}
+            </Box>
         </>
     )
 }
 
 function ModulesTabHeroModuleState({ state }: { state: HeroState }) {
-    const module = useSelector((store: RootState) => store.modules.data?.[state.moduleKey])
-    const status = useSelector((store: RootState) => store.modules.status)
+    const isSmallScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"))
+
+    const module = useSelector((store: RootState) => store.modules.guilds[state.guild.id]?.data?.[state.moduleKey])
+    const status = useSelector((store: RootState) => store.modules.guilds[state.guild.id]?.status)
 
     if (status !== "success") {
         return <></>
@@ -78,7 +94,11 @@ function ModulesTabHeroModuleState({ state }: { state: HeroState }) {
 
             <Divider/>
 
-            <Box overflow="auto" height={600-64} p={2}>
+            <Box
+                overflow="auto"
+                height={!isSmallScreen ? 600-64 : undefined}
+                p={2}
+            >
                 <ModuleDescription module={module}/>
             </Box>
         </>

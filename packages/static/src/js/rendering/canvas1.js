@@ -1,24 +1,39 @@
-const Scene = require("./Scene.js")
+const Canvas = require("./Canvas.js")
 const Box = require("./Box.js")
 const BoxStack = require("./BoxStack1.js")
 const config = require("../config.js")
-const { getNodeDimensions } = require("../utils.js")
+const { BREAKPOINTS } = require("./Dimensions.js")
 
-const canvas = document.getElementById("canvas-1")
-const [width] = getNodeDimensions(canvas)
+const canvas = new Canvas({
+    id: "canvas-1",
+    getCameraPosition() {
+        return [-300, 600, 500]
+    },
+    getCameraFocusPosition() {
+        return [100, 0, -200]
+    },
+    getLightPosition() {
+        return [this.width / 2, 1000, 0]
+    }
+})
 
-const scene = new Scene(canvas)
-scene.setCameraPosition(-300, 600, 500)
-scene.setCameraFocusPosition(100, 0, -200)
-scene.setLightPosition(width / 2, 1000, 0)
+canvas.defineBreakpoint(BREAKPOINTS.L, function() {
+    const box = new Box(70, config.colors[0], true)
+    box.setPosition(150, 400, 100)
+    box.setRotation(0, Math.PI / 6, 0)
+    this.scene.addObject(box)
 
-const box = new Box(70, config.colors[0], true)
-box.setPosition(150, 400, 100)
-box.setRotation(0, Math.PI / 6, 0)
-scene.addObject(box)
+    const stack = new BoxStack(100)
+    stack.setPosition(900, 400, 0)
+    this.scene.addObject(stack)
+})
 
-const stack = new BoxStack(100)
-stack.setPosition(900, 400, 0)
-scene.addObject(stack)
+canvas.defineBreakpoint(BREAKPOINTS.S, function() {
+    const stack = new BoxStack(80)
+    stack.setPosition(0, 525, 0)
+    this.scene.addObject(stack)
 
-scene.start()
+    this.scene.setLightPosition(100, 1000, 300)
+})
+
+canvas.render()

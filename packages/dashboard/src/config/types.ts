@@ -117,6 +117,8 @@ export declare namespace API {
         key: string,
         name: string,
         desc: string,
+        maxInstances: number,
+        remainingInstances: number,
         features: string[],
         args: Argument[],
         commands: Command[],
@@ -128,10 +130,11 @@ export declare namespace API {
     }
 
     export type ModuleInstance = {
+        id: string,
         moduleKey: string,
         guildId: string,
         state: INSTANCE_STATES,
-        config: object
+        config: Record<string, any>
     }
 
     export type Argument = {
@@ -156,6 +159,7 @@ export declare namespace API {
         "module-instances" |
         "module-shares" |
         "user-guilds" |
+        "guild-modules" |
         "guild-module-instances" |
         "members" |
         "messages" |

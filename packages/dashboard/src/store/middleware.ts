@@ -9,6 +9,7 @@ import { updateInstances } from "../features/moduleInstances/moduleInstancesSlic
 import { makeStreamStatusSelector } from "../features/streams/streamsSlice"
 import api from "../api"
 import { updateUserGuilds, updateGlobalGuilds } from "../features/guilds/guildsSlice"
+import { updateModules } from "../features/modules/modulesSlice"
 
 export const authMiddleware: Middleware = () => next => (action: PayloadAction<{
     token?: string
@@ -80,6 +81,13 @@ export const streamDataMiddleware: Middleware = () => next => (action: PayloadAc
 }>) => {
     if (action.type === "streams/data") {
         switch (action.payload.args.eventStream) {
+            case "guild-modules":
+                store.dispatch(updateModules({
+                    guildId: action.payload.args.guildId!,
+                    data: action.payload.data
+                }))
+                break
+            
             case "guild-module-instances":
                 store.dispatch(updateInstances({
                     guildId: action.payload.args.guildId!,

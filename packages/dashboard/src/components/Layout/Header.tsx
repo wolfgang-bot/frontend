@@ -2,8 +2,18 @@ import React, { useState, useRef } from "react"
 import clsx from "clsx"
 import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
-import { AppBar, Toolbar, Button, Grid, Divider, Container, Box, Typography } from "@material-ui/core"
-import { makeStyles } from "@material-ui/core/styles"
+import {
+    AppBar,
+    Toolbar,
+    Button,
+    Grid,
+    Divider,
+    Container,
+    Box,
+    Typography,
+    useMediaQuery
+} from "@material-ui/core"
+import { makeStyles, Theme } from "@material-ui/core/styles"
 
 import { RootState } from "../../store"
 import DarkModeSwitch from "../../features/settings/DarkModeSwitch"
@@ -16,8 +26,7 @@ const useStyles = makeStyles(theme => ({
         ...theme.mixins.toolbar,
         backgroundColor: theme.palette.background.paper,
         color: theme.palette.text.primary,
-        boxShadow: "none",
-        marginBottom: theme.spacing(2)
+        boxShadow: "none"
     },
 
     toolbar: theme.mixins.toolbar,
@@ -29,7 +38,11 @@ const useStyles = makeStyles(theme => ({
     },
 
     spacingRight: {
-        marginRight: theme.spacing(3)
+        marginRight: theme.spacing(3),
+
+        [theme.breakpoints.down("sm")]: {
+            marginRight: theme.spacing(1)
+        }
     },
 
     avatar: {
@@ -39,6 +52,8 @@ const useStyles = makeStyles(theme => ({
 
 function Header() {
     const classes = useStyles()
+
+    const isSmallScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("xs"))
 
     const menuAnchorRef = useRef<HTMLElement | null>(null)
 
@@ -85,9 +100,11 @@ function Header() {
                                 >
                                     <Avatar className={classes.avatar}/>
 
-                                    <Typography variant="subtitle1">
-                                        {user?.username}
-                                    </Typography>
+                                    {!isSmallScreen && (
+                                        <Typography variant="subtitle1">
+                                            {user?.username}
+                                        </Typography>
+                                    )}
                                 </div>
                             )}
 
@@ -106,11 +123,11 @@ function Header() {
                 getContentAnchorEl={null}
                 anchorOrigin={{
                     vertical: "bottom",
-                    horizontal: "left"
+                    horizontal: isSmallScreen ? "right" : "left"
                 }}
                 transformOrigin={{
                     vertical: "top",
-                    horizontal: "left"
+                    horizontal: isSmallScreen ? "right" : "left"
                 }}
             />
         </AppBar>

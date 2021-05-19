@@ -1,5 +1,15 @@
 import { useRef } from "react"
-import { Box, Button, Card, CardActionArea, CardHeader, Divider, Typography } from "@material-ui/core"
+import {
+    Box,
+    Button,
+    Card,
+    CardActionArea,
+    CardHeader,
+    Divider,
+    Theme,
+    Typography,
+    useMediaQuery
+} from "@material-ui/core"
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft"
 
 import { API } from "../../config/types"
@@ -13,6 +23,8 @@ function ModuleStartCard({ module, guild, onBack }: {
     guild?: API.Guild,
     onBack: () => void
 }) {
+    const isSmallScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"))
+    
     const argsFormRef = useRef<ArgumentsRefHandle>(null)
 
     const validateArgs = async (args: Record<string, any>) => {
@@ -74,7 +86,13 @@ function ModuleStartCard({ module, guild, onBack }: {
 
             <Divider/>
 
-            <Box height={600-52-60} overflow="auto" p={2}>
+            <Box
+                overflow="hidden auto"
+                p={2}
+                {...({
+                    [isSmallScreen ? "maxHeight" : "height"]: 600-52-60
+                })}
+            >
                 {(!guild || !module) ? <></> : (
                     <ArgumentsForm
                         key={module.key}

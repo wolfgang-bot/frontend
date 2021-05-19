@@ -3,15 +3,12 @@ import { Button } from "@material-ui/core"
 import api from "../../api"
 import { API, INSTANCE_STATES } from "../../config/types"
 
-function ModuleRestartButton({ instance, module, guild }: {
-    instance: API.ModuleInstance,
-    module: API.Module,
-    guild: API.Guild
+function ModuleRestartButton({ instance }: {
+    instance: API.ModuleInstance
 }) {
     const handleClick = () => {
         api.ws.restartModuleInstance({
-            guildId: guild.id,
-            moduleKey: module.key
+            instanceId: instance.id
         })
     }
 

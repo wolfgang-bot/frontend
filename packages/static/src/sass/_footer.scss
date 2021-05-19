@@ -59,4 +59,31 @@ footer {
             }
         }
     }
+
+    @media (max-width: $breakpoint_l) {
+        padding: 64px 16px;
+    }
+
+    @media (max-width: $breakpoint_m) {
+        .container {
+            display: grid;
+            grid-template-columns: 100%;
+            grid-template-rows: auto;
+            grid-template-areas:
+                "top"
+                "center"
+                "bottom";
+            gap: 64px;
+            text-align: center;
+        }
+
+        .center {
+            grid-area: bottom;
+        }
+
+        .right {
+            grid-area: center;
+            align-items: center;
+        }
+    }
 }

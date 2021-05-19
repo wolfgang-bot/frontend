@@ -48,21 +48,21 @@
             <div>
                 <ol>
                     <li>
-                        <span>1. Invite The Bot</span>
+                        <span class="subtitle">1. Invite The Bot</span>
                         <a class="btn btn-primary" data-invite>
                             Invite
                         </a>
                     </li>
 
                     <li>
-                        <span>2. Start Some Modules</span>
+                        <span class="subtitle">2. Start Some Modules</span>
                         <a class="btn btn-primary" href="/dashboard">
                             Dashboard
                         </a>
                     </li>
 
                     <li>
-                        <span>3. Enjoy 🥳</span>
+                        <span class="subtitle">3. Enjoy 🥳</span>
                     </li>
                 </ol>
             </div>
@@ -126,6 +126,7 @@
                     <template id="module-content-template">
                         <div class="module-features"></div>
                         <div class="module-commands"></div>
+                        <div class="module-max-instances"></div>
                         <div class="module-images"></div>
                     </template>
 
@@ -135,11 +136,15 @@
                         </div>
                     </template>
 
-                    <template id="module-command">
+                    <template id="module-command-template">
                         <div class="module-command">
                             <div class="module-command-desc"></div>
                             <div class="module-command-usage"></div>
                         </div>
+                    </template>
+
+                    <template id="module-max-instances-template">
+                        <div>You can start <span class="amount"></span> instances of this module</div>
                     </template>
                 </div>
             </div>

@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 import { API, INSTANCE_STATES, ReduxAPIState } from "../../config/types"
-import { ThunkExtraArgument } from "../../store"
+import { RootState, ThunkExtraArgument } from "../../store"
 import { updateUserGuilds } from "../guilds/guildsSlice"
 
 type GuildState = ReduxAPIState<Record<string, API.ModuleInstance>>
@@ -23,14 +23,13 @@ const initialState: ModuleInstancesState = {
 
 export const updateConfig = createAsyncThunk<
     object | undefined,
-    { guildId: string, moduleKey: string, value: object },
+    { instanceId: string, guildId: string, value: object },
     { extra: ThunkExtraArgument }
 >(
     "moduleInstances/updateConfig",
-    async ({ guildId, moduleKey, value }, { extra: { api }}) => {
+    async ({ instanceId, value }, { extra: { api }}) => {
         const res = await api.ws.updateModuleInstanceConfig({
-            guildId: guildId,
-            moduleKey: moduleKey,
+            instanceId,
             newConfig: value
         })
         return res.data
@@ -53,10 +52,10 @@ const moduleInstancesSlice = createSlice({
             guild.status = "success"
             
             action.payload.data.forEach(instance => {
-                guild.data[instance.moduleKey] = instance
+                guild.data[instance.id] = instance
 
                 if (instance.state === INSTANCE_STATES.INACTIVE) {
-                    delete guild.data[instance.moduleKey]
+                    delete guild.data[instance.id]
                 }
             })
         }
@@ -72,11 +71,18 @@ const moduleInstancesSlice = createSlice({
 
         [updateConfig.fulfilled.toString()]: (state, action: any) => {
             const guild = state.guilds[action.meta.arg.guildId]
-            const instance = guild.data[action.meta.arg.moduleKey]
+            const instance = guild.data[action.meta.arg.instanceId]
             instance.config = action.payload
         }
     }
 })
+
+export function selectInstanceByModuleKey(guildId: string, moduleKey: string) {
+    return (store: RootState) => {
+        const instances = store.moduleInstances.guilds[guildId].data
+        return Object.values(instances).find((instance) => instance.moduleKey === moduleKey)
+    }
+}
 
 export const { updateInstances } = moduleInstancesSlice.actions
 

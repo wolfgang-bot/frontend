@@ -3,6 +3,10 @@
         max-width: 50%;
         margin-bottom: 48px;
 
+        @media (max-width: $breakpoint_s) {
+            max-width: unset;
+        }
+
         .caption {
             font-size: $font-size-m;
             margin-bottom: 48px;
@@ -15,8 +19,9 @@
         }
 
         img {
-            margin-left: -16px;
-            margin-top: -16px;
+            $margin: -16px;
+            margin: 0 $margin;
+            width: calc(100% - #{$margin} * 2);
         }
     }
 }

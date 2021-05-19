@@ -2,29 +2,33 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 import { API, ReduxAPIState } from "../../config/types"
 import { ThunkExtraArgument } from "../../store"
+import { updateUserGuilds } from "../guilds/guildsSlice"
 
-type ModuleState = ReduxAPIState<Record<string, API.Module>>
+type ModulesMap = Record<string, API.Module>
+type GuildState = ReduxAPIState<ModulesMap>
+type ModuleState = {
+    guilds: Record<string, GuildState>
+}
 
 const initialState: ModuleState = {
-    data: {},
-    status: "idle"
+    guilds: {}
+}
+
+function makeInitialGuildState(): GuildState {
+    return {
+        data: {},
+        status: "idle"
+    }
 }
 
 export const fetchModules = createAsyncThunk<
     API.Module[] | undefined,
-    "ws" | "http",
+    { guildId: string },
     { extra: ThunkExtraArgument }
 >(
     "module/fetchModules",
-    async (apiMode, { extra: { api } }) => {
-        let res
-
-        if (apiMode === "ws") {
-            res = await api.ws.getModules()
-        } else if (apiMode === "http") {
-            res = await api.http.getModules()
-        }
-
+    async (args, { extra: { api } }) => {
+        const res = await api.ws.getModules(args)
         return res?.data
     }
 )
@@ -32,15 +36,44 @@ export const fetchModules = createAsyncThunk<
 const modulesSlice = createSlice({
     name: "modules",
     initialState,
-    reducers: {},
+    reducers: {
+        updateModules: (state, action: PayloadAction<{
+            guildId: string,
+            data: API.Module[]
+        }>) => {
+            const guild = state.guilds[action.payload.guildId]
+            if (!guild) {
+                return
+            }
+            guild.status = "success"
+            action.payload.data.forEach(module => {
+                guild.data[module.key] = module
+            })
+        }
+    },
     extraReducers: {
-        [fetchModules.pending.toString()]: (state) => {
-            state.status = "pending"
+        [updateUserGuilds.toString()]: (state, action: PayloadAction<API.Guild[]>) => {
+            action.payload.forEach(guild => {
+                if (!state.guilds[guild.id]) {
+                    state.guilds[guild.id] = makeInitialGuildState()
+                }
+            })
         },
-        [fetchModules.fulfilled.toString()]: (state, action: PayloadAction<API.Module[]>) => {
-            state.status = "success"
-            action.payload.forEach(module => {
-                state.data[module.key] = module
+        [fetchModules.pending.toString()]: (state, action) => {
+            const guild = state.guilds[action.meta.arg.guildId]
+            if (!guild) {
+                return
+            }
+            guild.status = "pending"
+        },
+        [fetchModules.fulfilled.toString()]: (state, action) => {
+            const guild = state.guilds[action.meta.arg.guildId]
+            if (!guild) {
+                return
+            }
+            guild.status = "success"
+            action.payload.forEach((module: API.Module) => {
+                guild.data[module.key] = module
 
                 module.commands.forEach(command => {
                     if (!module.commandGroups) {
@@ -56,10 +89,15 @@ const modulesSlice = createSlice({
             })
         },
         [fetchModules.rejected.toString()]: (state, action) => {
-            state.status = "error"
-            state.error = action.payload
+            const guild = state.guilds[action.meta.arg.guildId]
+            if (!guild) {
+                return
+            }
+            guild.status = "error"
+            guild.error = action.payload
         }
     }
 })
 
+export const { updateModules } = modulesSlice.actions
 export default modulesSlice.reducer

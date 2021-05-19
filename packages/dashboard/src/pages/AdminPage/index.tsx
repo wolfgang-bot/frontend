@@ -18,17 +18,27 @@ import GuildList from "../../features/guilds/GlobalGuildList"
 const LIST_HEIGHT = 400
 const ADMIN_FORM_HEIGHT = 64
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
     guildList: {
         height: LIST_HEIGHT,
-        overflow: "auto"
+        overflow: "auto",
+
+        [theme.breakpoints.down("xs")]: {
+            height: "unset",
+            maxHeight: LIST_HEIGHT
+        }
     },
 
     adminList: {
         height: LIST_HEIGHT - ADMIN_FORM_HEIGHT,
-        overflow: "auto"
+        overflow: "auto",
+
+        [theme.breakpoints.down("xs")]: {
+            height: "unset",
+            maxHeight: LIST_HEIGHT - ADMIN_FORM_HEIGHT
+        }
     }
-})
+}))
 
 function AdminPage() {
     const classes = useStyles()
@@ -48,7 +58,7 @@ function AdminPage() {
                     justify="space-between"
                     spacing={4}
                 >
-                    <Grid item xs>
+                    <Grid item xs={12} sm={6} lg>
                         <StatisticCard
                             main={<GuildCount />}
                             trend={<GuildTrend />}
@@ -56,7 +66,7 @@ function AdminPage() {
                         />
                     </Grid>
 
-                    <Grid item xs>
+                    <Grid item xs={12} sm={6} lg>
                         <StatisticCard
                             main={<UserCount />}
                             trend={<UserTrend />}
@@ -64,7 +74,7 @@ function AdminPage() {
                         />
                     </Grid>
 
-                    <Grid item xs>
+                    <Grid item xs={12} sm={6} lg>
                         <StatisticCard
                             main={<ModuleInstanceCount />}
                             trend={<ModuleInstanceTrend />}
@@ -72,7 +82,7 @@ function AdminPage() {
                         />
                     </Grid>
 
-                    <Grid item xs>
+                    <Grid item xs={12} sm={6} lg>
                         <Paper variant="outlined">
                             <ModuleShares/>
                         </Paper>
@@ -85,21 +95,21 @@ function AdminPage() {
                     justify="space-between"
                     spacing={4}
                 >
-                    <Grid item xs>
+                    <Grid item xs={12} lg>
                         <ChartCard
                             chart={<GuildChart />}
                             label="Guilds"
                         />
                     </Grid>
 
-                    <Grid item xs>
+                    <Grid item xs={12} lg>
                         <ChartCard
                             chart={<UserChart />}
                             label="Users"
                         />
                     </Grid>
 
-                    <Grid item xs>
+                    <Grid item xs={12} lg>
                         <ChartCard
                             chart={<ModuleInstanceChart />}
                             label="Module Instances"

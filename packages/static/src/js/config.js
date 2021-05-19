@@ -16,5 +16,11 @@ module.exports = {
         "#9b59b6",
         "#34495e",
         "#95a5a6"
-    ]
+    ],
+    
+    breakpointS: 600,
+
+    localStorageKeys: {
+        consent: "consent"
+    }
 }

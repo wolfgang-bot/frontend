@@ -3,15 +3,12 @@ import { Button } from "@material-ui/core"
 import api from "../../api"
 import { API, INSTANCE_STATES } from "../../config/types"
 
-function ModuleStopButton({ instance, module, guild }: {
-    instance: API.ModuleInstance,
-    module: API.Module,
-    guild: API.Guild
+function ModuleStopButton({ instance }: {
+    instance: API.ModuleInstance
 }) {
     const handleClick = () => {
         api.ws.stopModuleInstance({
-            guildId: guild.id,
-            moduleKey: module.key
+            instanceId: instance.id
         })
     }
 

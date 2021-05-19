@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Grid, makeStyles } from "@material-ui/core"
+import { Grid, makeStyles, Theme, useMediaQuery } from "@material-ui/core"
 
 import { TabProps } from "./TabsRouter"
 import { SubscriptionOptions } from "../../features/streams/withStreamSubscription"
@@ -10,30 +10,32 @@ import { useSelector } from "react-redux"
 import { RootState } from "../../store"
 import ModulesPanel from "./ModulesPanel"
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
     panel: {
-        width: `${100/3}%`
+        [theme.breakpoints.up("md")]: {
+            width: `${100/3}%`
+        }
     }
-})
+}))
 
 function ModulesTab({ guild, getStreamRef, onClearStreamRefs }: TabProps) {
     const classes = useStyles()
 
-    const modules = useSelector((store: RootState) => store.modules.data)
-    const modulesState = useSelector((store: RootState) => store.modules.status)
+    const isSmallScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"))
+
+    const modules = useSelector((store: RootState) => store.modules.guilds[guild.id]?.data)
+    const modulesState = useSelector((store: RootState) => store.modules.guilds[guild.id]?.status)
 
     const getInitialHeroState = () => {
-        const firstModule = Object.values(modules)[0]
-        if (firstModule) {
-            return {
-                type: "module",
-                guild,
-                moduleKey: firstModule.key
-            } as HeroState
-        }
+        const firstModule = Object.values(modules || {})[0]
+        return {
+            type: "module",
+            guild,
+            moduleKey: firstModule?.key
+        } as HeroState
     }
     
-    const [heroState, setHeroState] = useState<HeroState | undefined>(
+    const [heroState, setHeroState] = useState<HeroState>(
         getInitialHeroState()
     )
 
@@ -46,7 +48,7 @@ function ModulesTab({ guild, getStreamRef, onClearStreamRefs }: TabProps) {
             type,
             guild,
             moduleKey: event.module.key,
-            instanceModuleKey: event.instance?.moduleKey
+            instance: event.instance
         })
     }
     
@@ -64,8 +66,12 @@ function ModulesTab({ guild, getStreamRef, onClearStreamRefs }: TabProps) {
     onClearStreamRefs()
 
     return (
-        <Grid container spacing={4}>
-            <Grid item xs className={classes.panel}>
+        <Grid
+            container
+            spacing={4}
+            direction={isSmallScreen ? "column-reverse" : "row"}
+        >
+            <Grid item xs={12} md className={classes.panel}>
                 <ModuleInstanceList
                     guild={guild}
                     onHover={handleHover}
@@ -73,14 +79,14 @@ function ModulesTab({ guild, getStreamRef, onClearStreamRefs }: TabProps) {
                 />
             </Grid>
 
-            <Grid item xs className={classes.panel}>
+            <Grid item xs={12} md className={classes.panel}>
                 <ModulesTabHero
                     state={heroState}
                     reset={() => setHeroState(getInitialHeroState())}
                 />
             </Grid>
 
-            <Grid item xs className={classes.panel}>
+            <Grid item xs={12} md className={classes.panel}>
                 <ModulesPanel
                     state={heroState}
                     onHeroStateChange={setHeroState}
