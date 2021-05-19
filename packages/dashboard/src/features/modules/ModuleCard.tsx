@@ -28,6 +28,7 @@ function ModuleCard({ module, onMouseEnter, ...props }: Props) {
     const classes = useStyles()
 
     const disabled = module.remainingInstances === 0
+    const usedInstances = module.maxInstances - module.remainingInstances
 
     return (
         <Card
@@ -60,7 +61,7 @@ function ModuleCard({ module, onMouseEnter, ...props }: Props) {
                             <Box display="flex">
                                 <Box pr={.5}>
                                     <Typography>
-                                        {module.remainingInstances} / {module.maxInstances}
+                                        {usedInstances} / {module.maxInstances}
                                     </Typography>
                                 </Box>
                                 <ChevronRightIcon/>
