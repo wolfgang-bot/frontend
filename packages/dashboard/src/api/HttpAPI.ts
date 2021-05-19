@@ -43,11 +43,6 @@ class HttpAPI {
         return await this.get<API.User>("/oauth/discord/profile")
             .then(format<API.User>(FORMATS.USER))
     }
-
-    async getModules() {
-        return await this.get<API.Module[]>("/modules")
-            .then(format<API.Module[]>(FORMATS.MODULES))
-    }
 }
 
 export default HttpAPI

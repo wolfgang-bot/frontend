@@ -1,29 +1,21 @@
-import { useEffect } from "react"
-import { useSelector, useDispatch } from "react-redux"
+import { useSelector } from "react-redux"
 import { Box } from "@material-ui/core"
 
 import { RootState } from "../../store"
-import { fetchModules } from "./modulesSlice"
 import ModuleCard, { ModuleCardSkeleton } from "./ModuleCard"
 import { API } from "../../config/types"
+import withStreamSubscription from "../streams/withStreamSubscription"
 
 const AMOUNT_OF_CARDS = 4
 
-function ModuleList({ onHover = () => {}, onClick = () => {} }: {
+function ModuleList({ guild, onHover = () => {}, onClick = () => {} }: {
+    guild: API.Guild,
     onHover?: (props: { module: API.Module }) => void,
     onClick?: (props: { module: API.Module }) => void
 }) {
-    const dispatch = useDispatch()
-
-    const modules = useSelector((store: RootState) => store.modules.data)
-    const status = useSelector((store: RootState) => store.modules.status)
-    const error = useSelector((store: RootState) => store.modules.error)
-
-    useEffect(() => {
-        if (status === "idle") {
-            dispatch(fetchModules("http"))
-        }
-    }, [status, dispatch])
+    const modules = useSelector((store: RootState) => store.modules.guilds[guild?.id || '']?.data)
+    const status = useSelector((store: RootState) => store.modules.guilds[guild?.id || '']?.status)
+    const error = useSelector((store: RootState) => store.modules.guilds[guild?.id || '']?.error)
 
     if (status === "success") {
         const filtered = Object.values(modules)
@@ -65,4 +57,4 @@ export function ModuleListSkeleton() {
     )
 }
 
-export default ModuleList
+export default withStreamSubscription(ModuleList, "guild-modules")

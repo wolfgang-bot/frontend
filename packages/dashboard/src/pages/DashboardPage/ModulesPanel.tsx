@@ -8,7 +8,7 @@ import ModuleStartCard from "./ModuleStartCard"
 import { Theme, useMediaQuery } from "@material-ui/core"
 
 function ModulesPanel({ state, onHeroStateChange }: {
-    state?: HeroState,
+    state: HeroState,
     onHeroStateChange: (newState: HeroState) => void
 }) {
     const isSmallScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"))
@@ -44,13 +44,14 @@ function ModulesPanel({ state, onHeroStateChange }: {
                     {}
             }>
                 <ModuleList
+                    guild={state.guild}
                     onHover={handleHover}
                     onClick={handleModuleClick}
                 />
             </div>
 
             <ModuleStartCard
-                guild={state?.guild}
+                guild={state.guild}
                 module={activeModule}
                 onBack={() => setViewIndex(0)}
             />

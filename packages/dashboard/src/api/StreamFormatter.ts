@@ -8,7 +8,8 @@ export default class StreamFormatter {
         "user-guilds": format(FORMATS.GUILDS),
         "guilds-resources": format(FORMATS.GUILDS),
         "user-message-leaderboard": this.leaderboardFormatter.bind(this),
-        "user-voice-leaderboard": this.leaderboardFormatter.bind(this)
+        "user-voice-leaderboard": this.leaderboardFormatter.bind(this),
+        "guild-modules": format(FORMATS.MODULES)
     }
 
     constructor(public args: API.StreamArgs) {}

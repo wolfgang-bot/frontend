@@ -79,8 +79,8 @@ function ModuleDescription({ module }: { module: API.Module }) {
 function ModulesTabHeroModuleState({ state }: { state: HeroState }) {
     const isSmallScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"))
 
-    const module = useSelector((store: RootState) => store.modules.data?.[state.moduleKey])
-    const status = useSelector((store: RootState) => store.modules.status)
+    const module = useSelector((store: RootState) => store.modules.guilds[state.guild.id]?.data?.[state.moduleKey])
+    const status = useSelector((store: RootState) => store.modules.guilds[state.guild.id]?.status)
 
     if (status !== "success") {
         return <></>

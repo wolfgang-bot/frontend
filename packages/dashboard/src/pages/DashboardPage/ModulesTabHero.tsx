@@ -9,7 +9,7 @@ export type HeroState = {
     type: "module" | "instance",
     guild: API.Guild,
     moduleKey: string,
-    instanceModuleKey?: string
+    instance?: API.ModuleInstance
 }
 
 const contentMap: Record<
@@ -24,7 +24,7 @@ function ModulesTabHero({ state, reset }: {
     state?: HeroState,
     reset: () => void
 }) {
-    if (!state) {
+    if (!state || !state.moduleKey) {
         return null
     }
 

@@ -23,21 +23,19 @@ function ModulesTab({ guild, getStreamRef, onClearStreamRefs }: TabProps) {
 
     const isSmallScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"))
 
-    const modules = useSelector((store: RootState) => store.modules.data)
-    const modulesState = useSelector((store: RootState) => store.modules.status)
+    const modules = useSelector((store: RootState) => store.modules.guilds[guild.id]?.data)
+    const modulesState = useSelector((store: RootState) => store.modules.guilds[guild.id]?.status)
 
     const getInitialHeroState = () => {
-        const firstModule = Object.values(modules)[0]
-        if (firstModule) {
-            return {
-                type: "module",
-                guild,
-                moduleKey: firstModule.key
-            } as HeroState
-        }
+        const firstModule = Object.values(modules || {})[0]
+        return {
+            type: "module",
+            guild,
+            moduleKey: firstModule?.key
+        } as HeroState
     }
     
-    const [heroState, setHeroState] = useState<HeroState | undefined>(
+    const [heroState, setHeroState] = useState<HeroState>(
         getInitialHeroState()
     )
 
@@ -50,7 +48,7 @@ function ModulesTab({ guild, getStreamRef, onClearStreamRefs }: TabProps) {
             type,
             guild,
             moduleKey: event.module.key,
-            instanceModuleKey: event.instance?.moduleKey
+            instance: event.instance
         })
     }
     

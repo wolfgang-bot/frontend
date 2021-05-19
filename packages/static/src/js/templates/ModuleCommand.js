@@ -1,4 +1,4 @@
-const template = document.getElementById("module-command")
+const template = document.getElementById("module-command-template")
 
 class ModuleCommand {
     constructor(command) {

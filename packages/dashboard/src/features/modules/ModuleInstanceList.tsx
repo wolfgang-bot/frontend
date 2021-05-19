@@ -39,19 +39,21 @@ function ModuleInstanceList({ guild, onHover = () => {} }: {
 }) {
     const dispatch = useDispatch()
     
-    const modules = useSelector((state: RootState) => state.modules.data)
-    const modulesStatus = useSelector((state: RootState) => state.modules.status)
-    const modulesError = useSelector((state: RootState) => state.modules.error)
+    const modules = useSelector((store: RootState) => store.modules.guilds[guild.id]?.data)
+    const modulesStatus = useSelector((store: RootState) => store.modules.guilds[guild.id]?.status)
+    const modulesError = useSelector((store: RootState) => store.modules.guilds[guild.id]?.error)
     
-    const instances = useSelector((state: RootState) => state.moduleInstances.guilds[guild.id]?.data)
-    const instancesStatus = useSelector((state: RootState) => state.moduleInstances.guilds[guild.id]?.status)
-    const instancesError = useSelector((state: RootState) => state.moduleInstances.guilds[guild.id]?.error)
+    const instances = useSelector((store: RootState) => store.moduleInstances.guilds[guild.id]?.data)
+    const instancesStatus = useSelector((store: RootState) => store.moduleInstances.guilds[guild.id]?.status)
+    const instancesError = useSelector((store: RootState) => store.moduleInstances.guilds[guild.id]?.error)
 
     useEffect(() => {
         if (modulesStatus === "idle") {
-            dispatch(fetchModules("ws"))
+            dispatch(fetchModules({
+                guildId: guild.id
+            }))
         }
-    }, [modulesStatus, dispatch])
+    }, [modulesStatus, dispatch, guild.id])
 
     const status = mergeStatus(modulesStatus, instancesStatus)
 
@@ -74,12 +76,11 @@ function ModuleInstanceList({ guild, onHover = () => {} }: {
                     
                     return (
                         <Box
-                            key={instance.moduleKey}
+                            key={instance.id}
                             mb={2}
                             onMouseEnter={() => onHover({ module, instance })}
                         >
                             <ModuleInstanceCard
-                                guild={guild}
                                 instance={instance}
                                 module={modules[instance.moduleKey]}
                             />
