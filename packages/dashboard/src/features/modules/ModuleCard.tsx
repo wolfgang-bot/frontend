@@ -58,10 +58,11 @@ function ModuleCard({ module, onMouseEnter, ...props }: Props) {
                             </Typography>
 
                             <Box display="flex">
-                                <Typography>
-                                    {module.remainingInstances} /
-                                    {module.maxInstances}
-                                </Typography>
+                                <Box pr={.5}>
+                                    <Typography>
+                                        {module.remainingInstances} / {module.maxInstances}
+                                    </Typography>
+                                </Box>
                                 <ChevronRightIcon/>
                             </Box>
                         </Box>
