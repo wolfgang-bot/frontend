@@ -134,7 +134,7 @@ export declare namespace API {
         moduleKey: string,
         guildId: string,
         state: INSTANCE_STATES,
-        config: object
+        config: Record<string, any>
     }
 
     export type Argument = {

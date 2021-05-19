@@ -40,6 +40,8 @@ function ModuleInstanceCard({ instance, module }: {
     const isLoading =
         instance?.state === INSTANCE_STATES.STARTING ||
         instance?.state === INSTANCE_STATES.STOPPING
+
+    const label = instance.config.label || module.name
     
     return (
         <Card variant="outlined">
@@ -60,7 +62,7 @@ function ModuleInstanceCard({ instance, module }: {
                             alignItems="center"
                         >
                             <Typography variant="body1">
-                                {module.name}
+                                {label}
                             </Typography>
 
                             <Box display="flex" alignItems="center">
