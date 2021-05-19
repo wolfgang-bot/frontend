@@ -2,10 +2,15 @@ import { Box, Divider, Theme, useMediaQuery } from "@material-ui/core"
 import { useSelector } from "react-redux"
 
 import ArgumentsForm from "../../components/Forms/ArgumentsForm/ArgumentsForm"
+import { API } from "../../config/types"
 import { RootState } from "../../store"
 import { mergeStatus } from "../../utils"
 import { HeroState } from "./ModulesTabHero"
 import { ModuleHeader } from "./ModulesTabHeroModuleState"
+
+function filterArgs(args: API.Module["args"]) {
+    return args.filter(arg => arg.key !== "label")
+}
 
 function ModulesTabHeroInstanceState({ state, reset = () => {} }: {
     state: HeroState,
@@ -53,7 +58,7 @@ function ModulesTabHeroInstanceState({ state, reset = () => {} }: {
             >
                 <ArgumentsForm
                     key={module.key}
-                    args={module.args}
+                    args={filterArgs(module.args)}
                     guild={state.guild}
                     currentConfig={instance.config}
                     disabled
