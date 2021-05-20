@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { ForwardedRef, useState } from "react"
 import SwipeableViews from "react-swipeable-views"
 
 import ModuleList from "../../features/modules/ModuleList"
@@ -7,10 +7,10 @@ import { API } from "../../config/types"
 import ModuleStartCard from "./ModuleStartCard"
 import { Theme, useMediaQuery } from "@material-ui/core"
 
-function ModulesPanel({ state, onHeroStateChange }: {
+function ModulesPanel({ state, onHeroStateChange, ...args }: {
     state: HeroState,
     onHeroStateChange: (newState: HeroState) => void
-}) {
+}, ref: ForwardedRef<any>) {
     const isSmallScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"))
 
     const [viewIndex, setViewIndex] = useState(0)
@@ -47,6 +47,8 @@ function ModulesPanel({ state, onHeroStateChange }: {
                     guild={state.guild}
                     onHover={handleHover}
                     onClick={handleModuleClick}
+                    ref={ref}
+                    {...args}
                 />
             </div>
 
@@ -59,4 +61,4 @@ function ModulesPanel({ state, onHeroStateChange }: {
     )
 }
 
-export default ModulesPanel
+export default React.forwardRef(ModulesPanel)

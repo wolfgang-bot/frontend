@@ -90,6 +90,7 @@ function ModulesTab({ guild, getStreamRef, onClearStreamRefs }: TabProps) {
                 <ModulesPanel
                     state={heroState}
                     onHeroStateChange={setHeroState}
+                    {...streamProps}
                 />
             </Grid>
         </Grid>

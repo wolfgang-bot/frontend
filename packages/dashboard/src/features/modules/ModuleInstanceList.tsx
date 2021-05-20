@@ -30,7 +30,7 @@ function EmptyListIndicator() {
     )
 }
 
-function ModuleInstanceList({ guild, onHover = () => {} }: {
+function ModuleInstanceList({ guild, onHover = () => {}}: {
     guild: API.Guild,
     onHover?: (props: {
         module: API.Module,
