@@ -1,11 +1,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./css/main.min.css">
+    <link rel="stylesheet" href="/css/main.min.css">
+    <link rel="icon" href="/assets/favicon.ico" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Wolfgang - Discord Bots reinvented"
+    />
+    <title>wolfgang | <%- title %></title>
 
     <% if(process.env.NODE_ENV === "production") { %>
         <%- include("./analytics.ejs") %>
     <% } %>
-
-    <title>wolfgang | <%- title %></title>
 </head>
