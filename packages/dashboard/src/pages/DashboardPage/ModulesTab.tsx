@@ -15,6 +15,14 @@ const useStyles = makeStyles((theme) => ({
         [theme.breakpoints.up("md")]: {
             width: `${100/3}%`
         }
+    },
+    
+    instanceList: {
+        overflow: "auto scroll",
+        height: 600,
+        [theme.breakpoints.down("sm")]: {
+            height: 300
+        }
     }
 }))
 
@@ -72,11 +80,13 @@ function ModulesTab({ guild, getStreamRef, onClearStreamRefs }: TabProps) {
             direction={isSmallScreen ? "column-reverse" : "row"}
         >
             <Grid item xs={12} md className={classes.panel}>
-                <ModuleInstanceList
-                    guild={guild}
-                    onHover={handleHover}
-                    {...streamProps}
-                />
+                <div className={classes.instanceList}>
+                    <ModuleInstanceList
+                        guild={guild}
+                        onHover={handleHover}
+                        {...streamProps}
+                    />
+                </div>
             </Grid>
 
             <Grid item xs={12} md className={classes.panel}>

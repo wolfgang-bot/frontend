@@ -38,11 +38,10 @@ function ModulesPanel({ state, onHeroStateChange, ...args }: {
             onChangeIndex={setViewIndex}
             animateHeight={isSmallScreen}
         >
-            <div style={
-                isSmallScreen ?
-                    { overflow: "auto scroll", height: 300 } :
-                    {}
-            }>
+            <div style={{
+                overflow: "auto scroll",
+                height: isSmallScreen ? 300 : 600
+            }}>
                 <ModuleList
                     guild={state.guild}
                     onHover={handleHover}
