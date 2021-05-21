@@ -1,0 +1,66 @@
+name: backstage
+
+on:
+  push:
+    branches:
+      - backstage
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Docker Build
+        run: |
+          docker build \
+            --tag tracer1337/wolfgang:frontend-backstage \
+            --build-arg REACT_APP_DISCORD_BOT_CLIENT_ID=${{ secrets.STAGE_DISCORD_BOT_CLIENT_ID }} \
+            .
+
+      - name: Docker Push
+        run: |
+          docker login --username tracer1337 --password ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+          docker push tracer1337/wolfgang:frontend-backstage
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Docker Login
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            docker login --username tracer1337 --password ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+      - name: Docker Remove
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            docker rm -f wolfgang-frontend-backstage
+            docker rmi -f tracer1337/wolfgang:frontend-backstage
+          
+      - name: Docker Run
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            docker run \
+              --name wolfgang-frontend-backstage \
+              --detach \
+              --network wolfgang \
+              --network-alias frontend \
+              --restart=always \
+              tracer1337/wolfgang:frontend-backstage
