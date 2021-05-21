@@ -4,7 +4,7 @@ module.exports = {
 
     inviteURL: `https://discord.com/oauth2/authorize?client_id=${
         process.env.REACT_APP_DISCORD_BOT_CLIENT_ID
-    }&scope=bot&permissions=1342318608`,
+    }&scope=bot&permissions=1345535071`,
 
     animationSpeed: 1000,
 
