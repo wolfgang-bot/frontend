@@ -60,7 +60,7 @@ jobs:
             docker run \
               --name wolfgang-frontend-backstage \
               --detach \
-              --network wolfgang \
+              --network wolfgang-backstage \
               --network-alias frontend \
               --restart=always \
               tracer1337/wolfgang:frontend-backstage
