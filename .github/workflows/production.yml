@@ -15,14 +15,14 @@ jobs:
       - name: Docker Build
         run: |
           docker build \
-            --tag tracer1337/discord-bot:frontend \
-            --build-arg REACT_APP_DISCORD_BOT_CLIENT_ID=${{ secrets.DISCORD_BOT_CLIENT_ID }} \
+            --tag tracer1337/wolfgang:frontend \
+            --build-arg REACT_APP_DISCORD_BOT_CLIENT_ID=${{ secrets.PROD_DISCORD_BOT_CLIENT_ID }} \
             .
 
       - name: Docker Push
         run: |
           docker login --username tracer1337 --password ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-          docker push tracer1337/discord-bot:frontend
+          docker push tracer1337/wolfgang:frontend
 
   deploy:
     runs-on: ubuntu-latest
@@ -47,8 +47,8 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            docker rm -f discord-bot-frontend
-            docker rmi -f tracer1337/discord-bot:frontend
+            docker rm -f wolfgang-frontend
+            docker rmi -f tracer1337/wolfgang:frontend
           
       - name: Docker Run
         uses: appleboy/ssh-action@v0.1.4
@@ -58,9 +58,9 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             docker run \
-              --name discord-bot-frontend \
+              --name wolfgang-frontend \
               --detach \
-              --network discord-bot \
+              --network wolfgang \
               --network-alias frontend \
               --restart=always \
-              tracer1337/discord-bot:frontend
+              tracer1337/wolfgang:frontend
