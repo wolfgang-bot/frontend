@@ -16,14 +16,12 @@ $list-item-spacing: 16px;
 } 
 
 #module-list {
-    margin-left: -$list-item-spacing;
-    margin-right: 0;
     height: $height;
+    padding: 0 $list-item-spacing;
+    overflow-y: auto;
 
     @media (max-width: $breakpoint_l) {
-        margin-right: -$list-item-spacing;
         margin-bottom: $list-item-spacing * 3;
-        height: unset;
     }
 }
 
@@ -34,7 +32,7 @@ $list-item-spacing: 16px;
     width: 400px;
     background-color: $color-background-800;
     border-radius: 32px;
-    margin: $list-item-spacing;
+    margin-bottom: $list-item-spacing;
     cursor: pointer;
     position: relative;
     transition: background-color 150ms;
@@ -71,16 +69,12 @@ $list-item-spacing: 16px;
 #module-content {
     $padding: 48px;
 
-    width: 100%;
+    flex: 1;
     background-color: $color-background-800;
     border-radius: 32px;
     padding: $padding;
     height: $height - $padding * 2;
     overflow-y: auto;
-
-    &::-webkit-scrollbar-thumb {
-        display: none;
-    }
 
     @media (max-width: $breakpoint_l) {
         width: unset;

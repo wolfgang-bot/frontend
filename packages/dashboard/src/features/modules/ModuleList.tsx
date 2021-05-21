@@ -23,8 +23,8 @@ function ModuleList({ guild, onHover = () => {}, onClick = () => {} }: {
 
         return (
             <>
-                {filtered.map(module => (
-                    <Box key={module.key} mb={2}>
+                {filtered.map((module, i) => (
+                    <Box key={module.key} mb={i < filtered.length - 1 ? 2 : 0}>
                         <ModuleCard
                             module={module}
                             onMouseEnter={() => onHover({ module })}
@@ -49,7 +49,7 @@ export function ModuleListSkeleton() {
     return (
         <>
             {Array(AMOUNT_OF_CARDS).fill(0).map((_, index) => (
-                <Box key={index} mb={2}>
+                <Box key={index} mb={index}>
                     <ModuleCardSkeleton />
                 </Box>
             ))}
@@ -57,4 +57,6 @@ export function ModuleListSkeleton() {
     )
 }
 
-export default withStreamSubscription(ModuleList, "guild-modules")
+export default withStreamSubscription(ModuleList, "guild-modules", {
+    showOverlayIfEmpty: false
+})

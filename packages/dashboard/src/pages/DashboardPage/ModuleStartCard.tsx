@@ -10,6 +10,7 @@ import {
     Typography,
     useMediaQuery
 } from "@material-ui/core"
+import { makeStyles } from "@material-ui/core/styles"
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft"
 
 import { API } from "../../config/types"
@@ -18,12 +19,21 @@ import ArgumentsForm, {
 } from "../../components/Forms/ArgumentsForm/ArgumentsForm"
 import api from "../../api"
 
+const useStyles = makeStyles({
+    emptyArgs: {
+        opacity: .5,
+        textAlign: "center"
+    }
+})
+
 function ModuleStartCard({ module, guild, onBack }: {
     module?: API.Module,
     guild?: API.Guild,
     onBack: () => void
 }) {
     const isSmallScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"))
+
+    const classes = useStyles()
     
     const argsFormRef = useRef<ArgumentsRefHandle>(null)
 
@@ -100,6 +110,14 @@ function ModuleStartCard({ module, guild, onBack }: {
                         guild={guild}
                         ref={argsFormRef}
                     />
+                )}
+
+                {module?.args.length === 0 && (
+                    <Box mt={4}>
+                        <Typography className={classes.emptyArgs}>
+                            No configuration needed
+                        </Typography>
+                    </Box>
                 )}
             </Box>
 

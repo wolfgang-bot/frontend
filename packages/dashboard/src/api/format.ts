@@ -52,7 +52,7 @@ function formatGuild(guild: API.Guild) {
 }
 
 function formatModule(module: API.Module) {
-    module.icon = `${STORAGE_BASE_URL}/modules/${module.key}/icon.png`
+    module.icon = `${STORAGE_BASE_URL}/modules/${module.key}/icon.svg`
 }
 
 function formatAdmin(admin: API.Admin) {

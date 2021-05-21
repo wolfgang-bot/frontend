@@ -15,7 +15,7 @@ class ModuleListItem {
 
     render() {
         this.node.querySelector(".module-name").textContent = this.module.name
-        this.node.querySelector("img").src = `${config.storageBaseURL}/modules/${this.module.key}/icon.png`
+        this.node.querySelector("img").src = `${config.storageBaseURL}/modules/${this.module.key}/icon.svg`
     }
 }
 

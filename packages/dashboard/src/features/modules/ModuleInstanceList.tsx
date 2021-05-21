@@ -30,7 +30,7 @@ function EmptyListIndicator() {
     )
 }
 
-function ModuleInstanceList({ guild, onHover = () => {} }: {
+function ModuleInstanceList({ guild, onHover = () => {}}: {
     guild: API.Guild,
     onHover?: (props: {
         module: API.Module,
@@ -69,7 +69,7 @@ function ModuleInstanceList({ guild, onHover = () => {} }: {
 
         return (
             <>
-                {filtered.map(([module, instance]) => {
+                {filtered.map(([module, instance], i) => {
                     if (!module || !instance) {
                         throw new Error(`Missing module for instance ${instance?.moduleKey}`)
                     }
@@ -77,7 +77,7 @@ function ModuleInstanceList({ guild, onHover = () => {} }: {
                     return (
                         <Box
                             key={instance.id}
-                            mb={2}
+                            mb={i < filtered.length - 1 ? 2 : 0}
                             onMouseEnter={() => onHover({ module, instance })}
                         >
                             <ModuleInstanceCard
