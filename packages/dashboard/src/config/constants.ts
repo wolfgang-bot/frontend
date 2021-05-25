@@ -2,7 +2,9 @@ export const DEBUG = process.env.NODE_ENV === "development"
 
 export const API_BASE_URL = window.location.origin + "/api"
 export const STORAGE_BASE_URL = window.location.origin + "/storage"
-export const WEB_SOCKET_API_URL = `ws://${window.location.host}`
+export const WEB_SOCKET_API_URL = `${
+    window.location.protocol === "https:" ? "wss" : "ws"
+}://${window.location.host}`
 
 export const DISCORD_OAUTH_API_ENDPOINT = API_BASE_URL + "/oauth/discord"
 export const DISCORD_OAUTH_URL =
