@@ -1,17 +1,33 @@
 import { useEffect, useRef } from "react"
 import { useDispatch } from "react-redux"
+import { makeStyles } from "@material-ui/core/styles"
 
 import { createListeners } from "../../utils"
 import { API } from "../../config/types"
 import { DISCORD_OAUTH_URL } from "../../config/constants"
 import format, { FORMATS } from "../../api/format"
 import { login } from "../../features/auth/authSlice"
+import { Button } from "@material-ui/core"
 
-function OAuthDiscord({ onClose }: { onClose: () => void }) {
+import discordIcon from "../../assets/images/discord-brand.svg"
+
+const useStyles = makeStyles(theme => ({
+    discordOAuth: {
+        fontSize: theme.typography.subtitle1.fontSize
+    },
+
+    icon: {
+        width: 20
+    }
+}))
+
+function OAuthDiscord({ onCancel }: { onCancel: () => void }) {
     const dispatch = useDispatch()
 
+    const classes = useStyles()
+
     const popup = useRef<Window | null>()
-    const removeCloseListener = useRef<() => void | null>()
+    const removeCancelListener = useRef<() => void | null>()
 
     const addCloseListener = (popup: Window, callback: () => void) => {        
         const interval = setInterval(() => {
@@ -21,10 +37,10 @@ function OAuthDiscord({ onClose }: { onClose: () => void }) {
             }
         }, 100)
         
-        removeCloseListener.current = () => clearInterval(interval)
+        removeCancelListener.current = () => clearInterval(interval)
     }
 
-    useEffect(() => {
+    const openPopup = () => {
         const width = 1000
         const height = 800
 
@@ -34,13 +50,14 @@ function OAuthDiscord({ onClose }: { onClose: () => void }) {
         popup.current = window.open(DISCORD_OAUTH_URL, "Login with Discord", `width=${width},height=${height},left=${x},top=${y}`)
 
         if (popup.current) {
-            addCloseListener(popup.current, onClose)
+            addCloseListener(popup.current, onCancel)
         } else {
-            onClose()
+            onCancel()
         }
+    }
 
-        // eslint-disable-next-line
-    }, [])
+    // eslint-disable-next-line
+    useEffect(openPopup, [])
 
     useEffect(() => {
         const handleMessage = (event: any) => {
@@ -51,7 +68,7 @@ function OAuthDiscord({ onClose }: { onClose: () => void }) {
             }
 
             if (res?.source === "oauth" && popup.current) {
-                removeCloseListener.current?.()
+                removeCancelListener.current?.()
                 popup.current.close()
 
                 if (res.status === "ok") {
@@ -65,8 +82,6 @@ function OAuthDiscord({ onClose }: { onClose: () => void }) {
                         user: res.data.user,
                         token: res.data.token
                     }))
-                } else {
-                    alert("Authorization failed")
                 }
             }
         }
@@ -76,7 +91,22 @@ function OAuthDiscord({ onClose }: { onClose: () => void }) {
         ])
     })
 
-    return null
+    return (
+        <Button
+            variant="outlined"
+            onClick={openPopup}
+            className={classes.discordOAuth}
+            startIcon={
+                <img
+                    src={discordIcon} 
+                    alt="Discord"
+                    className={classes.icon}
+                />
+            }
+        >
+            Login with Discord
+        </Button>
+    )
 }
 
 export default OAuthDiscord
